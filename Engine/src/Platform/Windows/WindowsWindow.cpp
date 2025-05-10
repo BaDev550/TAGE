@@ -1,0 +1,149 @@
+#include "tagepch.h"
+#include "WindowsWindow.h"
+
+#include "TAGE/Events/Event.h"
+#include "TAGE/Events/ApplicationEvents.h"
+#include "TAGE/Events/InputEvents.h"
+
+namespace TAGE {
+	static bool s_WindowClassRegistered = false;
+	static void GLFWErrorCallback(int err, const char* desc);
+
+	WindowsWindow::WindowsWindow(const SWindowPropeties& props)
+	{
+		Init(props);
+	}
+
+	WindowsWindow::~WindowsWindow()
+	{
+		Shutdown();
+	}
+
+	void WindowsWindow::Init(const SWindowPropeties& props)
+	{
+		_Data.Title = props.Title;
+		_Data.Width = props.Width;
+		_Data.Height = props.Height;
+
+		CORE_LOG_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+
+		if (!s_WindowClassRegistered) {
+			int success = glfwInit();
+			ENGINE_ASSERT(success, "Failed to initialize GLFW");
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+			glfwWindowHint(GLFW_SAMPLES, 4);
+			glfwSetErrorCallback(GLFWErrorCallback);
+			s_WindowClassRegistered = true;
+		}
+
+		_Window = glfwCreateWindow(_Data.Width, _Data.Height, _Data.Title.c_str(), NULL, NULL);
+		ENGINE_ASSERT(_Window != NULL, "Failed to create GLFW window");
+		glfwSetWindowUserPointer(_Window, &_Data);
+
+		_Context = MEM::CreateRef<RENDERER::Context>((GLFWwindow*)_Window);
+		_Context->Init();
+		glfwSwapInterval(1);
+
+		glfwSetWindowSizeCallback(_Window, [](GLFWwindow* window, int width, int height) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			data.Width = width;
+			data.Height = height;
+
+			WindowResizeEvent event(width, height);
+			data.EventCallback(event);
+			});
+
+		glfwSetWindowCloseCallback(_Window, [](GLFWwindow* window) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			WindowCloseEvent event;
+			data.EventCallback(event);
+			});
+
+		glfwSetKeyCallback(_Window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			switch (action)
+			{
+			case GLFW_PRESS: {
+				KeyPressedEvent event((KeyCode)key);
+				data.EventCallback(event);
+				break;
+			}
+			case GLFW_RELEASE: {
+				KeyReleasedEvent event((KeyCode)key);
+				data.EventCallback(event);
+				break;
+			}
+			case GLFW_REPEAT: {
+				KeyPressedEvent event((KeyCode)key);
+				data.EventCallback(event);
+				break;
+			}
+			default:
+				std::cout << "Incorrect Key action!" << std::endl;
+				break;
+			}
+			});
+
+		glfwSetMouseButtonCallback(_Window, [](GLFWwindow* window, int button, int action, int mods) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			switch (action)
+			{
+			case GLFW_PRESS: {
+				MouseButtonPressedEvent event((MouseButton)button);
+				data.EventCallback(event);
+				break;
+			}
+			case GLFW_RELEASE: {
+				MouseButtonReleasedEvent event((MouseButton)button);
+				data.EventCallback(event);
+				break;
+			}
+			default:
+				std::cout << "Incorrect Mouse action!" << std::endl;
+				break;
+			}
+			});
+
+		glfwSetScrollCallback(_Window, [](GLFWwindow* window, double x, double y) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			MouseScrolledEvent event((float)x, (float)y);
+			data.EventCallback(event);
+			});
+
+		glfwSetCursorPosCallback(_Window, [](GLFWwindow* window, double xPos, double yPos) {
+			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			MouseMovedEvent event((float)xPos, (float)yPos);
+			data.EventCallback(event);
+			});
+	}
+
+	void WindowsWindow::Shutdown()
+	{
+		glfwDestroyWindow(_Window);
+		glfwTerminate();
+	}
+
+	bool WindowsWindow::ShoudClose() const
+	{
+		return glfwWindowShouldClose(_Window);
+	}
+
+	void WindowsWindow::SwapBuffers() const
+	{
+		glfwPollEvents();
+		_Context->SwapBuffers();
+	}
+
+	void WindowsWindow::EnableCursor(bool enable) const
+	{
+		glfwSetInputMode(_Window, GLFW_CURSOR, enable ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+	}
+
+	void GLFWErrorCallback(int err, const char* desc)
+	{
+		CORE_LOG_ERROR("GLFW Error [{0}], {1}", err, desc);
+	}
+}
