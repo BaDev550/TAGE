@@ -7,10 +7,11 @@
 namespace TAGE::RENDERER::DEBUG {
 	MEM::Ref<Shader> DebugRenderer::_LineShader;
 	MEM::Ref<VertexArrayBuffer> DebugRenderer::DEBUGVAO;
+	MEM::Ref<VertexBuffer> DebugRenderer::_VertexBuffer;
 
 	struct DebugVertex {
 		glm::vec3 Pos;
-		glm::vec2 Color;
+		glm::vec3 Color;
 	};
 
 	void DebugRenderer::Init()
@@ -20,17 +21,17 @@ namespace TAGE::RENDERER::DEBUG {
 		std::vector<DebugVertex> vertices = { };
 		std::vector<uint32_t> indices = { 0, 1 };
 
-		MEM::Ref<VertexBuffer> vertexBuffer = MEM::CreateRef<VertexBuffer>(vertices.data(), vertices.size() * sizeof(DebugVertex));
+		_VertexBuffer = MEM::CreateRef<VertexBuffer>(vertices.data(), vertices.size() * sizeof(DebugVertex));
 		MEM::Ref<IndexBuffer> indexBuffer = MEM::CreateRef<IndexBuffer>(indices.data(), indices.size());
 
 		BufferLayout layout = {
 			{ ShaderDataType::Vec3, "aPos" },
-			{ ShaderDataType::Vec2, "aColor" }
+			{ ShaderDataType::Vec3, "aColor" }
 		};
-		vertexBuffer->SetLayout(layout);
+		_VertexBuffer->SetLayout(layout);
 
 		DEBUGVAO = MEM::CreateRef<VertexArrayBuffer>();
-		DEBUGVAO->AddVertexBuffer(vertexBuffer);
+		DEBUGVAO->AddVertexBuffer(_VertexBuffer);
 		DEBUGVAO->SetIndexBuffer(indexBuffer);
 	}
 
@@ -40,14 +41,7 @@ namespace TAGE::RENDERER::DEBUG {
 			{ from, color },
 			{ to,   color }
 		};
-		MEM::Ref<VertexBuffer> vertexBuffer = MEM::CreateRef<VertexBuffer>(vertices.data(), vertices.size() * sizeof(DebugVertex));
-		BufferLayout layout = {
-			{ ShaderDataType::Vec3, "aPos" },
-			{ ShaderDataType::Vec2, "aColor" }
-		};
-		vertexBuffer->SetLayout(layout);
-
-		DEBUGVAO->AddVertexBuffer(vertexBuffer);
+		_VertexBuffer->SetData(vertices.data(), vertices.size() * sizeof(DebugVertex));
 
 		_LineShader->Bind();
 		DEBUGVAO->Bind();

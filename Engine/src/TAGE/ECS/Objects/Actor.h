@@ -6,18 +6,13 @@
 namespace TAGE::ECS {
     class Actor : public Object {
     public:
-        Actor(Actor* actor)
-            : _entity(actor->GetEntity()), _registry(actor->_registry) {
-            OnCreate();
+        Actor(Actor* Actor)
+            : _entity(Actor->GetEntity()), _registry(Actor->_registry) {
         }
         Actor(entt::entity handle, entt::registry& registry)
             : _entity(handle), _registry(registry) {
-            OnCreate();
         }
-
-        virtual ~Actor() {
-            _registry.destroy(_entity);
-        }
+        virtual ~Actor() = default;
 
         template<typename T, typename... Args>
         T& AddComponent(Args&&... args) {
@@ -53,13 +48,18 @@ namespace TAGE::ECS {
             this->_entity = other.GetEntity();
         }
 
-        virtual void Tick(float deltaTime) {};
-        virtual void OnCreate() {};
-        virtual void OnDestroy() {}
+        virtual void Tick(float deltaTime) override {};
 
-        virtual std::string GetName() const override { return "Actor"; }
+        void AddChild(Actor* child);
+        void SetParent(Actor* parent);
+        Actor* GetParent() { 
+            if (!_Parent) return nullptr;
+            return _Parent;
+        }
+
     private:
         entt::entity _entity;
         entt::registry& _registry;
+        Actor* _Parent = nullptr;
     };
 }

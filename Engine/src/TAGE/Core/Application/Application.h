@@ -39,6 +39,7 @@ namespace TAGE
 		ECS::PhysicsSystem& GetPhysicsSystem() const { return _TestScene->GetWorld().GetPhysicsSystem(); }
 		ECS::RenderSystem& GetRenderSystem() const { return _TestScene->GetWorld().GetRenderSystem(); }
 		RENDERER::Renderer& GetRenderer() const { return *_Renderer; }
+		THREAD::ThreadPool& GetThreadPool() const { return *_AppThreadPool; }
 
 		TimeStep GetDeltaTime() const { return _DeltaTime; }
 		static Application& Get() { return *_Instance; }
@@ -53,10 +54,12 @@ namespace TAGE
 	private:
 		LayerStack _LayerStack;
 		MEM::Scope<Window> _Window;
+		MEM::Scope<THREAD::ThreadPool> _AppThreadPool;
 		MEM::Scope<RENDERER::Renderer> _Renderer;
 		MEM::Scope<RENDERER::Camera> _Camera;
 		MEM::Ref<ECS::Scene> _TestScene;
 		MEM::Ref<ImGuiLayer> _ImGuiLayer;
+		ECS::SystemUpdateMode _AppStat;
 
 		static Application* _Instance;
 	};

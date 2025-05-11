@@ -102,6 +102,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\TAGE\Core\Utilities\RaycastUtils.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h" />
     <ClInclude Include="src\TAGE\Physics\Raycaster.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\DebugRenderer.h" />
     <ClInclude Include="src\TAGE\Physics\PhysicsDebugRenderer.h" />
@@ -581,6 +583,9 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp" />
     <ClCompile Include="src\TAGE\Physics\Raycaster.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Render\DebugRenderer.cpp" />
     <ClCompile Include="src\TAGE\Physics\PhysicsDebugRenderer.cpp" />

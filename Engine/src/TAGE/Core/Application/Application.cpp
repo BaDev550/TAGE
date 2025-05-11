@@ -24,10 +24,13 @@ namespace TAGE
 		if (_TestScene) {
 			MEM::Ref<ECS::RenderSystem> renderSystem =  MEM::CreateRef<ECS::RenderSystem>(_Renderer.get());
 			MEM::Ref<ECS::PhysicsSystem> physicsSystem = MEM::CreateRef<ECS::PhysicsSystem>(_TestScene->GetWorld().GetPhysicsWorld());
+			MEM::Ref<ECS::TransformSystem> transformSystem = MEM::CreateRef<ECS::TransformSystem>();
 			_TestScene->GetWorld().AddSystem(renderSystem);
 			_TestScene->GetWorld().AddSystem(physicsSystem);
+			_TestScene->GetWorld().AddSystem(transformSystem);
 		}
 
+		_AppThreadPool = MEM::CreateScope<THREAD::ThreadPool>();
 		_ImGuiLayer = MEM::CreateRef<ImGuiLayer>();
 		PushOverlay(_ImGuiLayer.get());
 	}

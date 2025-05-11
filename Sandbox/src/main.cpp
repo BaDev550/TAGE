@@ -1,75 +1,6 @@
 #include "TAGE/TAGE.h"
 #include "imgui.h"
-
-class IInteractable {
-public:
-	virtual void Interact() = 0;
-};
-
-enum class ObjectType {
-	OBJECT_DOOR,
-	OBJECT_CHARACTER
-};
-class GameObject : public TActor {
-public:
-	GameObject(std::string name, ObjectType type, TEWorld& world) : TActor(world.SpawnActor(name)) {}
-	virtual ~GameObject() = default;
-	ObjectType GetType() const { return _Type; }
-
-private:
-	ObjectType _Type;
-};
-
-enum class EDoorState {
-	DOOR_OPENED,
-	DOOR_CLOSED
-};
-class Door : public GameObject, public IInteractable {
-public:
-	Door(std::string name, TEWorld& world) : GameObject(name, ObjectType::OBJECT_DOOR, world) {
-		AddComponent<TStaticMeshComponent>("Assets/Models/Cube/cube.obj");
-		auto collider = AddComponent<TAGE::ECS::ColliderComponent>();
-
-		world.GetPhysicsSystem().CreateRigidBody(this, 1.0f);
-		auto rb = GetComponent<TRigidBodyComponent>();
-
-		rb.BodyType = TAGE::ECS::PhysicsBodyType::Kinematic;
-		int flags = rb.Body->getCollisionFlags();
-		flags &= ~(btCollisionObject::CF_KINEMATIC_OBJECT);
-		flags |= btCollisionObject::CF_KINEMATIC_OBJECT;
-		rb.Body->setActivationState(DISABLE_DEACTIVATION);
-	}
-
-	virtual void Interact() override {
-		if (_state == EDoorState::DOOR_OPENED)
-			Close();
-		else
-			Open();
-	}
-
-	void Open() { _state = EDoorState::DOOR_OPENED; LOG_INFO("Door Opened"); }
-	void Close() { _state = EDoorState::DOOR_CLOSED; LOG_INFO("Door Closed"); }
-
-	void OnCreate() override {
-		LOG_INFO("Door created");
-	}
-	void Tick(float dt) override {
-
-	}
-
-	EDoorState _state;
-};
-
-class OakDoor : public Door {
-public:
-	OakDoor(TEWorld& world) : Door("oakDoor", world) {}
-
-	void Tick(float dt) override {
-
-	}
-
-	EDoorState _state;
-};
+#include "GameObjects/Player/Player.h"
 
 class SandboxLayer : public TELayer {
 public:
@@ -77,19 +8,9 @@ public:
 		_World = &_AppInstance->GetScene().GetWorld();
 
 		camera = _World->SpawnActor("Camera");
-		camera->AddComponent<TCameraComponent>(TCamType::Editor);
-		mainDoor = new Door("Door", * _World);
-		oakDoor = new OakDoor(*_World);
-
-		TActor* actor = _World->SpawnActor("Arms");
-		actor->AddComponent<TSkeletalMeshComponent>("Assets/Models/Arms/Arms.glb");
-
-		//TEAnim anim1("Assets/Models/Arms/Walk.glb", actor->GetComponent<TSkeletalMeshComponent>().model.get());
-		//actor->AddComponent<TAnimatorComponent>(&anim1);
+		camera->AddComponent<TEditorCameraComponent>();
 	}
 	~SandboxLayer() {
-		delete mainDoor;
-		delete oakDoor;
 	}
 
 	void OnImGuiRender() override {
@@ -118,16 +39,27 @@ public:
 
 				if (ImGui::Selectable(actor->GetComponent<TTagComponent>().tag.c_str())) {
 					_SelectedActor = actor;
+					std::cout << typeid(*_SelectedActor).name() << std::endl;
 				}
 			}
 
 			ImGui::Text("Selected Actor: %s", _SelectedActor ? _SelectedActor->GetComponent<TTagComponent>().tag.c_str() : "None");
 
 			if (_SelectedActor) {
+				if (_SelectedActor->GetParent()) {
+					auto parentActor = _SelectedActor->GetParent();
+					ImGui::Text("Parent is: %s", parentActor->GetComponent<TTagComponent>().tag.c_str());
+				}
+				else {
+					ImGui::Text("Parent is null!");
+				}
+
 				if (_SelectedActor->HasComponent<TTransformComponent>()) {
 					auto& tc = _SelectedActor->GetComponent<TTransformComponent>();
 					ImGui::Text("Transform");
 					ImGui::DragFloat3("Position", glm::value_ptr(tc.Position), 0.1f);
+					if (_SelectedActor->GetParent())
+						ImGui::DragFloat3("Local Position", glm::value_ptr(tc.LocalPosition), 0.1f);
 					ImGui::DragFloat3("Rotation", glm::value_ptr(tc.Rotation), 0.1f);
 					ImGui::DragFloat3("Scale", glm::value_ptr(tc.Scale), 0.1f);
 				}
@@ -193,17 +125,9 @@ public:
 				if (ImGui::Button("Add Collider")) {
 					_SelectedActor->AddComponent<TAGE::ECS::ColliderComponent>();
 				}
-				
-				if (dynamic_cast<Door*>(_SelectedActor)) {
-					auto door = dynamic_cast<Door*>(_SelectedActor);
-					std::string doorstat;
-					switch (door->_state)
-					{
-					case EDoorState::DOOR_OPENED: doorstat = "Opened"; break;
-					case EDoorState::DOOR_CLOSED: doorstat = "Closed"; break;
-						break;
-					}
-					ImGui::Text("Door Stat: %s", doorstat.c_str());
+
+				if (dynamic_cast<Player*>(_SelectedActor)) {
+					dynamic_cast<Player*>(_SelectedActor)->DrawStats();
 				}
 			}
 		}
@@ -222,35 +146,9 @@ public:
 		return false;
 	}
 
-	bool OnMouseButtonPressed(TEMouseButtonPressedE& event) {
-		if (event.GetButton() == TEMouseButton::Left) {
-			auto& activeCam = camera->GetComponent<TCameraComponent>();
-
-			glm::vec2 mousePos = TEInput::GetMousePosition();
-
-			glm::vec3 rayDirection = TAGE::RAYHELPER::ScreenPointToRay(mousePos, 1280, 720, activeCam.GetViewMatrix(), activeCam.GetProjectionMatrix());;
-			glm::vec3 rayOrigin = activeCam.Camera->GetPosition();
-			glm::vec3 rayEnd = rayOrigin + rayDirection * 1000.0f;
-
-			TEHitResult hit = TECast::Raycast(rayOrigin, rayEnd, TERayDrawType::FOR_DURATION, 5.0f);
-
-			if (hit.hit && hit.actor && hit.actor->HasComponent<TTagComponent>()) {
-				_SelectedActor = hit.actor;
-				
-				auto interactable = dynamic_cast<IInteractable*>(hit.actor);
-				if (interactable) {
-					interactable->Interact();
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-
 	void OnEvent(TEEvent& event) override {
 		TEEventDistpacher dispatcher(event);
 		dispatcher.Dispatch<TEKeyPressedE>(BIND_EVENT_FN(SandboxLayer::OnKeyPressed));
-		dispatcher.Dispatch<TEMouseButtonPressedE>(BIND_EVENT_FN(SandboxLayer::OnMouseButtonPressed));
 	}
 
 private:
@@ -259,8 +157,7 @@ private:
 
 	TActor* _SelectedActor = nullptr;
 	TActor* camera;
-	Door* mainDoor;
-	OakDoor* oakDoor;
+	Player player;
 };
 
 class Sandbox : public TEApplication {

@@ -18,6 +18,7 @@
 #include "TAGE/Layers/Layer.h"
 
 #include "TAGE/ECS/Objects/Actor.h"
+#include "TAGE/ECS/Objects/GameObject.h"
 #include "TAGE/ECS/ECS/Components.h"
 #include "TAGE/ECS/Scene/World.h"
 
@@ -49,15 +50,22 @@ using TEAnim = TAGE::RENDERER::Animation;
 using TEAnimator = TAGE::RENDERER::Animator;
 
 using TActor = TAGE::ECS::Actor;
+using TGameObject = TAGE::ECS::GameObject;
+using TObjectType = TAGE::ECS::ObjectType;
 using TStaticMeshComponent = TAGE::ECS::StaticMeshComponent;
 using TSkeletalMeshComponent = TAGE::ECS::SkeletalMeshComponent;
 using TAnimatorComponent = TAGE::ECS::AnimatorComponent;
 using TCameraComponent = TAGE::ECS::CameraComponent;
+using TEditorCameraComponent = TAGE::ECS::EditorCameraComponent;
 using TCamType = TAGE::ECS::ECameraType;
 using TTagComponent = TAGE::ECS::TagComponent;
 using TTransformComponent = TAGE::ECS::TransformComponent;
 using TRigidBodyComponent = TAGE::ECS::RigidBodyComponent;
+using TColliderComponent = TAGE::ECS::ColliderComponent;
+using TRelationshipComponent = TAGE::ECS::RelationshipComponent;
 
 using TEHitResult = TAGE::PHYSICS::RAYCAST::RaycastHit;
 using TERayDrawType = TAGE::PHYSICS::RAYCAST::RayDrawType;
 using TECast = TAGE::PHYSICS::RAYCAST::Raycaster;
+
+inline TEWorld& GetWorld() { return TAGE::Application::Get().GetScene().GetWorld(); }

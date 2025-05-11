@@ -22,6 +22,38 @@ namespace TAGE::ECS {
         virtual void Update(entt::registry& registry, float dt, SystemUpdateMode mode) = 0;
     };
 
+    class TransformSystem : public System {
+    public:
+        void Update(entt::registry& registry, float dt, SystemUpdateMode mode) override {
+            auto view = registry.view<TransformComponent, RelationshipComponent>();
+
+            for (auto entity : view) {
+                auto& rel = view.get<RelationshipComponent>(entity);
+
+                if (rel.Parent == entt::null) {
+                    UpdateTransformRecursive(registry, entity, glm::mat4(1.0f)); 
+                }
+            }
+        }
+
+    private:
+        void UpdateTransformRecursive(entt::registry& registry, entt::entity entity, const glm::mat4& parentTransform) {
+            auto& transform = registry.get<TransformComponent>(entity);
+
+            transform.UpdateWorldMatrix(parentTransform);
+
+            if (registry.any_of<RelationshipComponent>(entity)) {
+                auto& rel = registry.get<RelationshipComponent>(entity);
+
+                for (auto child : rel.Children) {
+                    if (registry.valid(child)) {
+                        UpdateTransformRecursive(registry, child, transform.WorldMatrix); 
+                    }
+                }
+            }
+        }
+    };
+
     class RenderSystem : public System {
     public:
         RenderSystem(RENDERER::Renderer* renderer);

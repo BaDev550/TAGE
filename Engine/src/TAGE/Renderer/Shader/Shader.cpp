@@ -82,12 +82,7 @@ namespace TAGE::RENDERER {
 	}
 	int Shader::GetUniformLocation(const std::string& name)
 	{
-		auto it = _UniformLocationCache.find(name);
-		if (it != _UniformLocationCache.end())
-			return it->second;
-
 		int location = glGetUniformLocation(_ProgramID, name.c_str());
-		_UniformLocationCache[name] = location;
 		return location;
 	}
 
@@ -110,14 +105,5 @@ namespace TAGE::RENDERER {
 	void Shader::SetUniform(const std::string& name, const glm::mat4& value)
 	{
 		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
-	}
-	void Shader::BindUniformBlock(const std::string& blockName, uint32_t bindingPoint) const
-	{
-		GLuint blockIndex = glGetUniformBlockIndex(_ProgramID, blockName.c_str());
-		if (blockIndex == GL_INVALID_INDEX) {
-			CORE_LOG_ERROR("Warning: Uniform block '{}' not found in shader!", blockName);
-			return;
-		}
-		glUniformBlockBinding(_ProgramID, blockIndex, bindingPoint);
 	}
 }

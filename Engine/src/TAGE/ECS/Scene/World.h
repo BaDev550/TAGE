@@ -5,6 +5,8 @@
 #include "TAGE/ECS/ECS/EntityRegistry.h"
 #include "TAGE/ECS/ECS/System.h"
 #include "TAGE/Physics/PhysicsWorld.h"
+#include "TAGE/ECS/Objects/GameObjectManager.h"
+
 #include <vector>
 
 namespace TAGE::ECS {
@@ -19,6 +21,7 @@ namespace TAGE::ECS {
 		
 		Actor* SpawnActor(const std::string& name = "Actor");
 		void DestroyActor(const Actor& actor);
+		void RegisterActor(Actor* actor) {}
 		std::vector<Actor*> GetAllActors();
 
 		void AddSystem(const MEM::Ref<System>& system) {
@@ -37,6 +40,7 @@ namespace TAGE::ECS {
 
 		ECS::PhysicsSystem& GetPhysicsSystem() const { return *GetSystem<ECS::PhysicsSystem>(); }
 		ECS::RenderSystem& GetRenderSystem() const { return *GetSystem<ECS::RenderSystem>(); }
+		GameObjectManager& GetGameObjectManager() const { return *_GameObjectManager; }
 
 		void Clear() {
 			_entityRegistry->ClearEntitys();
@@ -46,6 +50,7 @@ namespace TAGE::ECS {
 		MEM::Scope<EntityRegistry>& GetRegistry() { return _entityRegistry; }
 	private:
 		MEM::Scope<EntityRegistry> _entityRegistry;
+		MEM::Scope<GameObjectManager> _GameObjectManager;
 		std::vector<MEM::Ref<System>> _systems;
 		std::vector<Actor*> _Actors;
 		PHYSICS::PhysicsWorld _PWorld;

@@ -10,6 +10,7 @@ namespace TAGE::RENDERER::DEBUG {
 		static void DrawLine(const glm::vec3& from, const glm::vec3& to, const glm::vec3& color);
 	private:
 		static MEM::Ref<Shader> _LineShader;
+		static MEM::Ref<VertexBuffer> _VertexBuffer;
 		static MEM::Ref<VertexArrayBuffer> DEBUGVAO;
 	};
 }

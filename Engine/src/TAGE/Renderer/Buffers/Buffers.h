@@ -47,16 +47,16 @@ namespace TAGE::RENDERER
 	};
 	
 	struct BufferElement{
-		std::string Name;
+		const char* Name;
 		ShaderDataType Type;
-		uint32_t Size;
-		uint32_t Offset;
-		uint32_t Divisor = 0;
+		uint16_t Size;
+		uint16_t Offset;
+		uint16_t Divisor = 0;
 		bool Normalized;
 	
 		BufferElement() {}
 		BufferElement(ShaderDataType type, const std::string& name, uint32_t divisor = 0, bool normalized = false)
-			: Name(name), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized), Divisor(divisor)
+			: Name(name.c_str()), Type(type), Size(ShaderDataTypeSize(type)), Offset(0), Normalized(normalized), Divisor(divisor)
 		{ 	}
 	
 		uint32_t GetComponentCount() const {

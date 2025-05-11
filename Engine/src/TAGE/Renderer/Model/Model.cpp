@@ -6,6 +6,7 @@ namespace TAGE::RENDERER {
 	Model::Model(const std::string& path, EMeshType type)
 		: _MeshType(type)
 	{
+		_Vao = MEM::CreateRef<VertexArrayBuffer>();
 		LoadModel(path);
 	}
 
@@ -57,8 +58,8 @@ namespace TAGE::RENDERER {
 	
 	Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
-		vertices.clear();
-		indices.clear();
+		std::vector<Vertex> vertices;
+		std::vector<uint32_t> indices;
 
 		for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
 			Vertex v;
@@ -112,16 +113,15 @@ namespace TAGE::RENDERER {
 		};
 		vertexBuffer->SetLayout(layout);
 
-		MEM::Ref<VertexArrayBuffer> vao = MEM::CreateRef<VertexArrayBuffer>();
-		vao->AddVertexBuffer(vertexBuffer);
+		_Vao->AddVertexBuffer(vertexBuffer);
 
 		MEM::Ref<IndexBuffer> indexBuffer =  MEM::CreateRef<IndexBuffer>(indices.data(), indices.size());
-		vao->SetIndexBuffer(indexBuffer);
+		_Vao->SetIndexBuffer(indexBuffer);
 
 		MEM::Ref<Material> material = LoadMaterial(scene->mMaterials[mesh->mMaterialIndex], scene);
 		CORE_LOG_INFO("Mesh vertex count: {}", mesh->mNumVertices);
 
-		return { vao, material, (int)indices.size() };
+		return { _Vao, material, (int)indices.size() };
 	}
 
 	void Model::LoadTexture(aiMaterial* material, const MEM::Ref<Material>& mat, aiTextureType type, TextureType ourType) {
@@ -131,11 +131,13 @@ namespace TAGE::RENDERER {
 			std::string texPath = str.C_Str();
 
 			int texIndex = std::atoi(texPath.c_str() + 1);
-			const aiTexture* texture = _Scene->mTextures[texIndex];
+			if (!texPath.empty() && texPath[0] == '*') {
+				const aiTexture* texture = _Scene->mTextures[texIndex];
 
-			if (texture->mHeight == 0) {
-				MEM::Ref<Texture2D> tex = LoadEmbeddedTexture(texture);
-				mat->SetTexture(ourType, tex);
+				if (texture->mHeight == 0) {
+					MEM::Ref<Texture2D> tex = LoadEmbeddedTexture(texture);
+					mat->SetTexture(ourType, tex);
+				}
 			}
 			else {
 				std::string fullPath = _Directory + "/" + texPath;

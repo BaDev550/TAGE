@@ -56,26 +56,52 @@ namespace TAGE::ECS {
     void RenderSystem::Update(entt::registry& registry, float dt, SystemUpdateMode mode)
     {
         PassLightsToShader(registry);
-        auto cameraView = registry.view<CameraComponent>();
+        auto cameraView = registry.view<TransformComponent, CameraComponent>();
+        auto editorCameraView = registry.view<TransformComponent, EditorCameraComponent>();
 
-        if (!cameraView.empty()) {
-            auto entity = *cameraView.begin();
-            auto activeCam = registry.get<CameraComponent>(entity);
+        if (mode == SystemUpdateMode::Game)
+        {
+            if (cameraView.begin() != cameraView.end()) {
+                auto entity = *cameraView.begin();
+                CameraComponent* activeCam = &registry.get<CameraComponent>(entity);
 
-            activeCam.Camera->OnUpdate(dt);
+                activeCam->Camera->OnUpdate(dt);
 
-            _Renderer->BeginShadowMap();
-            RenderScene(registry, dt, _ShadowShader);
-            _Renderer->EndShadowMap();
+                _Renderer->BeginShadowMap();
+                RenderScene(registry, dt, _ShadowShader);
+                _Renderer->EndShadowMap();
 
-            _Renderer->BeginScene(activeCam.Camera);
-            RenderScene(registry, dt, _Shader);
-            _Renderer->EndScene();
+                _Renderer->BeginScene(activeCam->Camera);
+                RenderScene(registry, dt, _Shader);
+                _Renderer->EndScene();
 
-            Application::Get().UpdateLayers(dt);
-            _PhysicsDebugRenderer.Flush(dt);
+                Application::Get().UpdateLayers(dt);
+                _PhysicsDebugRenderer.Flush(dt);
 
-            UpdateCamera(registry);
+                UpdateCamera(registry);
+            }
+        }
+        else if (mode == SystemUpdateMode::Editor)
+        {
+            if (editorCameraView.begin() != editorCameraView.end()) {
+                auto entity = *editorCameraView.begin();
+                EditorCameraComponent* activeCam = &registry.get<EditorCameraComponent>(entity);
+
+                activeCam->Camera->OnUpdate(dt);
+
+                _Renderer->BeginShadowMap();
+                RenderScene(registry, dt, _ShadowShader);
+                _Renderer->EndShadowMap();
+
+                _Renderer->BeginScene(activeCam->Camera);
+                RenderScene(registry, dt, _Shader);
+                _Renderer->EndScene();
+
+                Application::Get().UpdateLayers(dt);
+                _PhysicsDebugRenderer.Flush(dt);
+
+                UpdateCamera(registry);
+            }
         }
     }
 
@@ -87,14 +113,17 @@ namespace TAGE::ECS {
 
     void PhysicsSystem::Update(entt::registry& registry, float dt, SystemUpdateMode mode)
     {
+        //if (mode == SystemUpdateMode::Editor) return;
+
         _PhysicsWorld.StepSimulation(dt);
         _PhysicsWorld.GetWorld()->debugDrawWorld();
 
         auto rigidView = registry.view<TransformComponent, RigidBodyComponent>();
+
         for (auto entity : rigidView) {
             auto& transform = rigidView.get<TransformComponent>(entity);
             auto& rb = rigidView.get<RigidBodyComponent>(entity);
-            
+
             if (rb.Body->isKinematicObject() || rb.Body->isStaticObject()) {
                 glm::vec3 position = transform.Position;
                 glm::vec3 rotation = transform.Rotation;
@@ -114,8 +143,8 @@ namespace TAGE::ECS {
             btVector3 pos = bulletTransform.getOrigin();
             btQuaternion rot = bulletTransform.getRotation();
 
-            transform.Position = glm::vec3(pos.getX(), pos.getY(), pos.getZ());
             glm::quat q(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+            transform.Position = glm::vec3(pos.getX(), pos.getY(), pos.getZ());
             transform.Rotation = glm::eulerAngles(q) * (180.0f / glm::pi<float>());
         }
     }

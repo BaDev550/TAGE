@@ -19,15 +19,11 @@ namespace TAGE::RENDERER {
 		void SetUniform(const std::string& name, const glm::vec2& value);
 		void SetUniform(const std::string& name, const glm::vec3& value);
 		void SetUniform(const std::string& name, const glm::mat4& value);
-		void BindUniformBlock(const std::string& blockName, uint32_t bindingPoint) const;
 
 		inline uint32_t GetProgramID() const { return _ProgramID; }
 		virtual ASSET::AssetType GetType() const override { return ASSET::AssetType::SHADER; }
 	private:
 		uint32_t _ProgramID = 0;
-		std::unordered_map<std::string, int> _UniformLocationCache;
-
-		std::string _Path;
 
 		std::string ParseShaderFile(const std::string& path);
 		uint32_t CompileShader(uint32_t type, const std::string& source);

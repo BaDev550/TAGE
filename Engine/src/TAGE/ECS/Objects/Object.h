@@ -9,6 +9,6 @@ namespace TAGE::ECS {
         virtual ~Object() = default;
 
         virtual std::string GetName() const { return "Object"; }
-        virtual void Tick(float dt) {}
+        virtual void Tick(float dt) {};
     };
 }

@@ -41,12 +41,11 @@ namespace TAGE::RENDERER {
 	private:
 		std::vector<Mesh> _Meshes;
 		std::string _Directory;
-		std::vector<Vertex> vertices;
-		std::vector<uint32_t> indices;
 		EMeshType _MeshType;
 		const aiScene* _Scene = nullptr;
 
 		std::map<std::string, BoneInfo> m_BoneInfoMap;
+		MEM::Ref<VertexArrayBuffer> _Vao;
 		int m_BoneCounter = 0;
 
 		void LoadModel(const std::string& path);

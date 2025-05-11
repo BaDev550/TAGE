@@ -21,6 +21,9 @@ namespace TAGE::ECS {
 		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 
+		glm::vec3 LocalPosition = { 0.0f, 0.0f, 0.0f };
+		glm::mat4 WorldMatrix = glm::mat4(1.0f);
+
 		glm::mat4 GetMatrix() const {
 			glm::mat4 translation = glm::translate(glm::mat4(1.0f), Position);
 			glm::mat4 rotX = glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.x), glm::vec3(1, 0, 0));
@@ -29,6 +32,10 @@ namespace TAGE::ECS {
 			glm::mat4 rotation = rotZ * rotY * rotX;
 			glm::mat4 scale = glm::scale(glm::mat4(1.0f), Scale);
 			return translation * rotation * scale;
+		}
+
+		void UpdateWorldMatrix(const glm::mat4& parentWorldMatrix) {
+			WorldMatrix = parentWorldMatrix * GetMatrix();
 		}
 	};
 
@@ -136,6 +143,11 @@ namespace TAGE::ECS {
 		glm::mat4 GetProjectionMatrix() const { return Camera->GetProjectionMatrix(); }
 	};
 
+	struct EditorCameraComponent : public CameraComponent {
+	public:
+		EditorCameraComponent() : CameraComponent(ECameraType::Editor) {}
+	};
+
 	struct LightComponent {
 		glm::vec4 color;
 		float intensity;
@@ -147,5 +159,10 @@ namespace TAGE::ECS {
 
 	struct PointLightComponent : public LightComponent {
 		glm::vec3 direction;
+	};
+
+	struct RelationshipComponent {
+		entt::entity Parent = entt::null;
+		std::vector<entt::entity> Children;
 	};
 }
