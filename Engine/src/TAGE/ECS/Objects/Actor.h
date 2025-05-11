@@ -6,10 +6,16 @@
 namespace TAGE::ECS {
     class Actor : public Object {
     public:
+        Actor(Actor* actor)
+            : _entity(actor->GetEntity()), _registry(actor->_registry) {
+            OnCreate();
+        }
         Actor(entt::entity handle, entt::registry& registry)
             : _entity(handle), _registry(registry) {
+            OnCreate();
         }
-        ~Actor() {
+
+        virtual ~Actor() {
             _registry.destroy(_entity);
         }
 
@@ -35,8 +41,8 @@ namespace TAGE::ECS {
 
         entt::entity GetEntity() const { return _entity; }
 
-        operator bool() {
-            return this;
+        operator bool() const {
+            return _registry.valid(_entity);
         }
 
         inline bool operator==(Actor other) {
@@ -46,6 +52,10 @@ namespace TAGE::ECS {
         inline void operator=(Actor other) {
             this->_entity = other.GetEntity();
         }
+
+        virtual void Tick(float deltaTime) {};
+        virtual void OnCreate() {};
+        virtual void OnDestroy() {}
 
         virtual std::string GetName() const override { return "Actor"; }
     private:

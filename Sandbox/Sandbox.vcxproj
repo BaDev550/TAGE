@@ -58,7 +58,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Engine\src;..\Engine\thirdParty\GLFW\include;..\Engine\thirdParty\GLAD\include;..\Engine\thirdParty\imgui;..\Engine\thirdParty\assimp\include;..\Engine\thirdParty\entt\include;..\Engine\thirdParty\glm;..\Engine\thirdParty\spdlog;..\Engine\thirdParty\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Engine\src;..\Engine\thirdParty\GLFW\include;..\Engine\thirdParty\GLAD\include;..\Engine\thirdParty\imgui;..\Engine\thirdParty\assimp\include;..\Engine\thirdParty\entt\include;..\Engine\thirdParty\glm;..\Engine\thirdParty\spdlog;..\Engine\thirdParty\json;..\Engine\thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -75,7 +75,7 @@
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>..\Engine\src;..\Engine\thirdParty\GLFW\include;..\Engine\thirdParty\GLAD\include;..\Engine\thirdParty\imgui;..\Engine\thirdParty\assimp\include;..\Engine\thirdParty\entt\include;..\Engine\thirdParty\glm;..\Engine\thirdParty\spdlog;..\Engine\thirdParty\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Engine\src;..\Engine\thirdParty\GLFW\include;..\Engine\thirdParty\GLAD\include;..\Engine\thirdParty\imgui;..\Engine\thirdParty\assimp\include;..\Engine\thirdParty\entt\include;..\Engine\thirdParty\glm;..\Engine\thirdParty\spdlog;..\Engine\thirdParty\json;..\Engine\thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>

@@ -19,7 +19,6 @@ namespace TAGE::RENDERER {
 		virtual void SetRotation(const glm::vec3& rotation) = 0;
 		virtual const glm::vec3& GetPosition() const = 0;
 		virtual const glm::vec3& GetRotation() const = 0;
-
 		virtual void OnUpdate(float deltaTime) = 0;
 	};
 

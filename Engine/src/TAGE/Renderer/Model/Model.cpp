@@ -33,7 +33,6 @@ namespace TAGE::RENDERER {
 			aiProcess_GenNormals |
 			aiProcess_JoinIdenticalVertices |
 			aiProcess_SortByPType |
-			aiProcess_GlobalScale |
 			aiProcess_OptimizeMeshes |
 			aiProcess_ImproveCacheLocality
 		);
@@ -55,11 +54,11 @@ namespace TAGE::RENDERER {
 			ProcessNode(node->mChildren[i], scene);
 		}
 	}
-
+	
 	Mesh Model::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 	{
-		std::vector<Vertex> vertices;
-		std::vector<uint32_t> indices;
+		vertices.clear();
+		indices.clear();
 
 		for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
 			Vertex v;
@@ -131,24 +130,14 @@ namespace TAGE::RENDERER {
 			material->GetTexture(type, 0, &str);
 			std::string texPath = str.C_Str();
 
-			if (!texPath.empty() && texPath[0] == '*') {
-				int texIndex = std::atoi(texPath.c_str() + 1);
-				const aiTexture* texture = _Scene->mTextures[texIndex];
+			int texIndex = std::atoi(texPath.c_str() + 1);
+			const aiTexture* texture = _Scene->mTextures[texIndex];
+
+			if (texture->mHeight == 0) {
 				MEM::Ref<Texture2D> tex = LoadEmbeddedTexture(texture);
-				if (tex) {
-					mat->SetTexture(ourType, tex);
-				}
+				mat->SetTexture(ourType, tex);
 			}
 			else {
-				for (unsigned int i = 0; i < _Scene->mNumTextures; ++i) {
-					const aiTexture* embedded = _Scene->mTextures[i];
-					if (embedded->mFilename.C_Str() == texPath) {
-						auto tex = LoadEmbeddedTexture(embedded);
-						mat->SetTexture(ourType, tex);
-						return;
-					}
-				}
-
 				std::string fullPath = _Directory + "/" + texPath;
 				if (ASSET::AssetManager::Has<Texture2D>(fullPath)) {
 					mat->SetTexture(ourType, ASSET::AssetManager::Get<Texture2D>(fullPath));

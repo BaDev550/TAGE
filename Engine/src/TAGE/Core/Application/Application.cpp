@@ -20,9 +20,13 @@ namespace TAGE
 		_Renderer = MEM::CreateScope<RENDERER::Renderer>();
 		_Renderer->Init(_Window.get());
 
-		MEM::Scope<ECS::RenderSystem> renderSystem = MEM::CreateScope<ECS::RenderSystem>(_Renderer.get());
 		_TestScene = MEM::CreateRef<ECS::Scene>("Test Map");
-		_TestScene->GetWorld().AddSystem(std::move(renderSystem));
+		if (_TestScene) {
+			MEM::Ref<ECS::RenderSystem> renderSystem =  MEM::CreateRef<ECS::RenderSystem>(_Renderer.get());
+			MEM::Ref<ECS::PhysicsSystem> physicsSystem = MEM::CreateRef<ECS::PhysicsSystem>(_TestScene->GetWorld().GetPhysicsWorld());
+			_TestScene->GetWorld().AddSystem(renderSystem);
+			_TestScene->GetWorld().AddSystem(physicsSystem);
+		}
 
 		_ImGuiLayer = MEM::CreateRef<ImGuiLayer>();
 		PushOverlay(_ImGuiLayer.get());

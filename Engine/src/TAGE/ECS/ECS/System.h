@@ -3,7 +3,12 @@
 #include "Components.h"
 #include "entt/entt.hpp"
 #include "TAGE/ECS/Objects/Object.h"
+#include "TAGE/ECS/Objects/Actor.h"
 #include "TAGE/Renderer/Renderer.h"
+#include "TAGE/Physics/PhysicsWorld.h"
+#include "TAGE/Physics/ContactListener.h"
+#include "TAGE/Physics/PhysicsDebugRenderer.h"
+#include "TAGE/Physics/Raycaster.h"
 
 namespace TAGE::ECS {
     enum class SystemUpdateMode {
@@ -31,5 +36,16 @@ namespace TAGE::ECS {
         MEM::Ref<RENDERER::Shader> _ShadowShader;
 
         RENDERER::Renderer* _Renderer;
+    };
+
+    class PhysicsSystem : public System {
+    public:
+        PhysicsSystem(PHYSICS::PhysicsWorld& world);
+        
+        void Update(entt::registry& registry, float dt, SystemUpdateMode mode) override;
+        btRigidBody* CreateRigidBody(Actor* actor, float mass);
+    private:
+        PHYSICS::PhysicsWorld& _PhysicsWorld;
+        PHYSICS::PhysicsContactListener _ContactListener;
     };
 }

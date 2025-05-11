@@ -11,6 +11,7 @@ namespace TAGE::RENDERER {
 		_FBShader = ShaderLibrary::Load("framebuffer", "../Engine/shaders/Framebuffer_Vertex.glsl", "../Engine/shaders/Framebuffer_Fragment.glsl");
 		_SkyBoxShader = ShaderLibrary::Load("skybox", "../Engine/shaders/Skybox_Vertex.glsl", "../Engine/shaders/Skybox_Fragment.glsl");
 		_ShadowShader = ShaderLibrary::Load("shadow", "../Engine/shaders/Shadow_Vertex.glsl", "../Engine/shaders/Shadow_Fragment.glsl");
+		_LineShader = ShaderLibrary::Load("line", "../Engine/shaders/Debug_Line_Vertex.glsl", "../Engine/shaders/Debug_Line_Fragment.glsl");
 		_Framebuffer = MEM::CreateRef<Framebuffer>(_Window->GetWidth(), _Window->GetHeight(), _FBShader);
 		_ShadowMap = MEM::CreateRef<ShadowMap>(2048, 2048);
 
@@ -20,6 +21,7 @@ namespace TAGE::RENDERER {
 		_PostProcessPass = MEM::CreateRef<PostProcessPass>(_Framebuffer, _FBShader);
 
 		_PostProcessEffects = PostProcessEffects(1.460f);
+		DEBUG::DebugRenderer::Init();
 	}
 
 	void Renderer::BeginScene(const MEM::Ref<Camera>& cam)
@@ -36,6 +38,9 @@ namespace TAGE::RENDERER {
 		_Shader->SetUniform("u_Light.color", _SceneLight.Color);
 		_Shader->SetUniform("u_Light.intensity", _SceneLight.Intensity);
 		_Shader->SetUniform("u_CameraPosition", cam->GetPosition());
+
+		_LineShader->Bind();
+		_LineShader->SetUniform("u_ViewProj", vp);
 
 		_SkyBoxShader->Bind();
 		_SkyBoxShader->SetUniform("view", glm::mat4(glm::mat3(cam->GetViewMatrix())));

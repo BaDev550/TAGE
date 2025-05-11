@@ -17,9 +17,6 @@
 
 #include "TAGE/ECS/Scene/Scene.h"
 #include "TAGE/ECS/ECS/System.h"
-// Test
-#include "TAGE/Renderer/Model/Model.h"
-#include "TAGE/Renderer/Model/Animation/Animator.h"
 
 #include "TAGE/Thread/ThreadPool.h"
 
@@ -39,7 +36,8 @@ namespace TAGE
 
 		Window& GetWindow() const { return *_Window; }
 		ECS::Scene& GetScene() const { return *_TestScene; }
-
+		ECS::PhysicsSystem& GetPhysicsSystem() const { return _TestScene->GetWorld().GetPhysicsSystem(); }
+		ECS::RenderSystem& GetRenderSystem() const { return _TestScene->GetWorld().GetRenderSystem(); }
 		RENDERER::Renderer& GetRenderer() const { return *_Renderer; }
 
 		TimeStep GetDeltaTime() const { return _DeltaTime; }

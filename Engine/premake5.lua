@@ -31,7 +31,8 @@ project "Engine"
         "../%{IncludeDir.entt}",
         "../%{IncludeDir.glm}",
         "../%{IncludeDir.log}",
-        "../%{IncludeDir.json}"
+        "../%{IncludeDir.json}",
+        "../%{IncludeDir.Bullet}",
     }
 
     defines 
@@ -45,7 +46,9 @@ project "Engine"
             "GLAD",
             "GLFW",
             "Assimp",
-            "freetype"
+            "BulletDynamics",
+            "BulletCollision",
+            "LinearMath"
         }
 
     buildoptions "/utf-8"

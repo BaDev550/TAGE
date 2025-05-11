@@ -10,6 +10,7 @@
 #include "TAGE/Renderer/Render/PostProcessPass.h"
 #include "TAGE/Renderer/Render/Light.h"
 #include "TAGE/Renderer/Shadow/ShadowMap.h"
+#include "TAGE/Renderer/Render/DebugRenderer.h"
 
 namespace TAGE::RENDERER {
 	class Renderer {
@@ -40,6 +41,7 @@ namespace TAGE::RENDERER {
 		MEM::Ref<Shader> _ShadowShader;
 		MEM::Ref<Shader> _FBShader;
 		MEM::Ref<Shader> _SkyBoxShader;
+		MEM::Ref<Shader> _LineShader;
 		MEM::Ref<Framebuffer> _Framebuffer;
 		MEM::Ref<ShadowMap> _ShadowMap;
 		MEM::Ref<Skybox> _SkyBox;

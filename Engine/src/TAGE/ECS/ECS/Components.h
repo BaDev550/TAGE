@@ -8,6 +8,8 @@
 #include "TAGE/Renderer/Shader/ShaderLibrary.h"
 #include "TAGE/Core/Utilities/Memory.h"
 #include "TAGE/Renderer/Camera.h"
+#include <btBulletDynamicsCommon.h>
+#include "TAGE/ECS/Objects/Actor.h"
 #include <vector>
 
 namespace TAGE::ECS {
@@ -27,6 +29,34 @@ namespace TAGE::ECS {
 			glm::mat4 rotation = rotZ * rotY * rotX;
 			glm::mat4 scale = glm::scale(glm::mat4(1.0f), Scale);
 			return translation * rotation * scale;
+		}
+	};
+
+	enum class ColliderShapeType { BOX, SPHERE, CAPSULE, MESH};
+	enum class CollisionResponseType { NONE, OVERLAP, BLOCK  };
+	struct ColliderComponent {
+		ColliderShapeType Shape = ColliderShapeType::BOX;
+		CollisionResponseType ResponseType = CollisionResponseType::BLOCK;
+		glm::vec3 Size = glm::vec3(1.0f);
+		bool Dirty = false;
+
+		bool IsTrigger() const { return ResponseType == CollisionResponseType::OVERLAP; }
+	};
+
+	enum class PhysicsBodyType { Static = 0, Dynamic, Kinematic };
+	struct RigidBodyComponent {
+		btRigidBody* Body = nullptr;
+		btDefaultMotionState* MotionState = nullptr;
+		btCollisionShape* CollisionShape = nullptr;
+		PhysicsBodyType BodyType = PhysicsBodyType::Dynamic;
+		Actor* Owner;
+
+		RigidBodyComponent(btRigidBody* body, btDefaultMotionState* motion, btCollisionShape* shape, Actor* owner)
+			: Body(body), MotionState(motion), CollisionShape(shape), Owner(owner) {
+			body->setUserPointer(Owner);
+		}
+
+		~RigidBodyComponent() {
 		}
 	};
 
@@ -102,8 +132,8 @@ namespace TAGE::ECS {
 		}
 
 		MEM::Ref<Camera> Camera;
-		glm::mat4& GetViewMatrix() const { Camera->GetViewMatrix(); }
-		glm::mat4& GetProjectionMatrix() const { Camera->GetProjectionMatrix(); }
+		glm::mat4 GetViewMatrix() const { return Camera->GetViewMatrix(); }
+		glm::mat4 GetProjectionMatrix() const { return Camera->GetProjectionMatrix(); }
 	};
 
 	struct LightComponent {

@@ -48,7 +48,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define VER_MAJOR 5
 #define VER_MINOR 2
-#define VER_PATCH 0
+#define VER_PATCH 6
 
 // --------------------------------------------------------------------------------
 // Legal information string - don't remove this.

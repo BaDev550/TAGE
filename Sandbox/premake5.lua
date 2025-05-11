@@ -21,7 +21,8 @@ project "Sandbox"
         "../%{IncludeDir.entt}",
         "../%{IncludeDir.glm}",
         "../%{IncludeDir.log}",
-        "../%{IncludeDir.json}"
+        "../%{IncludeDir.json}",
+        "../%{IncludeDir.Bullet}",
     }
 
     links {

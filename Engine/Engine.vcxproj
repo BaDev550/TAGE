@@ -58,7 +58,7 @@
       <PrecompiledHeaderFile>tagepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>tagepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -97,10 +97,15 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <Lib>
-      <AdditionalDependencies>opengl32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\Core\Utilities\RaycastUtils.h" />
+    <ClInclude Include="src\TAGE\Physics\Raycaster.h" />
+    <ClInclude Include="src\TAGE\Renderer\Render\DebugRenderer.h" />
+    <ClInclude Include="src\TAGE\Physics\PhysicsDebugRenderer.h" />
+    <ClInclude Include="src\TAGE\Physics\ContactListener.h" />
     <ClInclude Include="src\Platform\Windows\WindowsKeyCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsMouseCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -129,6 +134,7 @@
     <ClInclude Include="src\TAGE\Layers\ImGuiLayer.h" />
     <ClInclude Include="src\TAGE\Layers\Layer.h" />
     <ClInclude Include="src\TAGE\Layers\LayerStack.h" />
+    <ClInclude Include="src\TAGE\Physics\PhysicsWorld.h" />
     <ClInclude Include="src\TAGE\Renderer\Buffers\Buffers.h" />
     <ClInclude Include="src\TAGE\Renderer\Buffers\Framebuffer.h" />
     <ClInclude Include="src\TAGE\Renderer\Buffers\VertexArrayBuffer.h" />
@@ -575,6 +581,10 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TAGE\Physics\Raycaster.cpp" />
+    <ClCompile Include="src\TAGE\Renderer\Render\DebugRenderer.cpp" />
+    <ClCompile Include="src\TAGE\Physics\PhysicsDebugRenderer.cpp" />
+    <ClCompile Include="src\TAGE\Physics\ContactListener.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp" />
@@ -586,6 +596,7 @@
     <ClCompile Include="src\TAGE\Layers\ImGuiBuild.cpp" />
     <ClCompile Include="src\TAGE\Layers\ImGuiLayer.cpp" />
     <ClCompile Include="src\TAGE\Layers\LayerStack.cpp" />
+    <ClCompile Include="src\TAGE\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Buffers\Buffers.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Buffers\Framebuffer.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Buffers\VertexArrayBuffer.cpp" />
@@ -624,6 +635,19 @@
     <ProjectReference Include="thirdParty\assimp\assimp.vcxproj">
       <Project>{724885F2-5EEA-AFC8-47A5-C31C33E63619}</Project>
     </ProjectReference>
+    <ProjectReference Include="thirdParty\bullet-physics\BulletDynamics.vcxproj">
+      <Project>{45122E0F-31E0-2115-1A74-923B06E1FD79}</Project>
+    </ProjectReference>
+    <ProjectReference Include="thirdParty\bullet-physics\BulletCollision.vcxproj">
+      <Project>{B91153C5-259D-C089-2EAE-437E9AB81C8A}</Project>
+    </ProjectReference>
+    <ProjectReference Include="thirdParty\bullet-physics\LinearMath.vcxproj">
+      <Project>{EAF25DFD-D6AA-9F4A-3FB2-78A62B893A3B}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\Debug_Line_Fragment.glsl" />
+    <None Include="shaders\Debug_Line_Vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
