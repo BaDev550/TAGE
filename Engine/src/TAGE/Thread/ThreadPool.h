@@ -12,6 +12,7 @@ namespace TAGE::THREAD {
 
 		template<class F>
 		void Enqueue(F&& task);
+		size_t GetThreadCount() const { return _Workers.size(); }
 
 	private:
 		std::vector<std::thread> _Workers;

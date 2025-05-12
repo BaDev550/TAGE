@@ -8,13 +8,19 @@ namespace TAGE::RENDERER {
 	{
 		_Vao = MEM::CreateRef<VertexArrayBuffer>();
 		LoadModel(path);
+
+		if (type == EMeshType::SKELETAL)
+			LoadSkeletalModel();
 	}
 
 	void Model::Draw(glm::mat4 transform, const MEM::Ref<RENDERER::Shader>& shader) const
 	{
+		glm::mat4 centerOffset = glm::translate(glm::mat4(1.0f), -_CenterOffset);
+		glm::mat4 finalTransform = transform * centerOffset;
+
 		for (const auto& mesh : _Meshes) {
 			mesh.MaterialR->Bind(shader);
-			Renderer::Submit(shader, mesh.VAO, transform);
+			Renderer::Submit(shader, mesh.VAO, finalTransform);
 		}
 	}
 
@@ -22,6 +28,11 @@ namespace TAGE::RENDERER {
 	{
 		_Meshes.clear();
 		m_BoneInfoMap.clear();
+	}
+
+	void Model::LoadSkeletalModel()
+	{
+		_Skeletal = MEM::CreateScope<Skeletal>(this);
 	}
 
 	void Model::LoadModel(const std::string& path)
@@ -35,7 +46,7 @@ namespace TAGE::RENDERER {
 			aiProcess_JoinIdenticalVertices |
 			aiProcess_SortByPType |
 			aiProcess_OptimizeMeshes |
-			aiProcess_ImproveCacheLocality
+			aiProcess_ImproveCacheLocality 
 		);
 
 		ENGINE_ASSERT(_Scene && _Scene->mRootNode, "Failed to load model: {}", path);
@@ -60,6 +71,8 @@ namespace TAGE::RENDERER {
 	{
 		std::vector<Vertex> vertices;
 		std::vector<uint32_t> indices;
+		glm::vec3 minBounds = glm::vec3(std::numeric_limits<float>::max());
+		glm::vec3 maxBounds = glm::vec3(std::numeric_limits<float>::lowest());
 
 		for (uint32_t i = 0; i < mesh->mNumVertices; ++i) {
 			Vertex v;
@@ -67,6 +80,11 @@ namespace TAGE::RENDERER {
 			v.Position[0] = mesh->mVertices[i].x;
 			v.Position[1] = mesh->mVertices[i].y;
 			v.Position[2] = mesh->mVertices[i].z;
+
+			glm::vec3 pos = { v.Position[0], v.Position[1], v.Position[2] };
+			minBounds = glm::min(minBounds, pos);
+			maxBounds = glm::max(maxBounds, pos);
+
 			if (mesh->HasNormals()) {
 				v.Normal[0] = mesh->mNormals[i].x;
 				v.Normal[1] = mesh->mNormals[i].y;
@@ -120,6 +138,16 @@ namespace TAGE::RENDERER {
 
 		MEM::Ref<Material> material = LoadMaterial(scene->mMaterials[mesh->mMaterialIndex], scene);
 		CORE_LOG_INFO("Mesh vertex count: {}", mesh->mNumVertices);
+
+		glm::vec3 center = (minBounds + maxBounds) * 0.5f;
+		for (auto& v : vertices) {
+			glm::vec3 p(v.Position[0], v.Position[1], v.Position[2]);
+			glm::vec3 centered = p - center;
+			v.Position[0] = centered.x;
+			v.Position[1] = centered.y;
+			v.Position[2] = centered.z;
+		}
+		_CenterOffset = center;
 
 		return { _Vao, material, (int)indices.size() };
 	}
@@ -196,7 +224,7 @@ namespace TAGE::RENDERER {
 	{
 		auto& boneInfoMap = m_BoneInfoMap;
 		int& boneCount = m_BoneCounter;
-
+		
 		for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
 		{
 			int boneID = -1;

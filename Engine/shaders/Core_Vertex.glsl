@@ -20,6 +20,7 @@ out mat3 TBN;
 uniform mat4 u_Model;
 uniform mat4 viewProj;
 uniform mat4 u_LightSpaceMatrix;
+uniform bool u_SkeletalMesh;
 
 const int MAX_BONES = 100;
 const int MAX_BONE_INFLUENCE = 4;
@@ -27,34 +28,60 @@ uniform mat4 finalBonesMatrices[MAX_BONES];
 
 void main()
 {
-    vec4 totalPosition = vec4(0.0f);
-    for(int i = 0 ; i < MAX_BONE_INFLUENCE ; i++)
+    vec4 localPosition;
+    vec3 localNormal;
+    vec3 localTangent;
+    vec3 localBitangent;
+
+    if (u_SkeletalMesh)
     {
-        if(aBoneIDs[i] == -1) 
-            continue;
-        if(aBoneIDs[i] >=MAX_BONES) 
+        vec4 totalPosition = vec4(0.0);
+        vec3 animatedNormal = vec3(0.0);
+        vec3 animatedTangent = vec3(0.0);
+        vec3 animatedBitangent = vec3(0.0);
+
+        for(int i = 0; i < MAX_BONE_INFLUENCE; i++)
         {
-            totalPosition = vec4(aPos,1.0f);
-            break;
+            if(aBoneIDs[i] < 0 || aBoneIDs[i] >= MAX_BONES)
+                continue;
+
+            mat4 boneTransform = finalBonesMatrices[aBoneIDs[i]];
+            totalPosition     += boneTransform * vec4(aPos, 1.0) * aWeights[i];
+            animatedNormal    += mat3(boneTransform) * aNormal    * aWeights[i];
+            animatedTangent   += mat3(boneTransform) * aTangent   * aWeights[i];
+            animatedBitangent += mat3(boneTransform) * aBitangent * aWeights[i];
         }
-        vec4 localPosition = finalBonesMatrices[aBoneIDs[i]] * vec4(aPos,1.0f);
-        totalPosition += localPosition * aWeights[i];
-        vec3 localNormal = mat3(finalBonesMatrices[aBoneIDs[i]]) * aNormal;
+
+        localPosition = totalPosition;
+        localNormal = animatedNormal;
+        localTangent = animatedTangent;
+        localBitangent = animatedBitangent;
+    }
+    else
+    {
+        localPosition = vec4(aPos, 1.0);
+        localNormal = aNormal;
+        localTangent = aTangent;
+        localBitangent = aBitangent;
     }
 
-    FragPos = vec3(u_Model * vec4(aPos, 1.0));
+    vec4 worldPosition = u_Model * localPosition;
+
+    FragPos = vec3(worldPosition);
     TexCoord = aTexCoord;
-    mat3 u_NormalMatrix = mat3(transpose(inverse(u_Model)));
-    Normal = u_NormalMatrix * aNormal;
-    Tangent = u_NormalMatrix * aTangent;
-    Bitangent = u_NormalMatrix * aBitangent;
 
-    vec3 T = normalize(vec3(u_Model * vec4(aTangent,   0.0)));
-    vec3 B = normalize(vec3(u_Model * vec4(aBitangent, 0.0)));
-    vec3 N = normalize(vec3(u_Model * vec4(aNormal,    0.0)));
-    TBN = transpose(mat3(T, B, N));   
+    mat3 normalMatrix = mat3(transpose(inverse(u_Model)));
+    Normal    = normalize(normalMatrix * localNormal);
+    Tangent   = normalize(normalMatrix * localTangent);
+    Bitangent = normalize(normalMatrix * localBitangent);
 
-    FragPosLightSpace = u_LightSpaceMatrix * vec4(FragPos, 1.0);
+    TBN = transpose(mat3(
+        normalize(vec3(u_Model * vec4(localTangent, 0.0))),
+        normalize(vec3(u_Model * vec4(localBitangent, 0.0))),
+        normalize(vec3(u_Model * vec4(localNormal, 0.0)))
+    ));
 
-    gl_Position = viewProj * vec4(FragPos, 1.0f);
+    FragPosLightSpace = u_LightSpaceMatrix * worldPosition;
+
+    gl_Position = viewProj * worldPosition;
 }

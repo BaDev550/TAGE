@@ -13,7 +13,7 @@ public:
 		camera = _World->SpawnActor("Camera");
 		camera->AddComponent<TEditorCameraComponent>();
 
-		Floor = new Wall("Assets/Models/Cube/Cube.obj", glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(5.0f, 0.5f, 5.0f));
+		Floor = new Wall("Assets/Models/Cube/Cube.obj", glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(50.0f, 0.5f, 50.0f));
 	}
 	~SandboxLayer() {
 		delete Floor;

@@ -42,14 +42,14 @@ namespace TAGE::ECS {
 
             if (registry.any_of<AnimatorComponent>(entity)) {
                 auto& animator = registry.get<AnimatorComponent>(entity).AnimatorInstance;
+
                 animator->UpdateAnimation(dt);
-
+                skeletal_model.GetSkeleton()->Update(animator->GetCurrentAnimationTime());
                 auto transforms = animator->GetFinalBoneMatrices();
-                for (int i = 0; i < transforms.size(); ++i)
-                    _Shader->SetUniform("finalBonesMatrices[" + std::to_string(i) + "]", transforms[i]);
+                _Shader->SetUniformArray("finalBonesMatrices", transforms.data(), transforms.size());
+                skeletal_model.Draw(shader, transform.GetMatrix());
             }
-
-            skeletal_model.Draw(shader, transform.GetMatrix());
+            skeletal_model.Draw(_Shader, transform.GetMatrix());
         }
     }
 

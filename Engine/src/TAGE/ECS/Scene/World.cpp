@@ -17,7 +17,8 @@ namespace TAGE::ECS {
 		for (auto& system : _systems)
 			system->Update(_entityRegistry->GetRegistry(), dt, mode);
 
-		_GameObjectManager->UpdateGameObjects(dt);
+		if (mode == SystemUpdateMode::Game)
+			_GameObjectManager->UpdateGameObjects(dt);
 	}
 
 	Actor* World::SpawnActor(const std::string& name)

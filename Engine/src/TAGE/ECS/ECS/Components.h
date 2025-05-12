@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/euler_angles.hpp>
 #include "TAGE/Renderer/Model/Model.h"
 #include "TAGE/Renderer/Model/Animation/Animator.h"
 #include "TAGE/Renderer/Shader/ShaderLibrary.h"
@@ -22,15 +24,19 @@ namespace TAGE::ECS {
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 
 		glm::vec3 LocalPosition = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 LocalRotation = { 0.0f, 0.0f, 0.0f };
+		glm::vec3 LocalScale = { 1.0f, 1.0f, 1.0f };
+
 		glm::mat4 WorldMatrix = glm::mat4(1.0f);
 
 		glm::mat4 GetMatrix() const {
-			glm::mat4 translation = glm::translate(glm::mat4(1.0f), Position);
-			glm::mat4 rotX = glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.x), glm::vec3(1, 0, 0));
-			glm::mat4 rotY = glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.y), glm::vec3(0, 1, 0));
-			glm::mat4 rotZ = glm::rotate(glm::mat4(1.0f), glm::radians(Rotation.z), glm::vec3(0, 0, 1));
-			glm::mat4 rotation = rotZ * rotY * rotX;
-			glm::mat4 scale = glm::scale(glm::mat4(1.0f), Scale);
+			glm::mat4 translation = glm::translate(glm::mat4(1.0f), (LocalPosition + Position));
+			glm::mat4 rotation = glm::eulerAngleYXZ(
+				glm::radians((LocalRotation.x + Rotation.y)),
+				glm::radians((LocalRotation.y + Rotation.x)),
+				glm::radians((LocalRotation.z + Rotation.z))
+			);
+			glm::mat4 scale = glm::scale(glm::mat4(1.0f), (LocalScale * Scale));
 			return translation * rotation * scale;
 		}
 
@@ -70,6 +76,10 @@ namespace TAGE::ECS {
 			Body->activate();
 			Body->applyCentralForce(btVector3(force.x, force.y, force.z));
 		}
+
+		glm::vec3& GetVelocity() const {
+			return glm::vec3(Body->getLinearVelocity().getX(), Body->getLinearVelocity().getY(), Body->getLinearVelocity().getZ());
+		}
 	};
 
 	struct TagComponent
@@ -93,8 +103,11 @@ namespace TAGE::ECS {
 		bool IsVisible = true;
 
 		void Draw(MEM::Ref<Shader> shader, const glm::mat4& transform) {
-			if (IsVisible)
+			if (IsVisible) {
+				shader->Bind();
+				shader->SetUniform("u_SkeletalMesh", meshType == EMeshType::SKELETAL);
 				model->Draw(transform, shader);
+			}
 		}
 
 		void LoadModel(const std::string& modelPath) {
@@ -115,17 +128,19 @@ namespace TAGE::ECS {
 		SkeletalMeshComponent(const std::string& path)
 			: MeshComponent(path, EMeshType::SKELETAL) {
 		}
+
+		Skeletal* GetSkeleton() const { return model->GetSkeletal(); }
 	};
 
 	struct AnimatorComponent
 	{
-		MEM::Scope<Animator> AnimatorInstance;
+		MEM::Ref<Animator> AnimatorInstance;
 
 		AnimatorComponent() = default;
 
-		AnimatorComponent(Animation* animation)
+		AnimatorComponent(Skeletal* skeleton, Animation* animation)
 		{
-			AnimatorInstance = MEM::CreateScope<Animator>(animation);
+			AnimatorInstance = MEM::CreateRef<Animator>(skeleton, animation);
 		}
 	};
 

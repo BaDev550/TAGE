@@ -1545,6 +1545,8 @@
     <ClInclude Include="thirdParty\stb\stb_image.h">
       <Filter>thirdParty\stb</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Socket.h" />
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Skeletal.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1670,5 +1672,7 @@
     <ClCompile Include="thirdParty\stb\stb_image.cpp">
       <Filter>thirdParty\stb</Filter>
     </ClCompile>
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Socket.cpp" />
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
   </ItemGroup>
 </Project>

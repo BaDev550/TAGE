@@ -4,6 +4,7 @@
 #include "TAGE/Core/AssetManager/AssetManager.h"
 #include "TAGE/Renderer/Buffers/Buffers.h"
 #include "TAGE/Renderer/Buffers/VertexArrayBuffer.h"
+#include "TAGE/Renderer/Model/Animation/Socket.h"
 #include "TAGE/Renderer/Material/Material.h"
 #include "TAGE/Renderer/Renderer.h"
 #include <assimp/Importer.hpp>
@@ -12,6 +13,8 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "AssimpGLMHelpers.h"
 #include "Animation/AnimData.h"
+#include "Animation/Skeletal.h"
+#include <cfloat>
 
 namespace TAGE::RENDERER {
 	struct Mesh {
@@ -38,16 +41,21 @@ namespace TAGE::RENDERER {
 		int& GetBoneCount() { return m_BoneCounter; }
 
 		void Reset();
+
+		Skeletal* GetSkeletal() { return _Skeletal.get(); }
 	private:
 		std::vector<Mesh> _Meshes;
 		std::string _Directory;
+		MEM::Scope<Skeletal> _Skeletal;
 		EMeshType _MeshType;
 		const aiScene* _Scene = nullptr;
+		glm::vec3 _CenterOffset;
 
 		std::map<std::string, BoneInfo> m_BoneInfoMap;
 		MEM::Ref<VertexArrayBuffer> _Vao;
 		int m_BoneCounter = 0;
 
+		void LoadSkeletalModel();
 		void LoadModel(const std::string& path);
 		void ProcessNode(aiNode* node, const aiScene* scene);
 		Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);

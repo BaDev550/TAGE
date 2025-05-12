@@ -23,15 +23,15 @@ public:
 		_pitch += delta.y * sensitivity;
 		_pitch = glm::clamp(_pitch, -89.0f, 89.0f);
 
-		transform.Rotation = -glm::vec3(0.0f, _yaw, 0.0f);
-		Component->Camera->SetRotation(glm::vec3(_pitch, _yaw, 0.0f));
-		Component->Camera->SetPosition(transform.Position + glm::vec3(0, 1.7f, 0));
+		transform.Rotation = -glm::vec3(_pitch, _yaw, 0.0f);
+		Component->Camera->SetRotation(glm::vec3(_pitch, _yaw + 90.0f, 0.0f));
+		Component->Camera->SetPosition(transform.Position + glm::vec3(0, 1.5f, 0));
 	}
 
 	glm::vec3 GetForward() { return Component->Camera->GetFront(); }
 private:
 	TCameraComponent* Component;
 	float _pitch = 0.0f;
-	float _yaw = 0.0f;
+	float _yaw = -90.0f;
 	glm::vec2 _LastMousePosition = glm::vec2(0.0f);
 };

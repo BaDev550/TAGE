@@ -106,4 +106,8 @@ namespace TAGE::RENDERER {
 	{
 		glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
 	}
+	void Shader::SetUniformArray(const std::string& name, const glm::mat4* data, int count)
+	{
+		glUniformMatrix4fv(GetUniformLocation(name), count, GL_FALSE, glm::value_ptr(data[0]));
+	}
 }

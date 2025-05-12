@@ -5,7 +5,9 @@
 #include <glm/glm.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include "TAGE/Renderer/Model/AssimpGLMHelpers.h"
+#include "Socket.h"
 
 namespace TAGE::RENDERER {
 	struct KeyPosition
@@ -33,7 +35,7 @@ namespace TAGE::RENDERER {
 
 		void Update(float animationTime);
 		glm::mat4 GetLocalTransform() { return m_LocalTransform; }
-		std::string GetBoneName() const { return m_Name; }
+		std::string GetBoneName() const { return m_Name.c_str(); }
 		int GetBoneID() { return m_ID; }
 
 		int GetPositionIndex(float animationTime)
@@ -65,6 +67,20 @@ namespace TAGE::RENDERER {
 			}
 			ENGINE_ASSERT(0, "Cant get Model scale");
 		}
+
+		void AddSocket(Socket& socket) { 
+			socket.SetParent(this);
+			m_Sockets.push_back(socket);
+		}
+
+        Socket* GetSocket(const std::string& name) const {  
+           for (auto& socket : m_Sockets)
+               if (socket.GetSocketName() == name)  
+                   return const_cast<Socket*>(&socket);
+           return nullptr;  
+        }
+
+		std::vector<Socket> GetAllSockets() const { return m_Sockets; }
 
 	private:
 
@@ -130,6 +146,7 @@ namespace TAGE::RENDERER {
 		int m_NumPositions;
 		int m_NumRotations;
 		int m_NumScalings;
+		std::vector<Socket> m_Sockets;
 
 		glm::mat4 m_LocalTransform;
 		std::string m_Name;

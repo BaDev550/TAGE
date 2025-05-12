@@ -101,6 +101,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Skeletal.h" />
     <ClInclude Include="src\Platform\Windows\WindowsKeyCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsMouseCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -146,6 +147,7 @@
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Animation.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Animator.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Bone.h" />
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Socket.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\AssimpGLMHelpers.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Model.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\Context.h" />
@@ -583,6 +585,7 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp" />
@@ -609,6 +612,7 @@
     <ClCompile Include="src\TAGE\Renderer\Material\Texture.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Animation.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Bone.cpp" />
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Socket.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Model.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Render\Context.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Render\DebugRenderer.cpp" />

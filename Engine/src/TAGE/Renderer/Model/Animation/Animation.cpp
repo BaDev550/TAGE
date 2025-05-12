@@ -4,6 +4,7 @@
 namespace TAGE::RENDERER {
 	Animation::Animation(const std::string& animationPath, Model* model)
 	{
+		m_Skeletal = model->GetSkeletal();
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(animationPath,
 			aiProcess_Triangulate
@@ -17,9 +18,5 @@ namespace TAGE::RENDERER {
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
 		CORE_LOG_INFO("Root Node name: {}", m_RootNode.name);
 		ReadMissingBones(animation, *model);
-
-		for (auto bone : m_Bones) {
-			CORE_LOG_INFO("Bone: {}", bone.GetBoneName());
-		}
 	}
 }

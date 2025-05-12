@@ -10,7 +10,7 @@ public:
         auto& collider = AddComponent<TColliderComponent>();
         collider.Size = scale;
         transform.Position = position;
-        transform.Scale = scale;
+        transform.Scale = scale / 2.0f;
         GetWorld().GetPhysicsSystem().CreateRigidBody(this, 0.0f);
     }
 };

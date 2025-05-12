@@ -2,6 +2,7 @@
 #include "TAGE/Core/AssetManager/Asset.h"
 #include <unordered_map>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <string>
 
 namespace TAGE::RENDERER {
@@ -19,6 +20,7 @@ namespace TAGE::RENDERER {
 		void SetUniform(const std::string& name, const glm::vec2& value);
 		void SetUniform(const std::string& name, const glm::vec3& value);
 		void SetUniform(const std::string& name, const glm::mat4& value);
+		void SetUniformArray(const std::string& name, const glm::mat4* data, int count);
 
 		inline uint32_t GetProgramID() const { return _ProgramID; }
 		virtual ASSET::AssetType GetType() const override { return ASSET::AssetType::SHADER; }

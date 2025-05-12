@@ -45,5 +45,8 @@ namespace TAGE::RENDERER{
 		glm::mat4 rotation = InterpolateRotation(animationTime);
 		glm::mat4 scale = InterpolateScaling(animationTime);
 		m_LocalTransform = translation * rotation * scale;
+
+		for (auto& socket : m_Sockets)
+			socket.Update(animationTime, m_LocalTransform);
 	}
 }

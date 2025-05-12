@@ -7,16 +7,14 @@
 #include <assimp/Importer.hpp>
 #include "Animation.h"
 #include "Bone.h"
+#include "Skeletal.h"
 
 namespace TAGE::RENDERER {
 	class Animator
 	{
 	public:
-		Animator(Animation* animation)
+		Animator(Skeletal* skeletal, Animation* animation) : m_Skeletal(skeletal), m_CurrentTime(0.0f), m_CurrentAnimation(animation)
 		{
-			m_CurrentTime = 0.0;
-			m_CurrentAnimation = animation;
-
 			m_FinalBoneMatrices.reserve(100);
 
 			for (int i = 0; i < 100; i++)
@@ -45,36 +43,29 @@ namespace TAGE::RENDERER {
 			m_CurrentAnimation = pAnimation;
 			m_CurrentTime = 0.0f;
 		}
+		Animation* GetCurrentAnimation() const { return m_CurrentAnimation; }
 
-		void CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform)
-		{
-			try {
-				std::string nodeName = node->name;
-				glm::mat4 nodeTransform = node->transformation;
+		void CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform) {
+			std::string nodeName = node->name;
+			glm::mat4 nodeTransform = node->transformation;
 
-				Bone* Bone = m_CurrentAnimation->FindBone(nodeName);
-
-				if (Bone)
-				{
-					Bone->Update(m_CurrentTime);
-					nodeTransform = Bone->GetLocalTransform();
-				}
-
-				glm::mat4 globalTransformation = parentTransform * nodeTransform;
-
-				auto boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
-				if (boneInfoMap.find(nodeName) != boneInfoMap.end())
-				{
-					int index = boneInfoMap[nodeName].id;
-					glm::mat4 offset = boneInfoMap[nodeName].offset;
-					m_FinalBoneMatrices[index] = globalTransformation * offset;
-				}
-
-				for (int i = 0; i < node->childrenCount; i++)
-					CalculateBoneTransform(&node->children[i], globalTransformation);
+			Bone* bone = m_Skeletal->GetBone(nodeName);
+			if (bone) {
+				bone->Update(m_CurrentTime);
+				nodeTransform = bone->GetLocalTransform();
 			}
-			catch (const std::exception& e) {
-				CORE_LOG_ERROR("ERR: {}", e.what());
+
+			glm::mat4 globalTransformation = parentTransform * nodeTransform;
+
+			auto boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+			if (boneInfoMap.find(nodeName) != boneInfoMap.end()) {
+				int index = boneInfoMap[nodeName].id;
+				glm::mat4 offset = boneInfoMap[nodeName].offset;
+				m_FinalBoneMatrices[index] = globalTransformation * offset;
+			}
+
+			for (int i = 0; i < node->childrenCount; i++) {
+				CalculateBoneTransform(&node->children[i], globalTransformation);
 			}
 		}
 
@@ -83,7 +74,9 @@ namespace TAGE::RENDERER {
 			return m_FinalBoneMatrices;
 		}
 
+		float GetCurrentAnimationTime() const { return m_CurrentTime; }
 	private:
+		Skeletal* m_Skeletal;
 		std::vector<glm::mat4> m_FinalBoneMatrices;
 		Animation* m_CurrentAnimation;
 		float m_CurrentTime = 0.0f;
