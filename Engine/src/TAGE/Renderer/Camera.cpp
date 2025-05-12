@@ -26,24 +26,14 @@ namespace TAGE::RENDERER {
         _Forward.z = sin(glm::radians(_Rotation.y)) * cos(glm::radians(_Rotation.x));
 
         glm::vec3 direction = glm::normalize(_Forward);
-        glm::vec3 right = glm::normalize(glm::cross(direction, glm::vec3(0, 1, 0)));
-        glm::vec3 up = glm::cross(right, direction);
+        _Right = glm::normalize(glm::cross(direction, glm::vec3(0, 1, 0)));
+        glm::vec3 up = glm::cross(_Right, direction);
 
         _ViewMatrix = glm::lookAt(_Position, _Position + direction, up);
         _ProjectionMatrix = glm::perspective(glm::radians(_FOV), _AspectRatio, _NearClip, _FarClip);
     }
 
 	void PerspectiveCamera::OnUpdate(float deltaTime) {
-        glm::vec2 mousePos = Input::GetMousePosition();
-        mousePos.y = -Input::GetMousePosition().y;
-        glm::vec2 delta = (mousePos - _LastMousePosition) * 0.1f;
-        _LastMousePosition = mousePos;
-
-        _Rotation.y += delta.x;
-        _Rotation.x += delta.y;
-        _Rotation.x = glm::clamp(_Rotation.x, -89.0f, 89.0f);
-
-        UpdateViewMatrix();
 	}
 
 	void EditorCamera::OnUpdate(float deltaTime) {

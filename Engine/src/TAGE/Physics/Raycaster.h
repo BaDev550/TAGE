@@ -24,11 +24,25 @@ namespace TAGE::PHYSICS::RAYCAST {
 		bool hit;
 	};
 
+	class ClosestNotMeRayResultCallback : public btCollisionWorld::ClosestRayResultCallback {
+	public:
+		const btCollisionObject* ignoreObject;
+
+		ClosestNotMeRayResultCallback(const btVector3& rayFromWorld, const btVector3& rayToWorld, const btCollisionObject* ignore)
+			: btCollisionWorld::ClosestRayResultCallback(rayFromWorld, rayToWorld), ignoreObject(ignore) {}
+
+		virtual bool needsCollision(btBroadphaseProxy* proxy0) const override {
+			if (proxy0->m_clientObject == ignoreObject) return false;
+			return btCollisionWorld::ClosestRayResultCallback::needsCollision(proxy0);
+		}
+	};
+
 	class Raycaster
 	{
 	public:
 		static void Init(PHYSICS::PhysicsWorld& world, PHYSICS::DEBUG::PhysicsDebugRenderer& _debugRenderer);
-		static RaycastHit Raycast(const glm::vec3& from, const glm::vec3& to, RayDrawType draw = RayDrawType::FOR_FRAME, float draw_time = 0.0f);
+		static RaycastHit Raycast(const glm::vec3& from, const glm::vec3& to, bool ignoreSelf = true, RayDrawType draw = RayDrawType::FOR_FRAME, float draw_time = 0.0f);
+		static thread_local ECS::Actor* CurrentCaller;
 	private:
 		static PHYSICS::PhysicsWorld* _World;
 		static PHYSICS::DEBUG::PhysicsDebugRenderer* _DebugRenderer;

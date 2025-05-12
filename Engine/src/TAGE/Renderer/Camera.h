@@ -20,6 +20,7 @@ namespace TAGE::RENDERER {
 		virtual const glm::vec3& GetPosition() const = 0;
 		virtual const glm::vec3& GetRotation() const = 0;
 		virtual const glm::vec3& GetFront() const = 0;
+		virtual const glm::vec3& GetRight() const = 0;
 		virtual void OnUpdate(float deltaTime) = 0;
 	};
 
@@ -39,12 +40,14 @@ namespace TAGE::RENDERER {
 		const glm::vec3& GetPosition() const override { return _Position; }
 		const glm::vec3& GetRotation() const override { return _Rotation; }
 		const glm::vec3& GetFront() const override { return _Forward; }
+		const glm::vec3& GetRight() const override { return _Right; }
 	protected:
 		void UpdateViewMatrix();
 
 		glm::vec3 _Position;
 		glm::vec3 _Rotation;
 		glm::vec3 _Forward;
+		glm::vec3 _Right;
 		glm::vec2 _LastMousePosition = glm::vec2(0.0f);
 
 		float _FOV, _AspectRatio, _NearClip, _FarClip;

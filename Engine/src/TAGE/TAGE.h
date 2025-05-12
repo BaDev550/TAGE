@@ -62,6 +62,7 @@ using TTagComponent = TAGE::ECS::TagComponent;
 using TTransformComponent = TAGE::ECS::TransformComponent;
 using TRigidBodyComponent = TAGE::ECS::RigidBodyComponent;
 using TColliderComponent = TAGE::ECS::ColliderComponent;
+using TColliderShapeType = TAGE::ECS::ColliderShapeType;
 using TRelationshipComponent = TAGE::ECS::RelationshipComponent;
 
 using TEHitResult = TAGE::PHYSICS::RAYCAST::RaycastHit;
@@ -69,3 +70,5 @@ using TERayDrawType = TAGE::PHYSICS::RAYCAST::RayDrawType;
 using TECast = TAGE::PHYSICS::RAYCAST::Raycaster;
 
 inline TEWorld& GetWorld() { return TAGE::Application::Get().GetScene().GetWorld(); }
+inline void CreateRigidBodyWithCollider(TActor* actor, float mass = 1.0f) { actor->AddComponent<TColliderComponent>(); GetWorld().GetPhysicsSystem().CreateRigidBody(actor, mass); }
+inline static TEHitResult Raycast(TActor* caller, const glm::vec3& from, const glm::vec3& to, bool ignoreSelf = true, TERayDrawType draw = TERayDrawType::FOR_FRAME, float draw_time = 0.0f) { TECast::CurrentCaller = caller; TEHitResult res = TECast::Raycast(from, to, ignoreSelf, draw, draw_time); TECast::CurrentCaller = nullptr; return res; }

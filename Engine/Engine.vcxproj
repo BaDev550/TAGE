@@ -101,13 +101,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\TAGE\Core\Utilities\RaycastUtils.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h" />
-    <ClInclude Include="src\TAGE\Physics\Raycaster.h" />
-    <ClInclude Include="src\TAGE\Renderer\Render\DebugRenderer.h" />
-    <ClInclude Include="src\TAGE\Physics\PhysicsDebugRenderer.h" />
-    <ClInclude Include="src\TAGE\Physics\ContactListener.h" />
     <ClInclude Include="src\Platform\Windows\WindowsKeyCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsMouseCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -120,12 +113,15 @@
     <ClInclude Include="src\TAGE\Core\Utilities\Memory.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\PlatformDetection.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Random.h" />
+    <ClInclude Include="src\TAGE\Core\Utilities\RaycastUtils.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\TimeStep.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Timer.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\Components.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\EntityRegistry.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\System.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Actor.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Object.h" />
     <ClInclude Include="src\TAGE\ECS\Scene\Scene.h" />
     <ClInclude Include="src\TAGE\ECS\Scene\World.h" />
@@ -136,7 +132,10 @@
     <ClInclude Include="src\TAGE\Layers\ImGuiLayer.h" />
     <ClInclude Include="src\TAGE\Layers\Layer.h" />
     <ClInclude Include="src\TAGE\Layers\LayerStack.h" />
+    <ClInclude Include="src\TAGE\Physics\ContactListener.h" />
+    <ClInclude Include="src\TAGE\Physics\PhysicsDebugRenderer.h" />
     <ClInclude Include="src\TAGE\Physics\PhysicsWorld.h" />
+    <ClInclude Include="src\TAGE\Physics\Raycaster.h" />
     <ClInclude Include="src\TAGE\Renderer\Buffers\Buffers.h" />
     <ClInclude Include="src\TAGE\Renderer\Buffers\Framebuffer.h" />
     <ClInclude Include="src\TAGE\Renderer\Buffers\VertexArrayBuffer.h" />
@@ -150,6 +149,7 @@
     <ClInclude Include="src\TAGE\Renderer\Model\AssimpGLMHelpers.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Model.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\Context.h" />
+    <ClInclude Include="src\TAGE\Renderer\Render\DebugRenderer.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\Light.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\PostProcessPass.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\RenderPass.h" />
@@ -583,25 +583,24 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp" />
-    <ClCompile Include="src\TAGE\Physics\Raycaster.cpp" />
-    <ClCompile Include="src\TAGE\Renderer\Render\DebugRenderer.cpp" />
-    <ClCompile Include="src\TAGE\Physics\PhysicsDebugRenderer.cpp" />
-    <ClCompile Include="src\TAGE\Physics\ContactListener.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp" />
+    <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\Utilities.cpp" />
     <ClCompile Include="src\TAGE\ECS\ECS\System.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp" />
     <ClCompile Include="src\TAGE\ECS\Scene\Scene.cpp" />
     <ClCompile Include="src\TAGE\ECS\Scene\World.cpp" />
     <ClCompile Include="src\TAGE\Events\Input.cpp" />
     <ClCompile Include="src\TAGE\Layers\ImGuiBuild.cpp" />
     <ClCompile Include="src\TAGE\Layers\ImGuiLayer.cpp" />
     <ClCompile Include="src\TAGE\Layers\LayerStack.cpp" />
+    <ClCompile Include="src\TAGE\Physics\ContactListener.cpp" />
+    <ClCompile Include="src\TAGE\Physics\PhysicsDebugRenderer.cpp" />
     <ClCompile Include="src\TAGE\Physics\PhysicsWorld.cpp" />
+    <ClCompile Include="src\TAGE\Physics\Raycaster.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Buffers\Buffers.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Buffers\Framebuffer.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Buffers\VertexArrayBuffer.cpp" />
@@ -612,6 +611,7 @@
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Bone.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Model.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Render\Context.cpp" />
+    <ClCompile Include="src\TAGE\Renderer\Render\DebugRenderer.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Render\PostProcessPass.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Render\RenderPass.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Renderer.cpp" />
@@ -649,10 +649,6 @@
     <ProjectReference Include="thirdParty\bullet-physics\LinearMath.vcxproj">
       <Project>{EAF25DFD-D6AA-9F4A-3FB2-78A62B893A3B}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\Debug_Line_Fragment.glsl" />
-    <None Include="shaders\Debug_Line_Vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

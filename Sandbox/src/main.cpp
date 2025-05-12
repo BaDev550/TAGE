@@ -1,16 +1,22 @@
 #include "TAGE/TAGE.h"
 #include "imgui.h"
 #include "GameObjects/Player/Player.h"
+#include "GameObjects/Common/Wall.h"
 
 class SandboxLayer : public TELayer {
 public:
 	SandboxLayer(TEApplication* instance) : TELayer("Sandbox Layer"), _AppInstance(instance) {
+		_AppInstance->GetWindow().EnableCursor(false);
+
 		_World = &_AppInstance->GetScene().GetWorld();
 
 		camera = _World->SpawnActor("Camera");
 		camera->AddComponent<TEditorCameraComponent>();
+
+		Floor = new Wall("Assets/Models/Cube/Cube.obj", glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(5.0f, 0.5f, 5.0f));
 	}
 	~SandboxLayer() {
+		delete Floor;
 	}
 
 	void OnImGuiRender() override {
@@ -132,6 +138,8 @@ public:
 			}
 		}
 
+		player.DrawStats();
+
 		//if (ImGui::CollapsingHeader("Post Process")) {
 		//	ImGui::DragFloat("Exposure", &_AppInstance->GetRenderer()._PostProcessEffects.Exposure, 0.01);
 		//}
@@ -158,6 +166,8 @@ private:
 	TActor* _SelectedActor = nullptr;
 	TActor* camera;
 	Player player;
+
+	Wall* Floor;
 };
 
 class Sandbox : public TEApplication {

@@ -141,6 +141,9 @@
     <ClInclude Include="src\TAGE\Core\Utilities\Random.h">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Core\Utilities\RaycastUtils.h">
+      <Filter>src\TAGE\Core\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\Core\Utilities\TimeStep.h">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClInclude>
@@ -157,6 +160,12 @@
       <Filter>src\TAGE\ECS\ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\ECS\Objects\Actor.h">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h">
       <Filter>src\TAGE\ECS\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\ECS\Objects\Object.h">
@@ -189,7 +198,16 @@
     <ClInclude Include="src\TAGE\Layers\LayerStack.h">
       <Filter>src\TAGE\Layers</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Physics\ContactListener.h">
+      <Filter>src\TAGE\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\Physics\PhysicsDebugRenderer.h">
+      <Filter>src\TAGE\Physics</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\Physics\PhysicsWorld.h">
+      <Filter>src\TAGE\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\Physics\Raycaster.h">
       <Filter>src\TAGE\Physics</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\Renderer\Buffers\Buffers.h">
@@ -229,6 +247,9 @@
       <Filter>src\TAGE\Renderer\Model</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\Renderer\Render\Context.h">
+      <Filter>src\TAGE\Renderer\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\Renderer\Render\DebugRenderer.h">
       <Filter>src\TAGE\Renderer\Render</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\Renderer\Render\Light.h">
@@ -1524,13 +1545,6 @@
     <ClInclude Include="thirdParty\stb\stb_image.h">
       <Filter>thirdParty\stb</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\Physics\ContactListener.h" />
-    <ClInclude Include="src\TAGE\Physics\PhysicsDebugRenderer.h" />
-    <ClInclude Include="src\TAGE\Renderer\Render\DebugRenderer.h" />
-    <ClInclude Include="src\TAGE\Physics\Raycaster.h" />
-    <ClInclude Include="src\TAGE\Core\Utilities\RaycastUtils.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1542,11 +1556,20 @@
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp">
       <Filter>src\TAGE\Core\AssetManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp">
+      <Filter>src\TAGE\Core\Utilities</Filter>
+    </ClCompile>
     <ClCompile Include="src\TAGE\Core\Utilities\Utilities.cpp">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\ECS\ECS\System.cpp">
       <Filter>src\TAGE\ECS\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp">
+      <Filter>src\TAGE\ECS\Objects</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\ECS\Scene\Scene.cpp">
       <Filter>src\TAGE\ECS\Scene</Filter>
@@ -1566,7 +1589,16 @@
     <ClCompile Include="src\TAGE\Layers\LayerStack.cpp">
       <Filter>src\TAGE\Layers</Filter>
     </ClCompile>
+    <ClCompile Include="src\TAGE\Physics\ContactListener.cpp">
+      <Filter>src\TAGE\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\Physics\PhysicsDebugRenderer.cpp">
+      <Filter>src\TAGE\Physics</Filter>
+    </ClCompile>
     <ClCompile Include="src\TAGE\Physics\PhysicsWorld.cpp">
+      <Filter>src\TAGE\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\Physics\Raycaster.cpp">
       <Filter>src\TAGE\Physics</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\Renderer\Buffers\Buffers.cpp">
@@ -1597,6 +1629,9 @@
       <Filter>src\TAGE\Renderer\Model</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\Renderer\Render\Context.cpp">
+      <Filter>src\TAGE\Renderer\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\Renderer\Render\DebugRenderer.cpp">
       <Filter>src\TAGE\Renderer\Render</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\Renderer\Render\PostProcessPass.cpp">
@@ -1635,16 +1670,5 @@
     <ClCompile Include="thirdParty\stb\stb_image.cpp">
       <Filter>thirdParty\stb</Filter>
     </ClCompile>
-    <ClCompile Include="src\TAGE\Physics\ContactListener.cpp" />
-    <ClCompile Include="src\TAGE\Physics\PhysicsDebugRenderer.cpp" />
-    <ClCompile Include="src\TAGE\Renderer\Render\DebugRenderer.cpp" />
-    <ClCompile Include="src\TAGE\Physics\Raycaster.cpp" />
-    <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\Debug_Line_Vertex.glsl" />
-    <None Include="shaders\Debug_Line_Fragment.glsl" />
   </ItemGroup>
 </Project>

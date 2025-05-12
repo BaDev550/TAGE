@@ -5,7 +5,7 @@
 
 namespace TAGE::ECS {
 	enum class ObjectType {
-		OBJECT_DOOR,
+		OBJECT_STATIC,
 		OBJECT_CHARACTER,
 		OBJECT_WEAPON,
 		OBJECT_CAMERA
@@ -35,6 +35,14 @@ namespace TAGE::ECS {
 		inline ObjectType GetType() const { return _Type; }
 		virtual void Tick(float deltaTime) {}
 
+		glm::vec3& GetForwardVector() {
+			auto& rotation = GetComponent<TransformComponent>().Rotation;
+			glm::vec3 rotationRadians = glm::radians(rotation); 
+			glm::quat q = glm::quat(rotation); 
+			return glm::normalize(q * glm::vec3(0, 0, -1));
+		}
+
+		inline glm::vec3& GetWorldLocation() { return GetComponent<TransformComponent>().Position; }
 	protected:
 		ObjectType _Type;
 		GameObjectManager* _manager;

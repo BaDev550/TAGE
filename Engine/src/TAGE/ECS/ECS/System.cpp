@@ -205,6 +205,7 @@ namespace TAGE::ECS {
 
         btRigidBody::btRigidBodyConstructionInfo info(mass, motion, shape, inertia);
         btRigidBody* body = new btRigidBody(info);
+        body->setAngularFactor(btVector3(0, 0, 0));
 
         int flags = body->getCollisionFlags();
         switch (collider.ResponseType)

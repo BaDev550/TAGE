@@ -65,6 +65,11 @@ namespace TAGE::ECS {
 
 		~RigidBodyComponent() {
 		}
+
+		void AddForce(const glm::vec3& force) {
+			Body->activate();
+			Body->applyCentralForce(btVector3(force.x, force.y, force.z));
+		}
 	};
 
 	struct TagComponent
