@@ -26,24 +26,58 @@ namespace TAGE::RENDERER {
 		void UpdateAnimation(float dt)
 		{
 			m_DeltaTime = dt;
-			if (m_CurrentAnimation)
-			{
-				m_CurrentTime += m_CurrentAnimation->GetTicksPerSecond() * dt;
-				if (m_CurrentTime >= m_CurrentAnimation->GetDuration())
-				{
+
+			if (!m_CurrentAnimation)
+				return;
+
+			m_CurrentTime += m_CurrentAnimation->GetTicksPerSecond() * dt;
+			if (m_CurrentTime >= m_CurrentAnimation->GetDuration()) {
+				if (m_CurrentAnimation->IsLooping()) {
 					m_CurrentTime = fmod(m_CurrentTime, m_CurrentAnimation->GetDuration());
 				}
-
-				glm::mat4 rootTransformation = glm::mat4(1.0f);
-				CalculateBoneTransform(&m_CurrentAnimation->GetRootNode(), rootTransformation);
+				else {
+					m_CurrentTime = m_CurrentAnimation->GetDuration();
+				}
 			}
 
+			if (m_IsBlending && m_BlendTargetAnimation)
+			{
+				m_BlendTime += dt;
+				float blendFactor = glm::clamp(m_BlendTime / m_BlendDuration, 0.0f, 1.0f);
+
+				glm::mat4 identity(1.0f);
+				BlendBoneTransform(&m_CurrentAnimation->GetRootNode(), &m_BlendTargetAnimation->GetRootNode(), identity, blendFactor);
+
+				if (blendFactor >= 1.0f)
+				{
+					m_CurrentAnimation = m_BlendTargetAnimation;
+					m_CurrentTime = 0.0f;
+					m_BlendTargetAnimation = nullptr;
+					m_IsBlending = false;
+				}
+			}
+			else
+			{
+				glm::mat4 identity(1.0f);
+				CalculateBoneTransform(&m_CurrentAnimation->GetRootNode(), identity);
+			}
 		}
 
 		void PlayAnimation(Animation* pAnimation)
 		{
 			m_CurrentAnimation = pAnimation;
 			m_CurrentTime = 0.0f;
+		}
+
+		void PlayAnimationWithBlend(Animation* targetAnimation, float blendDuration)
+		{
+			if (!targetAnimation || targetAnimation == m_CurrentAnimation)
+				return;
+
+			m_BlendTargetAnimation = targetAnimation;
+			m_BlendDuration = blendDuration;
+			m_BlendTime = 0.0f;
+			m_IsBlending = true;
 		}
 		Animation* GetCurrentAnimation() const { return m_CurrentAnimation; }
 
@@ -71,18 +105,67 @@ namespace TAGE::RENDERER {
 			}
 		}
 
+		inline glm::mat4 MixMat4(const glm::mat4& a, const glm::mat4& b, float t)
+		{
+			glm::mat4 result;
+			for (int i = 0; i < 4; ++i)
+				result[i] = glm::mix(a[i], b[i], t);
+
+			return result;
+		}
+
+		void BlendBoneTransform(const AssimpNodeData* fromNode, const AssimpNodeData* toNode, const glm::mat4& parentTransform, float blendFactor)
+		{
+			std::string nodeName = fromNode->name;
+			glm::mat4 fromTransform = fromNode->transformation;
+			glm::mat4 toTransform = toNode->transformation;
+
+			if (Bone* bone = m_Skeletal->GetBone(nodeName); bone)
+			{
+				bone->Update(m_CurrentTime);
+				fromTransform = bone->GetLocalTransform();
+			}
+
+			if (Bone* bone = m_Skeletal->GetBone(toNode->name); bone)
+			{
+				bone->Update(0.0f);
+				toTransform = bone->GetLocalTransform();
+			}
+
+			glm::mat4 finalTransform = MixMat4(fromTransform, toTransform, blendFactor);
+			glm::mat4 globalTransform = parentTransform * finalTransform;
+
+			const auto& boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+			if (auto it = boneInfoMap.find(nodeName); it != boneInfoMap.end())
+			{
+				int index = it->second.id;
+				glm::mat4 offset = it->second.offset;
+				m_FinalBoneMatrices[index] = globalTransform * offset;
+			}
+
+			for (int i = 0; i < fromNode->childrenCount; ++i)
+			{
+				BlendBoneTransform(&fromNode->children[i], &toNode->children[i], globalTransform, blendFactor);
+			}
+		}
+
 		std::vector<glm::mat4> GetFinalBoneMatrices()
 		{
 			return m_FinalBoneMatrices;
 		}
 
 		float GetCurrentAnimationTime() const { return m_CurrentTime; }
+		float GetCurrentAnimationDuration() const { return m_CurrentAnimation->GetDuration(); }
 	private:
 		Skeletal* m_Skeletal;
 		std::vector<glm::mat4> m_FinalBoneMatrices;
-		Animation* m_CurrentAnimation;
 		float m_CurrentTime = 0.0f;
 		float m_DeltaTime = 0.0f;
 
+		Animation* m_CurrentAnimation;
+		Animation* m_BlendTargetAnimation = nullptr;
+		float m_BlendDuration = 0.0f;
+		float m_BlendTime = 0.0f;
+		bool m_IsBlending = false;
 	};
 }

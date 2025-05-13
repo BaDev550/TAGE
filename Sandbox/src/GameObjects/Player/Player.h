@@ -18,11 +18,13 @@ public:
 		auto& ctc = Camera.GetComponent<TTransformComponent>();
 		ctc.LocalPosition.y += 1.4f;
 		ctc.LocalRotation.y += 90.0f;
-		Camera.RotationLag(true);
-		Camera.SetCameraLagRotationSpeed(15.0f);
 		
 		idleAnim = new TEAnim("Assets/Models/Arms/Idle.glb", SkeletalMesh->model.get());
-		walkAnim = new TEAnim("Assets/Models/Arms/Walk_01.glb", SkeletalMesh->model.get());
+		idleAnim->SetLoop(true);
+
+		walkAnim = new TEAnim("Assets/Models/Arms/Idle.glb", SkeletalMesh->model.get());
+		walkAnim->SetLoop(true);
+
 		Animator = AddComponent<TAnimatorComponent>(SkeletalMesh->GetSkeleton(), idleAnim);
 	}
 	~Player() {
@@ -47,11 +49,11 @@ public:
 		TCharacter::Tick(deltaTime);
 		if (glm::length(RigidBody->GetVelocity()) > 10.0f) {
 			if (Animator.AnimatorInstance->GetCurrentAnimation() != walkAnim)
-				Animator.AnimatorInstance->PlayAnimation(walkAnim);
+				Animator.AnimatorInstance->PlayAnimationWithBlend(walkAnim, 0.3f);
 		}
 		else {
 			if (Animator.AnimatorInstance->GetCurrentAnimation() != idleAnim)
-				Animator.AnimatorInstance->PlayAnimation(idleAnim);
+				Animator.AnimatorInstance->PlayAnimationWithBlend(idleAnim, 0.3f);
 		}
 	};
 private:

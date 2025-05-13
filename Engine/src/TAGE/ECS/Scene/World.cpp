@@ -14,11 +14,11 @@ namespace TAGE::ECS {
 
 	void World::Update(float dt, SystemUpdateMode mode)
 	{
-		for (auto& system : _systems)
-			system->Update(_entityRegistry->GetRegistry(), dt, mode);
-
 		if (mode == SystemUpdateMode::Game)
 			_GameObjectManager->UpdateGameObjects(dt);
+
+		for (auto& system : _systems)
+			system->Update(_entityRegistry->GetRegistry(), dt, mode);
 	}
 
 	Actor* World::SpawnActor(const std::string& name)
