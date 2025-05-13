@@ -101,9 +101,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\ECS\Objects\Character.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\PawnCamera.h" />
     <ClInclude Include="src\TAGE\TEvents.h" />
     <ClInclude Include="src\TAGE\TMeshes.h" />
     <ClInclude Include="src\TAGE\TObjects.h" />

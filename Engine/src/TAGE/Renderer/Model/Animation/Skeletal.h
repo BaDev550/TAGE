@@ -15,6 +15,7 @@ namespace TAGE::RENDERER {
 		Skeletal(Model* model) : _Model(model) {}
 
         void AddBone(const Bone& bone) { m_Bones.push_back(bone); }
+		void SetBoneParent(const std::string& childName, const std::string& parentName);
         void AddSocketToBone(const std::string& boneName, Socket& socket);
         Socket* GetSocket(const std::string& socketName);
         Bone* GetBone(const std::string& name);

@@ -9,8 +9,7 @@
 class SandboxLayer : public TELayer {
 public:
 	SandboxLayer(TEApplication* instance) : TELayer("Sandbox Layer"), _AppInstance(instance) {
-		_AppInstance->GetWindow().EnableCursor(true);
-
+		_AppInstance->GetWindow().EnableCursor(_Cursor);
 		_World = &_AppInstance->GetScene().GetWorld();
 
 		camera = _World->SpawnActor("Camera");
@@ -134,18 +133,8 @@ public:
 				if (ImGui::Button("Add Collider")) {
 					_SelectedActor->AddComponent<TAGE::ECS::ColliderComponent>();
 				}
-
-				if (dynamic_cast<Player*>(_SelectedActor)) {
-					dynamic_cast<Player*>(_SelectedActor)->DrawStats();
-				}
 			}
 		}
-
-		player.DrawStats();
-
-		//if (ImGui::CollapsingHeader("Post Process")) {
-		//	ImGui::DragFloat("Exposure", &_AppInstance->GetRenderer()._PostProcessEffects.Exposure, 0.01);
-		//}
 		ImGui::End();
 	}
 
@@ -153,6 +142,14 @@ public:
 		if (event.GetKey() == TEKey::Escape) {
 			GetApp().Close();
 			return true;
+		}
+		if (event.GetKey() == TEKey::F1) {
+			_Cursor = !_Cursor;
+			_AppInstance->GetWindow().EnableCursor(_Cursor);
+		}
+		if (event.GetKey() == TEKey::F2) {
+			_OnEditor = !_OnEditor;
+			_AppInstance->SetEngineMode(_OnEditor ? TEEngineMode::Editor : TEEngineMode::Game);
 		}
 		return false;
 	}
@@ -171,6 +168,8 @@ private:
 	Player player;
 
 	Wall* Floor;
+	bool _Cursor = false;
+	bool _OnEditor = false;
 };
 
 class Sandbox : public TEApplication {

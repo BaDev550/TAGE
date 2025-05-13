@@ -45,6 +45,7 @@ namespace TAGE
 		TimeStep GetDeltaTime() const { return _DeltaTime; }
 		static Application& Get() { return *_Instance; }
 		void UpdateLayers(float dt);
+		void SetEngineMode(ECS::SystemUpdateMode mode) { _EngineMode = mode; }
 	private:
 		bool _Running = true;
 		float _LastFrameTime = 0.0f;
@@ -60,7 +61,7 @@ namespace TAGE
 		MEM::Scope<RENDERER::Camera> _Camera;
 		MEM::Ref<ECS::Scene> _TestScene;
 		MEM::Ref<ImGuiLayer> _ImGuiLayer;
-		ECS::SystemUpdateMode _AppStat;
+		ECS::SystemUpdateMode _EngineMode = ECS::SystemUpdateMode::Game;
 
 		static Application* _Instance;
 	};

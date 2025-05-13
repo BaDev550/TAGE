@@ -72,6 +72,16 @@ namespace TAGE::RENDERER {
 			}
 		}
 
+		void BuildBoneHierarchy(const AssimpNodeData& node, Skeletal* skeletal, const std::string& parentName = "") {
+			if (!parentName.empty()) {
+				skeletal->SetBoneParent(node.name, parentName);
+			}
+
+			for (const auto& child : node.children) {
+				BuildBoneHierarchy(child, skeletal, node.name);
+			}
+		}
+
 		float m_Duration = 0.0f;
 		int m_TicksPerSecond;
 		Skeletal* m_Skeletal;

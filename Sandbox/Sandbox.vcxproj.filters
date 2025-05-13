@@ -12,9 +12,6 @@
     <ClInclude Include="src\GameObjects\Player\Player.h">
       <Filter>GameObjects\Player</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObjects\Player\PlayerCamera.h">
-      <Filter>GameObjects\Player</Filter>
-    </ClInclude>
     <ClInclude Include="src\GameObjects\Common\Wall.h" />
     <ClInclude Include="src\GameObjects\Common\BasicObject.h" />
   </ItemGroup>

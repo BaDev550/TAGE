@@ -33,6 +33,7 @@ namespace TAGE::RENDERER {
 	public:
 		Bone(const std::string& name, int ID, const aiNodeAnim* channel);
 
+		void SetParentBone(Bone* parent) { m_ParentBone = parent; }
 		void Update(float animationTime);
 		glm::mat4 GetLocalTransform() { return m_LocalTransform; }
 		std::string GetBoneName() const { return m_Name.c_str(); }
@@ -79,6 +80,10 @@ namespace TAGE::RENDERER {
                    return const_cast<Socket*>(&socket);
            return nullptr;  
         }
+
+		glm::mat4 GetFinalTransform() const {
+			return m_FinalTransform;
+		}
 
 		std::vector<Socket> GetAllSockets() const { return m_Sockets; }
 
@@ -148,8 +153,10 @@ namespace TAGE::RENDERER {
 		int m_NumScalings;
 		std::vector<Socket> m_Sockets;
 
+		glm::mat4 m_FinalTransform;
 		glm::mat4 m_LocalTransform;
 		std::string m_Name;
 		int m_ID;
+		Bone* m_ParentBone = nullptr;
 	};
 }

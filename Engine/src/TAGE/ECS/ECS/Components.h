@@ -77,6 +77,11 @@ namespace TAGE::ECS {
 			Body->applyCentralForce(btVector3(force.x, force.y, force.z));
 		}
 
+		void SetVelocity(const glm::vec3& vel) {
+			Body->activate();
+			Body->setLinearVelocity(btVector3(vel.x, vel.y, vel.z));
+		}
+
 		glm::vec3& GetVelocity() const {
 			return glm::vec3(Body->getLinearVelocity().getX(), Body->getLinearVelocity().getY(), Body->getLinearVelocity().getZ());
 		}
@@ -97,6 +102,7 @@ namespace TAGE::ECS {
 			meshType = type;
 			model = MEM::CreateScope<Model>(modelPath, meshType);
 		}
+		MeshComponent(EMeshType type = EMeshType::STATIC) { meshType = type; model = MEM::CreateScope<Model>(type); }
 
 		MEM::Scope<Model> model;
 		EMeshType meshType = EMeshType::STATIC;
@@ -112,7 +118,7 @@ namespace TAGE::ECS {
 
 		void LoadModel(const std::string& modelPath) {
 			model->Reset();
-			model.reset(new Model(modelPath));
+			model.reset(new Model(modelPath, meshType));
 		}
 	};
 
@@ -121,6 +127,7 @@ namespace TAGE::ECS {
 		StaticMeshComponent(const std::string& path)
 			: MeshComponent(path, EMeshType::STATIC) {
 		}
+		StaticMeshComponent() : MeshComponent(EMeshType::STATIC) {}
 	};
 
 	struct SkeletalMeshComponent : public MeshComponent
@@ -128,6 +135,7 @@ namespace TAGE::ECS {
 		SkeletalMeshComponent(const std::string& path)
 			: MeshComponent(path, EMeshType::SKELETAL) {
 		}
+		SkeletalMeshComponent() : MeshComponent(EMeshType::SKELETAL) {}
 
 		Skeletal* GetSkeleton() const { return model->GetSkeletal(); }
 	};
@@ -161,6 +169,8 @@ namespace TAGE::ECS {
 		MEM::Ref<Camera> Camera;
 		glm::mat4 GetViewMatrix() const { return Camera->GetViewMatrix(); }
 		glm::mat4 GetProjectionMatrix() const { return Camera->GetProjectionMatrix(); }
+		glm::vec3 GetForward() { return Camera->GetFront(); }
+	private:
 	};
 
 	struct EditorCameraComponent : public CameraComponent {

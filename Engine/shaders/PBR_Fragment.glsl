@@ -1,7 +1,24 @@
 #ifndef PBR_FRAGMENT_GLSL
 #define PBR_FRAGMENT_GLSL
 
-const float PI = 3.14;
+const float PI = 3.14159265359;
+vec3 getNormalFromMap(sampler2D normalMap, vec2 texCoords, vec3 normal, vec3 worldPos)
+{
+    vec3 tangentNormal = texture(normalMap, texCoords).xyz * 2.0 - 1.0;
+
+    vec3 Q1  = dFdx(worldPos);
+    vec3 Q2  = dFdy(worldPos);
+    vec2 st1 = dFdx(texCoords);
+    vec2 st2 = dFdy(texCoords);
+
+    vec3 N   = normalize(normal);
+    vec3 T  = normalize(Q1 * st2.t - Q2 * st1.t);
+    vec3 B  = -normalize(cross(N, T));
+    mat3 TBN = mat3(T, B, N);
+
+    return normalize(TBN * tangentNormal);
+}
+
 vec3 fresnelSchlick(float cosTheta, vec3 F0)
 {
     return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
@@ -9,21 +26,27 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 
 float DistributionGGX(vec3 N, vec3 H, float roughness)
 {
-    float a      = roughness * roughness;
-    float a2     = a * a;
-    float NdotH  = max(dot(N, H), 0.0);
-    float NdotH2 = NdotH * NdotH;
+    float a = roughness*roughness;
+    float a2 = a*a;
+    float NdotH = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH*NdotH;
 
+    float nom   = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
-    return a2 / (PI * denom * denom);
+    denom = PI * denom * denom;
+
+    return nom / denom;
 }
 
 float GeometrySchlickGGX(float NdotV, float roughness)
 {
-    float r = roughness + 1.0;
-    float k = (r * r) / 8.0;
+    float r = (roughness + 1.0);
+    float k = (r*r) / 8.0;
 
-    return NdotV / (NdotV * (1.0 - k) + k);
+    float nom   = NdotV;
+    float denom = NdotV * (1.0 - k) + k;
+
+    return nom / denom;
 }
 
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)

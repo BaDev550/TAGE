@@ -32,6 +32,7 @@ namespace TAGE::RENDERER {
 	{
 	public:
 		Model(const std::string& path, EMeshType type = EMeshType::STATIC);
+		Model(EMeshType type = EMeshType::STATIC) {}
 		~Model() = default;
 
 		void Draw(glm::mat4 transform, const MEM::Ref<RENDERER::Shader>& shader) const;
@@ -41,6 +42,7 @@ namespace TAGE::RENDERER {
 		int& GetBoneCount() { return m_BoneCounter; }
 
 		void Reset();
+		void LoadModel(const std::string& path);
 
 		Skeletal* GetSkeletal() { return _Skeletal.get(); }
 	private:
@@ -48,7 +50,6 @@ namespace TAGE::RENDERER {
 		std::string _Directory;
 		MEM::Scope<Skeletal> _Skeletal;
 		EMeshType _MeshType;
-		const aiScene* _Scene = nullptr;
 		glm::vec3 _CenterOffset;
 
 		std::map<std::string, BoneInfo> m_BoneInfoMap;
@@ -56,10 +57,9 @@ namespace TAGE::RENDERER {
 		int m_BoneCounter = 0;
 
 		void LoadSkeletalModel();
-		void LoadModel(const std::string& path);
 		void ProcessNode(aiNode* node, const aiScene* scene);
 		Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-		void LoadTexture(aiMaterial* material, const MEM::Ref<Material>& mat, aiTextureType type, TextureType ourType);
+		void LoadTexture(aiMaterial* material, const MEM::Ref<Material>& mat, aiTextureType type, TextureType ourType, const aiScene* scene);
 		MEM::Ref<Texture2D> LoadEmbeddedTexture(const aiTexture* texture);
 		MEM::Ref<Material> LoadMaterial(aiMaterial* material, const aiScene* scene);
 

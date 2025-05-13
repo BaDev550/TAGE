@@ -48,7 +48,7 @@ namespace TAGE::ECS {
                 auto transforms = animator->GetFinalBoneMatrices();
                 shader->SetUniformArray("finalBonesMatrices", transforms.data(), transforms.size());
             }
-            skeletal_model.Draw(_Shader, transform.GetMatrix());
+            skeletal_model.Draw(shader, transform.GetMatrix());
         }
     }
 
@@ -74,8 +74,8 @@ namespace TAGE::ECS {
                 RenderScene(registry, dt, _Shader);
                 _Renderer->EndScene();
 
-                Application::Get().UpdateLayers(dt);
                 _PhysicsDebugRenderer.Flush(dt);
+                Application::Get().UpdateLayers(dt);
 
                 UpdateCamera(registry);
             }
@@ -112,10 +112,30 @@ namespace TAGE::ECS {
 
     void PhysicsSystem::Update(entt::registry& registry, float dt, SystemUpdateMode mode)
     {
-        //if (mode == SystemUpdateMode::Editor) return;
+        if (mode == SystemUpdateMode::Editor) {
+            _PhysicsWorld.GetWorld()->debugDrawWorld();
+
+            auto rigidView = registry.view<TransformComponent, RigidBodyComponent>();
+            for (auto entity : rigidView) {
+                auto& tc = rigidView.get<TransformComponent>(entity);
+                auto& rb = rigidView.get<RigidBodyComponent>(entity);
+
+                glm::vec3 position = tc.Position;
+                glm::vec3 rotation = tc.Rotation;
+
+                btTransform transform;
+                transform.setOrigin(btVector3(position.x, position.y, position.z));
+
+                glm::quat q = glm::quat(glm::radians(rotation));
+                transform.setRotation(btQuaternion(q.x, q.y, q.z, q.w));
+
+                rb.Body->getMotionState()->setWorldTransform(transform);
+                rb.Body->setWorldTransform(transform);
+            }
+            return;
+        }
 
         _PhysicsWorld.StepSimulation(dt);
-        _PhysicsWorld.GetWorld()->debugDrawWorld();
 
         auto rigidView = registry.view<TransformComponent, RigidBodyComponent>();
 

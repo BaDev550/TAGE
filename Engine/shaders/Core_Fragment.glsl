@@ -49,13 +49,12 @@ float ShadowCalculation(vec4 fragPosLightSpace)
 void main()
 {
     vec3 albedo = texture(u_Material.u_DiffuseMap, TexCoord).rgb;
-    vec3 normal = texture(u_Material.u_NormalMap, TexCoord).rgb;
+    vec3 normal = getNormalFromMap(u_Material.u_NormalMap, TexCoord, Normal, FragPos);
     float metallic = texture(u_Material.u_MetallicMap, TexCoord).r;
     float roughness = texture(u_Material.u_RoughnessMap, TexCoord).r;
 
-    normal = normalize(normal * 2.0 - 1.0);
     vec3 viewDir =  normalize(u_CameraPosition - FragPos);
-    vec3 lightDir = normalize(-u_Light.direction);
+    vec3 lightDir = normalize(u_Light.direction - FragPos);
 
     float shadow = ShadowCalculation(FragPosLightSpace);
     vec3 pbr = PBR(albedo, metallic, roughness, normal, viewDir, lightDir, u_Light.color * u_Light.intensity);

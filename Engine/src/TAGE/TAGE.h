@@ -19,6 +19,7 @@
 #include <btBulletDynamicsCommon.h>
 
 using TEApplication = TAGE::Application;
+using TEEngineMode = TAGE::ECS::SystemUpdateMode;
 using TEWindow = TAGE::Window;
 using TEInput = TAGE::Input;
 using TEKey = TAGE::KeyCode;

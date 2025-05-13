@@ -16,7 +16,7 @@ namespace TAGE::RENDERER {
 		aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
 		globalTransformation = globalTransformation.Inverse();
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
-		CORE_LOG_INFO("Root Node name: {}", m_RootNode.name);
 		ReadMissingBones(animation, *model);
+		BuildBoneHierarchy(m_RootNode, m_Skeletal);
 	}
 }

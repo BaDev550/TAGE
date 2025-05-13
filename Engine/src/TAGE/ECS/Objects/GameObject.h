@@ -6,7 +6,7 @@
 namespace TAGE::ECS {
 	enum class ObjectType {
 		OBJECT_STATIC,
-		OBJECT_CHARACTER,
+		OBJECT_PAWN,
 		OBJECT_WEAPON,
 		OBJECT_CAMERA
 	};

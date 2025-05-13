@@ -38,7 +38,7 @@ namespace TAGE::RENDERER {
 	void Model::LoadModel(const std::string& path)
 	{
 		Assimp::Importer importer;
-		_Scene = importer.ReadFile(path,
+		const aiScene* _Scene = importer.ReadFile(path,
 			aiProcess_Triangulate |
 			aiProcess_FlipUVs |
 			aiProcess_CalcTangentSpace |
@@ -152,52 +152,56 @@ namespace TAGE::RENDERER {
 		return { _Vao, material, (int)indices.size() };
 	}
 
-	void Model::LoadTexture(aiMaterial* material, const MEM::Ref<Material>& mat, aiTextureType type, TextureType ourType) {
+	void Model::LoadTexture(aiMaterial* material, const MEM::Ref<Material>& mat, aiTextureType type, TextureType ourType, const aiScene* scene) {
 		if (material->GetTextureCount(type) > 0) {
 			aiString str;
 			material->GetTexture(type, 0, &str);
 			std::string texPath = str.C_Str();
 
-			int texIndex = std::atoi(texPath.c_str() + 1);
 			if (!texPath.empty() && texPath[0] == '*') {
-				const aiTexture* texture = _Scene->mTextures[texIndex];
-
-				if (texture->mHeight == 0) {
-					MEM::Ref<Texture2D> tex = LoadEmbeddedTexture(texture);
-					mat->SetTexture(ourType, tex);
+				int texIndex = std::atoi(texPath.c_str() + 1);
+				if (scene && texIndex < scene->mNumTextures) {
+					const aiTexture* texture = scene->mTextures[texIndex];
+					if (texture && texture->pcData && texture->mWidth > 0) {
+						const MEM::Ref<Texture2D> tex = LoadEmbeddedTexture(texture);
+						if (tex) {
+							mat->SetTexture(ourType, tex);
+							return;
+						}
+					}
 				}
 			}
 			else {
 				std::string fullPath = _Directory + "/" + texPath;
 				if (ASSET::AssetManager::Has<Texture2D>(fullPath)) {
 					mat->SetTexture(ourType, ASSET::AssetManager::Get<Texture2D>(fullPath));
+					return;
 				}
-				else {
+				else if (!texPath.empty()) {
 					auto texture = ASSET::AssetManager::Load<Texture2D>(fullPath);
-					CORE_LOG_WARN("Texture Loaded");
-					mat->SetTexture(ourType, texture);
+					if (texture) {
+						mat->SetTexture(ourType, texture);
+						return;
+					}
 				}
 			}
 		}
-		else {
-			if (type == aiTextureType::aiTextureType_DIFFUSE) {
-				auto texture = ASSET::AssetManager::Load<Texture2D>("");
-				mat->SetTexture(ourType, texture);
-			}
-		}
+
+		auto texture = ASSET::AssetManager::Load<Texture2D>("");
+		mat->SetTexture(ourType, texture);
 	}
 
 	MEM::Ref<Material> Model::LoadMaterial(aiMaterial* material, const aiScene* scene)
 	{
-		MEM::Ref<Material> Mmaterial = MEM::CreateRef<Material>();
+		const MEM::Ref<Material> Mmaterial = MEM::CreateRef<Material>();
 
-		LoadTexture(material, Mmaterial, aiTextureType_DIFFUSE, TextureType::Diffuse);
-		LoadTexture(material, Mmaterial, aiTextureType_SPECULAR, TextureType::Spec);
-		LoadTexture(material, Mmaterial, aiTextureType_NORMALS, TextureType::Normal);
-		LoadTexture(material, Mmaterial, aiTextureType_AMBIENT, TextureType::Ambient);
-		LoadTexture(material, Mmaterial, aiTextureType_METALNESS, TextureType::Metallic);
-		LoadTexture(material, Mmaterial, aiTextureType_DIFFUSE_ROUGHNESS, TextureType::Ambient);
-
+		LoadTexture(material, Mmaterial, aiTextureType_DIFFUSE, TextureType::Diffuse, scene);
+		LoadTexture(material, Mmaterial, aiTextureType_SPECULAR, TextureType::Spec, scene);
+		LoadTexture(material, Mmaterial, aiTextureType_NORMALS, TextureType::Normal, scene);
+		LoadTexture(material, Mmaterial, aiTextureType_AMBIENT, TextureType::Ambient, scene);
+		LoadTexture(material, Mmaterial, aiTextureType_METALNESS, TextureType::Metallic, scene);
+		LoadTexture(material, Mmaterial, aiTextureType_DIFFUSE_ROUGHNESS, TextureType::Ambient, scene);
+		
 		return Mmaterial;
 	}
 	void Model::SetVertexBoneDataToDefault(Vertex& vertex)
@@ -266,7 +270,8 @@ namespace TAGE::RENDERER {
 			uint32_t width = texture->mWidth;
 			uint32_t height = texture->mHeight;
 			uint8_t* data = reinterpret_cast<uint8_t*>(texture->pcData);
-			return MEM::CreateRef<Texture2D>(data, width, height, 4);
+			const auto& tex = MEM::CreateRef<Texture2D>(data, width, height, 4);
+			return tex;
 		}
 	}
 }

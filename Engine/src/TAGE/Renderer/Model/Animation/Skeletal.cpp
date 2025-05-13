@@ -3,6 +3,12 @@
 #include "TAGE/Renderer/Model/Model.h"
 
 namespace TAGE::RENDERER {
+    void Skeletal::SetBoneParent(const std::string& childName, const std::string& parentName) {
+        Bone* child = GetBone(childName);
+        Bone* parent = GetBone(parentName);
+        if (child && parent)
+            child->SetParentBone(parent);
+    }
     void Skeletal::AddSocketToBone(const std::string& boneName, Socket& socket) {
         for (auto& bone : m_Bones) {
             if (bone.GetBoneName() == boneName) {

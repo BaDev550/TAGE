@@ -41,7 +41,7 @@ namespace TAGE::RENDERER {
         mousePos.y = -Input::GetMousePosition().y;
         glm::vec2 delta = (mousePos - _LastMousePosition) * 0.1f;
         _LastMousePosition = mousePos;
-
+        
         if (Input::IsMouseButtonPressed(MouseButton::Right)) {
             _Rotation.y += delta.x;
             _Rotation.x += delta.y;

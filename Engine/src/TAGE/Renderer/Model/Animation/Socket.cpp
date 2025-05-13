@@ -7,13 +7,13 @@ namespace TAGE::RENDERER {
     Socket::Socket(const std::string& name, int ID)
         : m_Name(name), m_ID(ID), m_Parent(nullptr), m_LocalTransform(1.0f) {
         if (m_Positions.empty()) {
-            AddPositionKeyframe(glm::vec3(1.0f), 0.0f);
+            AddPositionKeyframe(glm::vec3(0.0f), 1.0f);
         }
         if (m_Rotations.empty()) {
-            AddRotationKeyframe(glm::vec3(1.0f), 0.0f);
+            AddRotationKeyframe(glm::vec3(0.0f), 1.0f);
         }
         if (m_Scales.empty()) {
-            AddScaleKeyframe(glm::vec3(1.0f), 0.0f);
+            AddScaleKeyframe(glm::vec3(0.0f), 1.0f);
         }
     }
 
@@ -37,22 +37,13 @@ namespace TAGE::RENDERER {
     }
 
     void Socket::Update(float animationTime, const glm::mat4& parentTransform) {
-        m_LocalTransform = glm::mat4(1.0f);
-        glm::mat4 translation, rotation, scale;
+        glm::mat4 translation = InterpolatePosition(animationTime);
+        glm::mat4 rotation = InterpolateRotation(animationTime);
+        glm::mat4 scale = InterpolateScaling(animationTime);
 
-        if (m_NumPositions > 0) {
-            translation = InterpolatePosition(animationTime);
-        }
+        m_LocalTransform = translation * rotation * scale;
 
-        if (m_NumRotations > 0) {
-            rotation = InterpolateRotation(animationTime) * m_LocalTransform;
-        }
-
-        if (m_NumScalings > 0) {
-            scale = InterpolateScaling(animationTime) * m_LocalTransform;
-        }
-
-        m_LocalTransform = (translation * rotation * scale) * parentTransform;
+        m_WorldTransform = parentTransform * m_LocalTransform;
     }
 
     glm::vec3 Socket::GetPosition() const {
@@ -60,10 +51,7 @@ namespace TAGE::RENDERER {
     }
 
     glm::vec3 Socket::GetWorldPosition() const {
-        glm::mat4 world = m_LocalTransform;
-        if (m_Parent)
-            world = m_Parent->GetLocalTransform() * world;
-        return glm::vec3(world[3]);
+        return glm::vec3(m_WorldTransform[3]);
     }
 
     glm::vec3 Socket::GetRotation() const {

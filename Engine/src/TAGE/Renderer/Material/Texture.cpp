@@ -74,7 +74,8 @@ namespace TAGE::RENDERER {
 	{
 		_Channels = 0;
 		unsigned char* imageData = stbi_load_from_memory(data, size, &_Width, &_Height, &_Channels, 0);
-		if (!imageData) {
+		if (!imageData || _Width == 0 || _Height == 0) {
+			CreateCheckerboardTexture();
 			return;
 		}
 

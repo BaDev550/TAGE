@@ -39,14 +39,19 @@ namespace TAGE::RENDERER{
 			m_Scales.push_back(data);
 		}
 	}
-	void Bone::Update(float animationTime)
-	{
+	void Bone::Update(float animationTime) {
 		glm::mat4 translation = InterpolatePosition(animationTime);
 		glm::mat4 rotation = InterpolateRotation(animationTime);
 		glm::mat4 scale = InterpolateScaling(animationTime);
+
 		m_LocalTransform = translation * rotation * scale;
 
+		if (m_ParentBone)
+			m_FinalTransform = m_ParentBone->m_FinalTransform * m_LocalTransform;
+		else
+			m_FinalTransform = m_LocalTransform;
+
 		for (auto& socket : m_Sockets)
-			socket.Update(animationTime, m_LocalTransform);
+			socket.Update(animationTime, m_FinalTransform);
 	}
 }

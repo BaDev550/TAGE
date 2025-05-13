@@ -59,9 +59,9 @@ namespace TAGE::RENDERER {
 	{
 		Clear();
 
-		glm::mat4 lightProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 50.0f);
+		glm::mat4 lightProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
 		glm::mat4 lightView = glm::lookAt(
-			-_SceneLight.Pos * 20.0f,
+			_SceneLight.Pos,
 			glm::vec3(0.0f),
 			glm::vec3(0.0f, 1.0f, 0.0f)
 		);

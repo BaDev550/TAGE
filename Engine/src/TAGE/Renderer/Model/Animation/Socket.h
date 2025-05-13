@@ -17,6 +17,7 @@ namespace TAGE::RENDERER {
         Socket(const std::string& name, int ID);
 
         void SetParent(Bone* parent);
+        Bone* GetParent() const { return m_Parent; }
         void AddPositionKeyframe(const glm::vec3& position, float timeStamp);
         void AddRotationKeyframe(const glm::vec3& rotation, float timeStamp);
         void AddScaleKeyframe(const glm::vec3& scale, float timeStamp);
@@ -50,6 +51,7 @@ namespace TAGE::RENDERER {
         int m_NumScalings = 0;
 
         glm::mat4 m_LocalTransform = glm::mat4(1.0f);
+        glm::mat4 m_WorldTransform{ 1.0f };
         std::string m_Name;
         int m_ID;
 
