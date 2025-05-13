@@ -103,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
+    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h" />
     <ClInclude Include="src\TAGE\TEvents.h" />
     <ClInclude Include="src\TAGE\TMeshes.h" />
     <ClInclude Include="src\TAGE\TObjects.h" />
@@ -593,6 +594,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
+    <ClCompile Include="src\TAGE\Core\Profiler\ProfilerTimer.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />

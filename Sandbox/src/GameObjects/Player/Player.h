@@ -3,6 +3,7 @@
 #include "TAGE/TAGE.h"
 #include "TAGE/TObjects.h"
 #include "TAGE/TPhysics.h"
+#include "TAGE/TMeshes.h"
 
 #include "PlayerCamera.h"
 #include "../Common/BasicObject.h"
@@ -30,8 +31,13 @@ public:
 		tc.LocalPosition.y += 1.5f;
 
 		GetWorld().GetPhysicsSystem().CreateRigidBody(this, 1.0f);
+		idleAnim = new TEAnim("Assets/Models/Arms/Idle.glb", SkeletalMesh->model.get());
+		Animator = AddComponent<TAnimatorComponent>(SkeletalMesh->GetSkeleton(), idleAnim);
 
 		AddChild(&camera);
+	}
+	~Player() {
+		delete idleAnim;
 	}
 
 	void DrawStats() {
@@ -118,6 +124,8 @@ private:
 	};
 	Item _SelectedItem;
 
+	TEAnim* idleAnim;
 	TSkeletalMeshComponent* SkeletalMesh;
+	TAnimatorComponent Animator;
 };
 

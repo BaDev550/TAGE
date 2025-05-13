@@ -46,8 +46,7 @@ namespace TAGE::ECS {
                 animator->UpdateAnimation(dt);
                 skeletal_model.GetSkeleton()->Update(animator->GetCurrentAnimationTime());
                 auto transforms = animator->GetFinalBoneMatrices();
-                _Shader->SetUniformArray("finalBonesMatrices", transforms.data(), transforms.size());
-                skeletal_model.Draw(shader, transform.GetMatrix());
+                shader->SetUniformArray("finalBonesMatrices", transforms.data(), transforms.size());
             }
             skeletal_model.Draw(_Shader, transform.GetMatrix());
         }

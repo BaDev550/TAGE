@@ -1554,6 +1554,7 @@
     <ClInclude Include="src\TAGE\TMeshes.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
+    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1682,5 +1683,6 @@
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Socket.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
     <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
+    <ClCompile Include="src\TAGE\Core\Profiler\ProfilerTimer.cpp" />
   </ItemGroup>
 </Project>

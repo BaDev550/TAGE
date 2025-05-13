@@ -8,6 +8,7 @@
 #include "Animation.h"
 #include "Bone.h"
 #include "Skeletal.h"
+#include "TAGE/Core/Profiler/Profiler.h"
 
 namespace TAGE::RENDERER {
 	class Animator
@@ -19,6 +20,7 @@ namespace TAGE::RENDERER {
 
 			for (int i = 0; i < 100; i++)
 				m_FinalBoneMatrices.push_back(glm::mat4(1.0f));
+
 		}
 
 		void UpdateAnimation(float dt)
@@ -45,26 +47,26 @@ namespace TAGE::RENDERER {
 		}
 		Animation* GetCurrentAnimation() const { return m_CurrentAnimation; }
 
-		void CalculateBoneTransform(const AssimpNodeData* node, glm::mat4 parentTransform) {
-			std::string nodeName = node->name;
+		void CalculateBoneTransform(const AssimpNodeData* node, const glm::mat4& parentTransform) {
+			TE_PROFILE_SCOPE("calculate bone transform");
+			const std::string_view nodeName = node->name;
 			glm::mat4 nodeTransform = node->transformation;
 
-			Bone* bone = m_Skeletal->GetBone(nodeName);
-			if (bone) {
+			if (Bone* bone = m_Skeletal->GetBone(nodeName.data()); bone) {
 				bone->Update(m_CurrentTime);
 				nodeTransform = bone->GetLocalTransform();
 			}
 
-			glm::mat4 globalTransformation = parentTransform * nodeTransform;
+			const glm::mat4 globalTransformation = parentTransform * nodeTransform;
 
-			auto boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
-			if (boneInfoMap.find(nodeName) != boneInfoMap.end()) {
-				int index = boneInfoMap[nodeName].id;
-				glm::mat4 offset = boneInfoMap[nodeName].offset;
+			const auto& boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+			if (auto it = boneInfoMap.find(nodeName.data()); it != boneInfoMap.end()) {
+				const int index = it->second.id;
+				const glm::mat4& offset = it->second.offset;
 				m_FinalBoneMatrices[index] = globalTransformation * offset;
 			}
 
-			for (int i = 0; i < node->childrenCount; i++) {
+			for (int i = 0; i < node->childrenCount; ++i) {
 				CalculateBoneTransform(&node->children[i], globalTransformation);
 			}
 		}

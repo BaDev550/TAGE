@@ -3,9 +3,10 @@
 #include <string>
 #include <vector>
 #include "TAGE/Core/Utilities/Timer.h"
+#include "TAGE/Core/Profiler/ProfilerTimer.h"
 
-#define TE_PROFILE_SCOPE(name) TAGE::Timer timer##__LINE__; \
-                               TAGE::DEBUG::Profiler::Get().AddEntry(name, timer##__LINE__.ElapsedMillis())
+#define TE_PROFILE_SCOPE(name) \
+    TAGE::DEBUG::ProfilerTimer __timer##__LINE__(name)
 
 namespace TAGE::DEBUG {
     struct ProfilerEntry {

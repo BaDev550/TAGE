@@ -19,6 +19,7 @@
 #include "TAGE/ECS/ECS/System.h"
 
 #include "TAGE/Thread/ThreadPool.h"
+#include "TAGE/Core/Profiler/Profiler.h"
 
 namespace TAGE
 {
