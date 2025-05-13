@@ -64,7 +64,7 @@ namespace TAGE
 			_DeltaTime = time - _LastFrameTime;
 			_LastFrameTime = time;
 
-			_TestScene->OnUpdate(_DeltaTime, ECS::SystemUpdateMode::Game);
+			_TestScene->OnUpdate(_DeltaTime, ECS::SystemUpdateMode::Editor);
 
 			_Window->SwapBuffers();
 		}

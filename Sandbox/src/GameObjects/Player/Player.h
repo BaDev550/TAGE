@@ -1,6 +1,9 @@
 #pragma once
 
 #include "TAGE/TAGE.h"
+#include "TAGE/TObjects.h"
+#include "TAGE/TPhysics.h"
+
 #include "PlayerCamera.h"
 #include "../Common/BasicObject.h"
 #include "imgui.h"
@@ -27,20 +30,8 @@ public:
 		tc.LocalPosition.y += 1.5f;
 
 		GetWorld().GetPhysicsSystem().CreateRigidBody(this, 1.0f);
-		idleAnim = new TEAnim("Assets/Models/Arms/Idle.glb", SkeletalMesh->model.get());
-		walkAnim = new TEAnim("Assets/Models/Arms/Walk.glb", SkeletalMesh->model.get());
-		Animator = AddComponent<TAnimatorComponent>(SkeletalMesh->GetSkeleton(), idleAnim);
-
-		TESocket socket("WeaponSocket", 0);
-		SkeletalMesh->GetSkeleton()->AddSocketToBone("mixamorig1:RightHand", socket);
-		for (auto& bone : SkeletalMesh->GetSkeleton()->GetBones())
-			LOG_INFO("Bone Name: {}", bone.GetBoneName());
 
 		AddChild(&camera);
-	}
-	~Player() {
-		delete idleAnim;
-		delete walkAnim;
 	}
 
 	void DrawStats() {
@@ -52,6 +43,12 @@ public:
 		}
 
 		ImGui::Text(IsGrounded() ? "Gounded" : "Air");
+
+		if (ImGui::CollapsingHeader("Skeleton")) {
+			for (auto& bone : SkeletalMesh->GetSkeleton()->GetBones()) {
+				ImGui::Text(bone.GetBoneName().c_str());
+			}
+		}
 	}
 
 	void Fire() {
@@ -60,7 +57,7 @@ public:
 		glm::vec3 start = camera.GetWorldLocation();
 		glm::vec3 end = start + camera.GetForward() * 500.0f;
 
-		TEHitResult hit = Raycast(this, start, end, true, TERayDrawType::FOR_DURATION, 5.0f);
+		TEHitResult hit = Cast::Raycast(this, start, end, true, TERayDrawType::FOR_DURATION, 5.0f);
 
 		if (hit.hit) {
 			std::cout << hit.actor->GetComponent<TTagComponent>().tag << std::endl;
@@ -72,7 +69,7 @@ public:
 		glm::vec3 start = transform.Position;
 		glm::vec3 end = start - glm::vec3(0, 1.6f, 0);
 
-		TEHitResult hit = Raycast(this, start, end, true);
+		TEHitResult hit = Cast::Raycast(this, start, end, true);
 		return hit.hit;
 	}
 
@@ -97,15 +94,6 @@ public:
 		auto& rb = GetComponent<TRigidBodyComponent>();
 		rb.AddForce(moveDirection);
 
-		if (glm::length(rb.GetVelocity()) > 10.0f) {
-			if (Animator.AnimatorInstance->GetCurrentAnimation() != walkAnim)
-				Animator.AnimatorInstance->PlayAnimation(walkAnim);
-		}
-		else {
-			if (Animator.AnimatorInstance->GetCurrentAnimation() != idleAnim)
-				Animator.AnimatorInstance->PlayAnimation(idleAnim);
-		}
-
 		if (TEInput::IsKeyPressed(TEKey::Space) && IsGrounded()) {
 			rb.AddForce(glm::vec3(0.0f, 100.0f, 0.0f));
 		}
@@ -119,15 +107,6 @@ public:
 			_SelectedItem = _SelectedItem.name == _Inventory[1].name ? _Inventory[0] : _Inventory[1];
 		}
 
-		TESocket* socket = SkeletalMesh->GetSkeleton()->GetSocket("WeaponSocket");
-		glm::mat4 weaponTransform;
-		if (socket) {
-			weaponTransform = socket->GetLocalTransform();
-			LOG_WARN("Weapon Socket Local Transform: {}", glm::to_string(weaponTransform));
-			LOG_WARN("Weapon Socket World Position: {}", glm::to_string(socket->GetWorldPosition()));
-			object.GetTransform().Position = socket->GetWorldPosition();
-		}
-
 		camera.ProcessCamera(transform);
 	};
 private:
@@ -139,10 +118,6 @@ private:
 	};
 	Item _SelectedItem;
 
-	TEAnim* idleAnim;
-	TEAnim* walkAnim;
-	BasicObject object;
 	TSkeletalMeshComponent* SkeletalMesh;
-	TAnimatorComponent Animator;
 };
 

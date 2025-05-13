@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TAGE/TAGE.h"
+#include "TAGE/TObjects.h"
 
 class Wall : public TGameObject {
 public:

@@ -1547,6 +1547,13 @@
     </ClInclude>
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Socket.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Skeletal.h" />
+    <ClInclude Include="src\TAGE\TPhysics.h" />
+    <ClInclude Include="src\TAGE\TObjects.h" />
+    <ClInclude Include="src\TAGE\TComponents.h" />
+    <ClInclude Include="src\TAGE\TEvents.h" />
+    <ClInclude Include="src\TAGE\TMeshes.h" />
+    <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
+    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1674,5 +1681,6 @@
     </ClCompile>
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Socket.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
+    <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
   </ItemGroup>
 </Project>

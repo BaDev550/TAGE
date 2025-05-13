@@ -101,6 +101,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
+    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
+    <ClInclude Include="src\TAGE\TEvents.h" />
+    <ClInclude Include="src\TAGE\TMeshes.h" />
+    <ClInclude Include="src\TAGE\TObjects.h" />
+    <ClInclude Include="src\TAGE\TPhysics.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Skeletal.h" />
     <ClInclude Include="src\Platform\Windows\WindowsKeyCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsMouseCodes.h" />
@@ -162,6 +168,7 @@
     <ClInclude Include="src\TAGE\Renderer\Shadow\ShadowMap.h" />
     <ClInclude Include="src\TAGE\Renderer\Skybox\Skybox.h" />
     <ClInclude Include="src\TAGE\TAGE.h" />
+    <ClInclude Include="src\TAGE\TComponents.h" />
     <ClInclude Include="src\TAGE\Thread\ThreadPool.h" />
     <ClInclude Include="src\TAGE\Window\Window.h" />
     <ClInclude Include="src\tagepch.h" />
@@ -585,6 +592,7 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />

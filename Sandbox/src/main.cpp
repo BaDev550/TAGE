@@ -1,4 +1,7 @@
 #include "TAGE/TAGE.h"
+#include "TAGE/TComponents.h"
+#include "TAGE/TEvents.h"
+
 #include "imgui.h"
 #include "GameObjects/Player/Player.h"
 #include "GameObjects/Common/Wall.h"
@@ -6,7 +9,7 @@
 class SandboxLayer : public TELayer {
 public:
 	SandboxLayer(TEApplication* instance) : TELayer("Sandbox Layer"), _AppInstance(instance) {
-		_AppInstance->GetWindow().EnableCursor(false);
+		_AppInstance->GetWindow().EnableCursor(true);
 
 		_World = &_AppInstance->GetScene().GetWorld();
 
@@ -148,7 +151,7 @@ public:
 
 	bool OnKeyPressed(TEKeyPressedE& event) {
 		if (event.GetKey() == TEKey::Escape) {
-			TEApplication::Get().Close();
+			GetApp().Close();
 			return true;
 		}
 		return false;
@@ -174,6 +177,7 @@ class Sandbox : public TEApplication {
 public:
 	Sandbox() : Application("Sandbox") {
 		PushLayer(new SandboxLayer(this));
+		PushLayer(new TEProfilerLayer());
     }
 
     ~Sandbox() override = default;

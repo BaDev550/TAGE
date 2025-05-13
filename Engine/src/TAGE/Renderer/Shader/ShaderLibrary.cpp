@@ -1,5 +1,6 @@
 #include "tagepch.h"
 #include "ShaderLibrary.h"
+#include "TAGE/Core/Profiler/Profiler.h"
 
 namespace TAGE::RENDERER {
     std::unordered_map<std::string, MEM::Ref<Shader>> ShaderLibrary::_Shaders;
@@ -15,6 +16,7 @@ namespace TAGE::RENDERER {
 
     MEM::Ref<Shader> ShaderLibrary::Load(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
     {
+        TE_PROFILE_SCOPE(name);
         _Shaders[name] = MEM::CreateRef<Shader>(vertexPath, fragmentPath);
         return _Shaders[name];
     }

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "TAGE/TAGE.h"
+#include "TAGE/TObjects.h"
+#include "TAGE/TComponents.h"
 
 class PlayerCamera : public TGameObject
 {
