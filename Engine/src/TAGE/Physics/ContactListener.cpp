@@ -1,6 +1,6 @@
 #include "tagepch.h"
 #include "ContactListener.h"
-#include "TAGE/ECS/ECS/Components.h"
+#include "TAGE/ECS/ECS/Components/PhysicsComponents.h"
 
 namespace TAGE::PHYSICS {
     void PhysicsContactListener::CheckContacts(btDynamicsWorld* world, entt::registry& registry)

@@ -1,7 +1,7 @@
 #include "tagepch.h"
 #include "Raycaster.h"
 #include "PhysicsDebugRenderer.h"
-#include "TAGE/ECS/ECS/Components.h"
+#include "TAGE/ECS/ECS/Components/PhysicsComponents.h"
 
 namespace TAGE::PHYSICS::RAYCAST {
 	PHYSICS::PhysicsWorld* Raycaster::_World;
@@ -35,7 +35,7 @@ namespace TAGE::PHYSICS::RAYCAST {
             result.point = glm::vec3(callback.m_hitPointWorld.getX(), callback.m_hitPointWorld.getY(), callback.m_hitPointWorld.getZ());
             result.normal = glm::vec3(callback.m_hitNormalWorld.getX(), callback.m_hitNormalWorld.getY(), callback.m_hitNormalWorld.getZ());
             result.distance = (result.point - from).length();
-            result.actor = reinterpret_cast<ECS::Actor*>(callback.m_collisionObject->getUserPointer());
+            result.actor = reinterpret_cast<ECS::GameObject*>(callback.m_collisionObject->getUserPointer());
         }
 
         if (draw == RayDrawType::FOR_DURATION) {

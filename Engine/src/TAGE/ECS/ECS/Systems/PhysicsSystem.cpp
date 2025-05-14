@@ -1,108 +1,12 @@
 #include "tagepch.h"
 #include "System.h"
-#include "TAGE/Core/Application/Application.h"
 
 namespace TAGE::ECS {
+#ifndef PHYSICS_DEBUGER_INCLUDED
     PHYSICS::DEBUG::PhysicsDebugRenderer _PhysicsDebugRenderer;
-
-    RenderSystem::RenderSystem(RENDERER::Renderer* renderer) {
-        _Renderer = renderer;
-        _Shader = ShaderLibrary::Get("core");
-        _ShadowShader = ShaderLibrary::Get("shadow");
-    }
-
-    void RenderSystem::PassLightsToShader(entt::registry& registry) {
-
-    }
-
-    void RenderSystem::UpdateCamera(entt::registry& registry) {
-        auto view = registry.view<TransformComponent, CameraComponent>();
-        PassLightsToShader(registry);
-        for (auto entity : view) {
-            auto& transform = view.get<TransformComponent>(entity);
-            auto& camera = view.get<CameraComponent>(entity);
-            transform.Position = camera.Camera->GetPosition();
-            transform.Rotation = camera.Camera->GetRotation();
-        }
-    }
-
-    void RenderSystem::RenderScene(entt::registry& registry, float dt, const MEM::Ref<RENDERER::Shader>& shader) {
-        auto staticmeshview = registry.view<TransformComponent, StaticMeshComponent>();
-        auto skeletalmeshview = registry.view<TransformComponent, SkeletalMeshComponent>();
-
-        for (const auto& entity : staticmeshview) {
-            auto& transform = registry.get<TransformComponent>(entity);
-            auto& static_model = registry.get<StaticMeshComponent>(entity);
-            static_model.Draw(shader, transform.GetMatrix());
-        }
-
-        for (const auto& entity : skeletalmeshview) {
-            auto& transform = registry.get<TransformComponent>(entity);
-            auto& skeletal_model = registry.get<SkeletalMeshComponent>(entity);
-
-            if (registry.any_of<AnimatorComponent>(entity)) {
-                auto& animator = registry.get<AnimatorComponent>(entity).AnimatorInstance;
-
-                animator->UpdateAnimation(dt);
-                skeletal_model.GetSkeleton()->Update(animator->GetCurrentAnimationTime());
-                auto transforms = animator->GetFinalBoneMatrices();
-                shader->SetUniformArray("finalBonesMatrices", transforms.data(), transforms.size());
-            }
-            skeletal_model.Draw(shader, transform.GetMatrix());
-        }
-    }
-
-    void RenderSystem::Update(entt::registry& registry, float dt, SystemUpdateMode mode)
-    {
-        PassLightsToShader(registry);
-        auto cameraView = registry.view<TransformComponent, CameraComponent>();
-        auto editorCameraView = registry.view<TransformComponent, EditorCameraComponent>();
-
-        if (mode == SystemUpdateMode::Game)
-        {
-            if (cameraView.begin() != cameraView.end()) {
-                auto entity = *cameraView.begin();
-                CameraComponent* activeCam = &registry.get<CameraComponent>(entity);
-
-                activeCam->Camera->OnUpdate(dt);
-
-                _Renderer->BeginShadowMap();
-                RenderScene(registry, dt, _ShadowShader);
-                _Renderer->EndShadowMap();
-
-                _Renderer->BeginScene(activeCam->Camera);
-                RenderScene(registry, dt, _Shader);
-                _Renderer->EndScene();
-
-                _PhysicsDebugRenderer.Flush(dt);
-                Application::Get().UpdateLayers(dt);
-
-                UpdateCamera(registry);
-            }
-        }
-        else if (mode == SystemUpdateMode::Editor)
-        {
-            if (editorCameraView.begin() != editorCameraView.end()) {
-                auto entity = *editorCameraView.begin();
-                EditorCameraComponent* activeCam = &registry.get<EditorCameraComponent>(entity);
-
-                activeCam->Camera->OnUpdate(dt);
-
-                _Renderer->BeginShadowMap();
-                RenderScene(registry, dt, _ShadowShader);
-                _Renderer->EndShadowMap();
-
-                _Renderer->BeginScene(activeCam->Camera);
-                RenderScene(registry, dt, _Shader);
-                _Renderer->EndScene();
-
-                Application::Get().UpdateLayers(dt);
-                _PhysicsDebugRenderer.Flush(dt);
-
-                UpdateCamera(registry);
-            }
-        }
-    }
+#else
+    extern PHYSICS::DEBUG::PhysicsDebugRenderer _PhysicsDebugRenderer;
+#endif
 
     PhysicsSystem::PhysicsSystem(PHYSICS::PhysicsWorld& world)
         : _PhysicsWorld(world) {
@@ -112,7 +16,9 @@ namespace TAGE::ECS {
 
     void PhysicsSystem::Update(entt::registry& registry, float dt, SystemUpdateMode mode)
     {
-        if (mode == SystemUpdateMode::Editor) {
+        TE_PROFILE_SCOPE("Physics System");
+
+        if (mode == SystemUpdateMode::EDITOR) {
             _PhysicsWorld.GetWorld()->debugDrawWorld();
 
             auto rigidView = registry.view<TransformComponent, RigidBodyComponent>();

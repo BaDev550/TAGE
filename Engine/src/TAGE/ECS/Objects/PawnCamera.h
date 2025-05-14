@@ -7,7 +7,7 @@ namespace TAGE::ECS {
 	{
 	public:
 		PawnCamera() : GameObject("Pawn Camera", ObjectType::OBJECT_CAMERA), _pitch(0.0f), _yaw(-90.0f), _Sens(1.0f) {
-			Component = &AddComponent<CameraComponent>(ECameraType::Perfective);
+			Component = &AddComponent<CameraComponent>(ECameraType::PERSFECTIVE);
 		}
 
 		inline CameraComponent& GetCamera() const { return *Component; }
@@ -30,8 +30,8 @@ namespace TAGE::ECS {
 			_currentRot = glm::mix(_currentRot, targetRot, _rotationLagSpeed * deltaTime);
 
 			transform.Rotation = -glm::vec3(_pitch, _yaw, 0.0f);
-			Component->Camera->SetRotation((_cameraLagRotationEnabled ? glm::vec3(_currentRot.x, _currentRot.y, 0.0f) : glm::vec3(_pitch, _yaw, 0.0f)) + GetComponent<TransformComponent>().LocalRotation);
-			Component->Camera->SetPosition(_cameraLagPositionEnabled ? _currentPos : desiredPos + GetComponent<TransformComponent>().LocalPosition);
+			Component->GetCamera()->SetRotation((_cameraLagRotationEnabled ? glm::vec3(_currentRot.x, _currentRot.y, 0.0f) : glm::vec3(_pitch, _yaw, 0.0f)) + GetComponent<TransformComponent>().LocalRotation);
+			Component->GetCamera()->SetPosition(_cameraLagPositionEnabled ? _currentPos : desiredPos + GetComponent<TransformComponent>().LocalPosition);
 		}
 
 		void SetSensitivity(float sens) { _Sens = sens; }

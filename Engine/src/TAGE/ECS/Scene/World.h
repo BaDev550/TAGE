@@ -3,7 +3,7 @@
 #include "TAGE/Core/Utilities/Memory.h"
 #include "TAGE/Renderer/Camera.h"
 #include "TAGE/ECS/ECS/EntityRegistry.h"
-#include "TAGE/ECS/ECS/System.h"
+#include "TAGE/ECS/ECS/Systems/System.h"
 #include "TAGE/Physics/PhysicsWorld.h"
 #include "TAGE/ECS/Objects/GameObjectManager.h"
 

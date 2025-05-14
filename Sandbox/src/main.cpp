@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "GameObjects/Player/Player.h"
 #include "GameObjects/Common/Wall.h"
+#include "GameObjects/Common/Door.h"
 
 class SandboxLayer : public TELayer {
 public:
@@ -13,12 +14,14 @@ public:
 		_World = &_AppInstance->GetScene().GetWorld();
 
 		camera = _World->SpawnActor("Camera");
-		camera->AddComponent<TEditorCameraComponent>();
+		camera->AddComponent<TCameraComponent>(TCamType::EDITOR);
 
 		Floor = new Wall("Assets/Models/Cube/Cube.obj", glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(50.0f, 0.5f, 50.0f));
+		MainDoor = new Door("Assets/Models/Cube/Cube.obj", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 2.0f, 1.0f));
 	}
 	~SandboxLayer() {
 		delete Floor;
+		delete MainDoor;
 	}
 
 	void OnImGuiRender() override {
@@ -45,18 +48,18 @@ public:
 			for (auto actor : actors) {
 				if (!actor || !actor->IsValid()) continue;
 
-				if (ImGui::Selectable(actor->GetComponent<TTagComponent>().tag.c_str())) {
+				if (ImGui::Selectable(actor->GetComponent<TTagComponent>().name.c_str())) {
 					_SelectedActor = actor;
 					std::cout << typeid(*_SelectedActor).name() << std::endl;
 				}
 			}
 
-			ImGui::Text("Selected Actor: %s", _SelectedActor ? _SelectedActor->GetComponent<TTagComponent>().tag.c_str() : "None");
+			ImGui::Text("Selected Actor: %s", _SelectedActor ? _SelectedActor->GetComponent<TTagComponent>().name.c_str() : "None");
 
 			if (_SelectedActor) {
 				if (_SelectedActor->GetParent()) {
 					auto parentActor = _SelectedActor->GetParent();
-					ImGui::Text("Parent is: %s", parentActor->GetComponent<TTagComponent>().tag.c_str());
+					ImGui::Text("Parent is: %s", parentActor->GetComponent<TTagComponent>().name.c_str());
 				}
 				else {
 					ImGui::Text("Parent is null!");
@@ -105,15 +108,15 @@ public:
 							flags &= ~(btCollisionObject::CF_KINEMATIC_OBJECT);
 
 							switch (rb.BodyType) {
-							case TAGE::ECS::PhysicsBodyType::Static:
+							case TAGE::ECS::PhysicsBodyType::STATIC:
 								rb.Body->setMassProps(0.0f, btVector3(0, 0, 0));
 								rb.Body->setActivationState(ISLAND_SLEEPING);
 								break;
-							case TAGE::ECS::PhysicsBodyType::Dynamic:
+							case TAGE::ECS::PhysicsBodyType::DYNAMIC:
 								rb.Body->setMassProps(1.0f, btVector3(1, 1, 1));
 								rb.Body->setActivationState(ACTIVE_TAG);
 								break;
-							case TAGE::ECS::PhysicsBodyType::Kinematic:
+							case TAGE::ECS::PhysicsBodyType::KINEMATIC:
 								flags |= btCollisionObject::CF_KINEMATIC_OBJECT;
 								rb.Body->setActivationState(DISABLE_DEACTIVATION);
 								break;
@@ -149,7 +152,7 @@ public:
 		}
 		if (event.GetKey() == TEKey::F2) {
 			_OnEditor = !_OnEditor;
-			_AppInstance->SetEngineMode(_OnEditor ? TEEngineMode::Editor : TEEngineMode::Game);
+			_AppInstance->SetEngineMode(_OnEditor ? TEEngineMode::EDITOR : TEEngineMode::GAME);
 		}
 		return false;
 	}
@@ -168,6 +171,7 @@ private:
 	Player player;
 
 	Wall* Floor;
+	Door* MainDoor;
 	bool _Cursor = false;
 	bool _OnEditor = false;
 };

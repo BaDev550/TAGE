@@ -187,8 +187,8 @@ namespace TAGE::RENDERER {
 			}
 		}
 
-		auto texture = ASSET::AssetManager::Load<Texture2D>("");
-		mat->SetTexture(ourType, texture);
+		const auto& tex = MEM::CreateRef<Texture2D>("");
+		mat->SetTexture(ourType, tex);
 	}
 
 	MEM::Ref<Material> Model::LoadMaterial(aiMaterial* material, const aiScene* scene)

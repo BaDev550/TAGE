@@ -3,6 +3,7 @@
 #include "TAGE/Renderer/Model/Model.h"
 #include "TAGE/Renderer/Model/Animation/Animator.h"
 #include "TAGE/Renderer/Model/Animation/Socket.h"
+#include "TAGE/ECS/ECS/Components/RenderingComponents.h"
 
 using TEMesh = TAGE::RENDERER::Model;
 using TEAnim = TAGE::RENDERER::Animation;

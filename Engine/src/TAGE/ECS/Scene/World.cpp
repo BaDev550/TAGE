@@ -14,7 +14,7 @@ namespace TAGE::ECS {
 
 	void World::Update(float dt, SystemUpdateMode mode)
 	{
-		if (mode == SystemUpdateMode::Game)
+		if (mode == SystemUpdateMode::GAME)
 			_GameObjectManager->UpdateGameObjects(dt);
 
 		for (auto& system : _systems)

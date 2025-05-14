@@ -8,6 +8,7 @@ namespace TAGE::ECS {
 	{
 	public:
 		Character(const std::string& name) : Pawn(name) {
+			AddChild(&Camera);
 		}
 
 		bool IsGrounded() {
@@ -23,6 +24,17 @@ namespace TAGE::ECS {
 
 		virtual void Tick(float deltaTime) override {
 			Pawn::Tick(deltaTime);
+
+			glm::vec2 mousePos = Input::GetMousePosition();
+			glm::vec2 delta = (mousePos - _LastMousePosition) * 0.1f;
+			_LastMousePosition = mousePos;
+
+			auto& tc = GetComponent<TransformComponent>();
+
+			Camera.AddYaw(delta.x);
+			Camera.AddPitch(-delta.y);
+
+			Camera.ProcessCamera(tc, deltaTime);
 
 			glm::vec3 forward = Camera.GetForward();
 			forward.y = 0.0f;
@@ -49,5 +61,8 @@ namespace TAGE::ECS {
 	protected:
 		float _MoveSpeed = 1700.0f;
 		float _JumpForce = 5.0f;
+
+		PawnCamera Camera;
+		glm::vec2 _LastMousePosition = glm::vec2(0.0f);
 	};
 }

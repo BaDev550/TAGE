@@ -2,6 +2,7 @@
 
 #include "TAGE/TAGE.h"
 #include "TAGE/TObjects.h"
+#include "TAGE/TComponents.h"
 
 class Wall : public TGameObject {
 public:

@@ -1,25 +1,8 @@
 #include "tagepch.h"
 #include "Actor.h"
-#include "TAGE/ECS/ECS/Components.h"
+#include "TAGE/ECS/ECS/Components/BaseComponents.h"
 
 namespace TAGE::ECS {
-    //Actor::~Actor()
-    //{
-    //    if (_registry.valid(_entity)) {
-    //        if (_registry.any_of<RelationshipComponent>(_entity)) {
-    //            auto& rel = _registry.get<RelationshipComponent>(_entity);
-    //            for (auto child : rel.Children) {
-    //                if (_registry.valid(child)) {
-    //                    auto& childRel = _registry.get<RelationshipComponent>(child);
-    //                    childRel.Parent = entt::null;
-    //                }
-    //            }
-    //        }
-
-    //        _registry.destroy(_entity);
-    //    }
-    //}
-
     void Actor::AddChild(Actor* child) {
         if (!HasComponent<RelationshipComponent>())
             AddComponent<RelationshipComponent>();
@@ -40,7 +23,6 @@ namespace TAGE::ECS {
 
     void Actor::SetParent(Actor* parent) {
         if (parent == this) {
-            std::cout << "Parent is this" << std::endl;
             return;
         }
 
@@ -48,7 +30,7 @@ namespace TAGE::ECS {
             AddComponent<RelationshipComponent>();
 
         auto& rel = GetComponent<RelationshipComponent>();
-        std::cout << "Setting parent for Actor " << GetComponent<TagComponent>().tag << " to " << parent->GetComponent<TagComponent>().tag << std::endl;
+        std::cout << "Setting parent for Actor " << GetComponent<TagComponent>().name << " to " << parent->GetComponent<TagComponent>().name << std::endl;
 
         if (rel.Parent != entt::null) {
             auto& currentParentRel = _registry.get<RelationshipComponent>(rel.Parent);

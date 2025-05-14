@@ -94,8 +94,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\GameObjects\Common\BasicObject.h" />
+    <ClInclude Include="src\GameObjects\Common\Door.h" />
     <ClInclude Include="src\GameObjects\Common\Wall.h" />
     <ClInclude Include="src\GameObjects\Player\Player.h" />
+    <ClInclude Include="src\Interfaces\Interaction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GameObjects\Player\Player.cpp" />

@@ -1,12 +1,13 @@
 #pragma once
 
-#include "TAGE/ECS/ECS/Components.h"
+#include "TAGE/ECS/ECS/Components/PhysicsComponents.h"
+#include "TAGE/ECS/ECS/Components/RenderingComponents.h"
+#include "TAGE/ECS/ECS/Components/BaseComponents.h"
 
 using TStaticMeshComponent = TAGE::ECS::StaticMeshComponent;
 using TSkeletalMeshComponent = TAGE::ECS::SkeletalMeshComponent;
 using TAnimatorComponent = TAGE::ECS::AnimatorComponent;
 using TCameraComponent = TAGE::ECS::CameraComponent;
-using TEditorCameraComponent = TAGE::ECS::EditorCameraComponent;
 using TTagComponent = TAGE::ECS::TagComponent;
 using TTransformComponent = TAGE::ECS::TransformComponent;
 using TRigidBodyComponent = TAGE::ECS::RigidBodyComponent;

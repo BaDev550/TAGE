@@ -16,7 +16,7 @@
 #include "TAGE/Renderer/Camera.h"
 
 #include "TAGE/ECS/Scene/Scene.h"
-#include "TAGE/ECS/ECS/System.h"
+#include "TAGE/ECS/ECS/Systems/System.h"
 
 #include "TAGE/Thread/ThreadPool.h"
 #include "TAGE/Core/Profiler/Profiler.h"
@@ -61,7 +61,7 @@ namespace TAGE
 		MEM::Scope<RENDERER::Camera> _Camera;
 		MEM::Ref<ECS::Scene> _TestScene;
 		MEM::Ref<ImGuiLayer> _ImGuiLayer;
-		ECS::SystemUpdateMode _EngineMode = ECS::SystemUpdateMode::Game;
+		ECS::SystemUpdateMode _EngineMode = ECS::SystemUpdateMode::GAME;
 
 		static Application* _Instance;
 	};

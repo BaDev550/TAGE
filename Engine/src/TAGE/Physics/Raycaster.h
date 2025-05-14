@@ -2,6 +2,7 @@
 
 #include "PhysicsWorld.h"
 #include "TAGE/ECS/Objects/Actor.h"
+#include "TAGE/ECS/Objects/GameObject.h"
 #include "glm/glm.hpp"
 
 namespace TAGE::PHYSICS::DEBUG { class PhysicsDebugRenderer; }
@@ -17,7 +18,7 @@ namespace TAGE::PHYSICS::RAYCAST {
 
 	struct RaycastHit
 	{
-		ECS::Actor* actor;
+		ECS::GameObject* actor;
 		glm::vec3 point;
 		glm::vec3 normal;
 		float distance;

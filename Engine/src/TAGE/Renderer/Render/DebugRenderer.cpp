@@ -45,7 +45,7 @@ namespace TAGE::RENDERER::DEBUG {
 
 		_LineShader->Bind();
 		DEBUGVAO->Bind();
-		glLineWidth(1.0f);
+		glLineWidth(2.0f);
 		glDisable(GL_DEPTH_TEST);
 		glDrawElements(GL_LINES, 2, GL_UNSIGNED_INT, nullptr);
 		glEnable(GL_DEPTH_TEST);

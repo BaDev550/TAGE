@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include "Shader/ShaderLibrary.h"
 
+#include "TAGE/Core/Profiler/Profiler.h"
+
 namespace TAGE::RENDERER {
 	void Renderer::Init(Window* window)
 	{
@@ -58,6 +60,7 @@ namespace TAGE::RENDERER {
 	void Renderer::BeginShadowMap()
 	{
 		Clear();
+		TE_PROFILE_SCOPE("Shadow Pass");
 
 		glm::mat4 lightProjection = glm::ortho(-35.0f, 35.0f, -35.0f, 35.0f, 0.1f, 75.0f);
 		glm::mat4 lightView = glm::lookAt(

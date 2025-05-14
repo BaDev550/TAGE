@@ -101,6 +101,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h" />
+    <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Character.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
@@ -127,9 +129,9 @@
     <ClInclude Include="src\TAGE\Core\Utilities\RaycastUtils.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\TimeStep.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Timer.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Components.h" />
+    <ClInclude Include="src\TAGE\ECS\ECS\Components\BaseComponents.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\EntityRegistry.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\System.h" />
+    <ClInclude Include="src\TAGE\ECS\ECS\Systems\System.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Actor.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h" />
@@ -598,13 +600,16 @@
   <ItemGroup>
     <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
     <ClCompile Include="src\TAGE\Core\Profiler\ProfilerTimer.cpp" />
+    <ClCompile Include="src\TAGE\ECS\ECS\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="src\TAGE\ECS\ECS\Systems\RenderSystem.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObject.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\Utilities.cpp" />
-    <ClCompile Include="src\TAGE\ECS\ECS\System.cpp" />
+    <ClCompile Include="src\TAGE\ECS\ECS\Systems\System.cpp" />
     <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp" />
     <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp" />
     <ClCompile Include="src\TAGE\ECS\Scene\Scene.cpp" />

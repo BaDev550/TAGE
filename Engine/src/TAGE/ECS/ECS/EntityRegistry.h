@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TAGE/ECS/Objects/Actor.h"
-#include "Components.h"
+#include "Components/BaseComponents.h"
 
 namespace TAGE::ECS {
     class EntityRegistry {
