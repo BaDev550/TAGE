@@ -6,7 +6,7 @@
 
 namespace TAGE::ECS {
 	enum class ColliderShapeType { BOX, SPHERE, CAPSULE, MESH };
-	enum class CollisionResponseType { NONE, OVERLAP, BLOCK };
+	enum class CollisionResponseType { NONE = 0, OVERLAP, BLOCK };
 	enum class PhysicsBodyType { STATIC = 0, DYNAMIC, KINEMATIC };
 
 	struct ColliderComponent {

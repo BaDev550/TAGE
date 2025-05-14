@@ -19,6 +19,8 @@ namespace TAGE::ECS {
 
 		for (auto& system : _systems)
 			system->Update(_entityRegistry->GetRegistry(), dt, mode);
+
+		Timeline::Update(dt);
 	}
 
 	Actor* World::SpawnActor(const std::string& name)

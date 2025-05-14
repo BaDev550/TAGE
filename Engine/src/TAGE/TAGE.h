@@ -5,6 +5,7 @@
 #include "TAGE/Core/Utilities/PlatformDetection.h"
 #include "TAGE/Core/Utilities/Random.h"
 #include "TAGE/Core/Utilities/RaycastUtils.h"
+#include "TAGE/Core/Utilities/Timeline.h"
 
 #include "TAGE/Core/Application/Application.h"
 #include "TAGE/Core/Profiler/ProfilerLayer.h"
@@ -25,6 +26,7 @@ using TEInput = TAGE::Input;
 using TEKey = TAGE::KeyCode;
 using TEMouseButton = TAGE::MouseButton;
 using TEProfilerLayer = TAGE::DEBUG::ProfilerLayer;
+using TETimeLine = TAGE::Timeline;
 
 using TELayer = TAGE::Layer;
 using TEImGuiLayer = TAGE::ImGuiLayer;

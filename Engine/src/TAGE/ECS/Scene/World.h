@@ -1,6 +1,8 @@
 #pragma once
 
 #include "TAGE/Core/Utilities/Memory.h"
+#include "TAGE/Core/Utilities/Timeline.h"
+
 #include "TAGE/Renderer/Camera.h"
 #include "TAGE/ECS/ECS/EntityRegistry.h"
 #include "TAGE/ECS/ECS/Systems/System.h"

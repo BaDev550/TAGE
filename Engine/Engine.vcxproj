@@ -101,6 +101,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\Core\Utilities\Timeline.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Character.h" />

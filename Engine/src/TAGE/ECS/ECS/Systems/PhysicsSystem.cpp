@@ -38,9 +38,11 @@ namespace TAGE::ECS {
                 rb.Body->getMotionState()->setWorldTransform(transform);
                 rb.Body->setWorldTransform(transform);
             }
+            RefreshDirtyBodies(registry);
             return;
         }
 
+        RefreshDirtyBodies(registry);
         _PhysicsWorld.StepSimulation(dt);
 
         auto rigidView = registry.view<TransformComponent, RigidBodyComponent>();
@@ -150,4 +152,59 @@ namespace TAGE::ECS {
         actor->AddComponent<RigidBodyComponent>(body, motion, shape, actor);
         return body;
     }
+
+    void PhysicsSystem::UpdateRigidBodyShape(entt::registry& registry, entt::entity entity)
+    {
+        auto& rb = registry.get<RigidBodyComponent>(entity);
+        auto& collider = registry.get<ColliderComponent>(entity);
+
+        btCollisionShape* newShape;
+        if (registry.any_of<StaticMeshComponent>(entity))
+            newShape = CreateShapeFromCollider(collider, registry.get<StaticMeshComponent>(entity));
+        else
+            newShape = CreateShapeFromCollider(collider, registry.get<SkeletalMeshComponent>(entity));
+
+        delete rb.CollisionShape;
+
+        rb.CollisionShape = newShape;
+        int flags = rb.Body->getCollisionFlags();
+        switch (collider.ResponseType)
+        {
+        case CollisionResponseType::NONE:
+            flags |= btCollisionObject::CF_NO_CONTACT_RESPONSE;
+            break;
+        case CollisionResponseType::OVERLAP:
+            flags |= btCollisionObject::CF_NO_CONTACT_RESPONSE;
+            break;
+        case CollisionResponseType::BLOCK:
+            break;
+        }
+        rb.Body->setCollisionFlags(flags);
+
+        rb.Body->setCollisionShape(newShape);
+
+        btVector3 localInertia(0, 0, 0);
+        float mass = rb.BodyType == PhysicsBodyType::DYNAMIC ? 1.0f : 0.0f;
+
+        if (mass > 0.0f)
+            newShape->calculateLocalInertia(mass, localInertia);
+
+        rb.Body->setMassProps(mass, localInertia);
+        rb.Body->updateInertiaTensor();
+    }
+
+    void PhysicsSystem::RefreshDirtyBodies(entt::registry& registry)
+    {
+        auto view = registry.view<ColliderComponent, RigidBodyComponent>();
+        for (auto entity : view) {
+            auto& collider = view.get<ColliderComponent>(entity);
+
+            if (!collider.Dirty)
+                continue;
+
+            UpdateRigidBodyShape(registry, entity);
+            collider.Dirty = false;
+        }
+    }
+
 }

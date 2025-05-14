@@ -56,5 +56,8 @@ namespace TAGE::ECS {
     private:
         PHYSICS::PhysicsWorld& _PhysicsWorld;
         PHYSICS::PhysicsContactListener _ContactListener;
+
+        void UpdateRigidBodyShape(entt::registry& registry, entt::entity entity);
+        void RefreshDirtyBodies(entt::registry& registry);
     };
 }

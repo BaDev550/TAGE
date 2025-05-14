@@ -80,9 +80,17 @@ public:
 					ImGui::Text("Collider");
 
 					const char* colliderTypes[] = { "Box", "Sphere", "Capsule"};
+					const char* colliderRespondes[] = { "None", "Block", "Overlap" };
 					int selectedCollider = static_cast<int>(collider.Shape);
+					int selectedResponde = static_cast<int>(collider.ResponseType);
 					if (ImGui::Combo("Collider Type", &selectedCollider, colliderTypes, IM_ARRAYSIZE(colliderTypes))) {
 						collider.Shape = static_cast<TAGE::ECS::ColliderShapeType>(selectedCollider);
+						collider.Dirty = true;
+					}
+
+					if (ImGui::Combo("Collider Responde", &selectedResponde, colliderRespondes, IM_ARRAYSIZE(colliderRespondes))) {
+						collider.ResponseType = static_cast<TAGE::ECS::CollisionResponseType>(selectedResponde);
+						collider.Dirty = true;
 					}
 
 					if (collider.Shape == TAGE::ECS::ColliderShapeType::BOX) {

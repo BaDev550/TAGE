@@ -1,10 +1,12 @@
 #include "tagepch.h"
 #include "Logger.h"
 #include "Timer.h"
+#include "Timeline.h"
 
 namespace TAGE {
 	MEM::Ref<spdlog::logger> Log::s_CoreLogger;
 	MEM::Ref<spdlog::logger> Log::s_ClientLogger;
+	std::vector<Timeline::Animation> Timeline::_Animations;
 
 	Timer::Timer() {
 		Reset();

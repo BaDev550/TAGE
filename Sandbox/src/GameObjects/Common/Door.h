@@ -33,11 +33,25 @@ private:
     EDoorState _State;
 
     void OpenDoor() {
-        _State = EDoorState::OPENED;
-        LOG_INFO("Door Opened");
+        float startZ = GetLocalLocation().z;
+        float targetZ = 1.5f;
+
+        TETimeLine::Play(startZ, targetZ, 1.0f, [this](float value) {
+            GetLocalLocation().z = value;
+        }, [this]() {
+            LOG_INFO("Door fully opened.");
+            _State = EDoorState::OPENED;
+        });
     }
     void CloseDoor() {
-        _State = EDoorState::CLOSED;
-        LOG_INFO("Door Closed");
+        float startZ = GetLocalLocation().z;
+        float targetZ = 0.0f;
+
+        TAGE::Timeline::Play(startZ, targetZ, 1.0f, [this](float value) {
+            GetLocalLocation().z = value;
+        }, [this]() {
+            LOG_INFO("Door fully closed.");
+            _State = EDoorState::CLOSED;
+        });
     }
 };
