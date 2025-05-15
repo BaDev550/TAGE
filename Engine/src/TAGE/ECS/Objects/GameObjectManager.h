@@ -11,6 +11,8 @@ namespace TAGE::ECS {
         void RegisterGameObject(GameObject* object);
         void RemoveGameObject(GameObject* object);
         void UpdateGameObjects(float deltaTime);
+        void ClearGameObjects();
+        std::vector<GameObject*> GetGameObjects() const { return _gameObjects; };
 
         GameObject* GetGameObjectByType(ObjectType type);
 

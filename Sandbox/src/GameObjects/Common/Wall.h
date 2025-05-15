@@ -6,6 +6,8 @@
 
 class Wall : public TGameObject {
 public:
+    Wall() : TGameObject("Wall", TObjectType::OBJECT_STATIC) {}
+
     Wall(const std::string& meshPath, const glm::vec3& position, const glm::vec3& scale) : TGameObject("Wall", TObjectType::OBJECT_STATIC) {
         auto& mesh = AddComponent<TStaticMeshComponent>(meshPath);
         auto& transform = GetComponent<TTransformComponent>();
@@ -16,3 +18,5 @@ public:
         GetWorld().GetPhysicsSystem().CreateRigidBody(this, 0.0f);
     }
 };
+
+REGISTER_GAMEOBJECT_CLASS(Wall);

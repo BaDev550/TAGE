@@ -6,6 +6,8 @@ namespace TAGE::RENDERER {
 	Model::Model(const std::string& path, EMeshType type)
 		: _MeshType(type)
 	{
+		_Path = path;
+
 		_Vao = MEM::CreateRef<VertexArrayBuffer>();
 		LoadModel(path);
 
@@ -53,6 +55,13 @@ namespace TAGE::RENDERER {
 		_Directory = path.substr(0, path.find_last_of('/'));
 
 		ProcessNode(_Scene->mRootNode, _Scene);
+
+		float maxRadius = 0.0f;
+		for (const auto& mesh : _Meshes) {
+			if (mesh.Radius > maxRadius)
+				maxRadius = mesh.Radius;
+		}
+		_BoundingRadius = maxRadius;
 	}
 
 	void Model::ProcessNode(aiNode* node, const aiScene* scene)
@@ -119,6 +128,14 @@ namespace TAGE::RENDERER {
 			}
 		}
 
+		float meshRadius = 0.0f;
+		for (const auto& v : vertices) {
+			glm::vec3 p(v.Position[0], v.Position[1], v.Position[2]);
+			float dist = glm::length(p);
+			if (dist > meshRadius)
+				meshRadius = dist;
+		}
+
 		MEM::Ref<VertexBuffer> vertexBuffer = MEM::CreateRef<VertexBuffer>(vertices.data(), vertices.size() * sizeof(Vertex));
 		BufferLayout layout = {
 			{ ShaderDataType::Vec3, "aPos" },
@@ -149,7 +166,7 @@ namespace TAGE::RENDERER {
 		}
 		_CenterOffset = center;
 
-		return { _Vao, material, (int)indices.size() };
+		return { _Vao, material, (int)indices.size(), meshRadius };
 	}
 
 	void Model::LoadTexture(aiMaterial* material, const MEM::Ref<Material>& mat, aiTextureType type, TextureType ourType, const aiScene* scene) {

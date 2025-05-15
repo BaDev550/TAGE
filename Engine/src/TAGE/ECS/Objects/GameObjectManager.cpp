@@ -19,6 +19,11 @@ namespace TAGE::ECS {
         }
     }
 
+    void GameObjectManager::ClearGameObjects()
+    {
+        _gameObjects.clear();
+    }
+
     GameObject* GameObjectManager::GetGameObjectByType(ObjectType type){
         for (auto& gameObject : _gameObjects) {
             if (gameObject->GetType() == type) {

@@ -2,6 +2,7 @@
 
 #include "TAGE/TAGE.h"
 #include "TAGE/TObjects.h"
+#include "TAGE/TComponents.h"
 
 class BasicObject : public TGameObject {
 public:
@@ -18,3 +19,5 @@ public:
 private:
     TTransformComponent* Transform;
 };
+
+REGISTER_GAMEOBJECT_CLASS(BasicObject);

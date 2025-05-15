@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameObject.h"
+#include "TAGE/Core/Defines.h"
 
 namespace TAGE::ECS {
 	class PawnCamera : public GameObject
@@ -62,4 +63,6 @@ namespace TAGE::ECS {
 		float _cameraLagSpeed = 5.0f;
 		float _rotationLagSpeed = 8.0f;
 	};
+
+	REGISTER_GAMEOBJECT_CLASS(PawnCamera);
 }

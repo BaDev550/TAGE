@@ -12,6 +12,8 @@ enum class EDoorState {
 
 class Door : public TGameObject, public IInteractable {
 public:
+    Door() : TGameObject("Door", TObjectType::OBJECT_STATIC) {}
+
     Door(const std::string& meshPath, const glm::vec3& position, const glm::vec3& scale) : TGameObject("Door", TObjectType::OBJECT_STATIC) {
         auto& mesh = AddComponent<TStaticMeshComponent>(meshPath);
         auto& collider = AddComponent<TColliderComponent>();
@@ -55,3 +57,5 @@ private:
         });
     }
 };
+
+REGISTER_GAMEOBJECT_CLASS(Door);

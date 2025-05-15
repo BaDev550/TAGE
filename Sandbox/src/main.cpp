@@ -1,5 +1,6 @@
 #include "TAGE/TAGE.h"
 #include "TAGE/TComponents.h"
+#include "TAGE/TObjects.h"
 #include "TAGE/TEvents.h"
 
 #include "imgui.h"
@@ -13,18 +14,24 @@ public:
 		_AppInstance->GetWindow().EnableCursor(_Cursor);
 		_World = &_AppInstance->GetScene().GetWorld();
 
-		camera = _World->SpawnActor("Camera");
-		camera->AddComponent<TCameraComponent>(TCamType::EDITOR);
-
 		Floor = new Wall("Assets/Models/Cube/Cube.obj", glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(50.0f, 0.5f, 50.0f));
 		MainDoor = new Door("Assets/Models/Cube/Cube.obj", glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.5f, 2.0f, 1.0f));
+
+		SceneSL = new TESceneSL(&GetScene());
+		SceneSL->Save("scene1.tagescene");
 	}
 	~SandboxLayer() {
 		delete Floor;
 		delete MainDoor;
+		delete SceneSL;
+	}
+
+	virtual void OnUpdate(float dt) override {
+		camera.ProcessCamera(dt);
 	}
 
 	void OnImGuiRender() override {
+
 		ImGui::Begin("Debug");
 
 		float FPS = 1 / _AppInstance->GetDeltaTime();
@@ -53,7 +60,7 @@ public:
 					std::cout << typeid(*_SelectedActor).name() << std::endl;
 				}
 			}
-
+			
 			ImGui::Text("Selected Actor: %s", _SelectedActor ? _SelectedActor->GetComponent<TTagComponent>().name.c_str() : "None");
 
 			if (_SelectedActor) {
@@ -147,6 +154,8 @@ public:
 			}
 		}
 		ImGui::End();
+
+
 	}
 
 	bool OnKeyPressed(TEKeyPressedE& event) {
@@ -162,6 +171,12 @@ public:
 			_OnEditor = !_OnEditor;
 			_AppInstance->SetEngineMode(_OnEditor ? TEEngineMode::EDITOR : TEEngineMode::GAME);
 		}
+		if (event.GetKey() == TEKey::F3) {
+			SceneSL->Load("scene.tagescene");
+		}
+		if (event.GetKey() == TEKey::F4) {
+			SceneSL->Save("scene1.tagescene");
+		}
 		return false;
 	}
 
@@ -175,11 +190,12 @@ private:
 	TEWorld* _World;
 
 	TActor* _SelectedActor = nullptr;
-	TActor* camera;
+	TEditorCamera camera;
 	Player player;
 
 	Wall* Floor;
 	Door* MainDoor;
+	TESceneSL* SceneSL;
 	bool _Cursor = false;
 	bool _OnEditor = false;
 };

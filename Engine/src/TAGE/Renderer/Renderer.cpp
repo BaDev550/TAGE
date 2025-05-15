@@ -6,6 +6,8 @@
 #include "TAGE/Core/Profiler/Profiler.h"
 
 namespace TAGE::RENDERER {
+	RenderSceneData Renderer::_SceneData;
+
 	void Renderer::Init(Window* window)
 	{
 		_Window.reset(window);
@@ -31,6 +33,7 @@ namespace TAGE::RENDERER {
 		cam->SetAspectRatio((float)_Window->GetWidth() / (float)_Window->GetHeight());
 		_Framebuffer->Resize(_Window->GetWidth(), _Window->GetHeight());
 		glm::mat4 vp = cam->GetProjectionMatrix() * cam->GetViewMatrix();
+		_SceneData.viewProjectionMatrix = vp;
 
 		_ScenePass->Begin();
 

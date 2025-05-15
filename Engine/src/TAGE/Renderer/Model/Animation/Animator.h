@@ -14,7 +14,7 @@ namespace TAGE::RENDERER {
 	class Animator
 	{
 	public:
-		Animator(Skeletal* skeletal, Animation* animation) : m_Skeletal(skeletal), m_CurrentTime(0.0f), m_CurrentAnimation(animation)
+		Animator(const MEM::Ref<Skeletal>& skeletal, const MEM::Ref<Animation>& animation) : m_Skeletal(skeletal), m_CurrentTime(0.0f), m_CurrentAnimation(animation)
 		{
 			m_FinalBoneMatrices.reserve(100);
 
@@ -63,13 +63,13 @@ namespace TAGE::RENDERER {
 			}
 		}
 
-		void PlayAnimation(Animation* pAnimation)
+		void PlayAnimation(const MEM::Ref<Animation>& pAnimation)
 		{
 			m_CurrentAnimation = pAnimation;
 			m_CurrentTime = 0.0f;
 		}
 
-		void PlayAnimationWithBlend(Animation* targetAnimation, float blendDuration)
+		void PlayAnimationWithBlend(const MEM::Ref<Animation>& targetAnimation, float blendDuration)
 		{
 			if (!targetAnimation || targetAnimation == m_CurrentAnimation)
 				return;
@@ -79,7 +79,7 @@ namespace TAGE::RENDERER {
 			m_BlendTime = 0.0f;
 			m_IsBlending = true;
 		}
-		Animation* GetCurrentAnimation() const { return m_CurrentAnimation; }
+		MEM::Ref<Animation> GetCurrentAnimation() const { return m_CurrentAnimation; }
 
 		void CalculateBoneTransform(const AssimpNodeData* node, const glm::mat4& parentTransform) {
 			TE_PROFILE_SCOPE("calculate bone transform");
@@ -157,13 +157,13 @@ namespace TAGE::RENDERER {
 		float GetCurrentAnimationTime() const { return m_CurrentTime; }
 		float GetCurrentAnimationDuration() const { return m_CurrentAnimation->GetDuration(); }
 	private:
-		Skeletal* m_Skeletal;
+		MEM::Ref<Skeletal> m_Skeletal;
 		std::vector<glm::mat4> m_FinalBoneMatrices;
 		float m_CurrentTime = 0.0f;
 		float m_DeltaTime = 0.0f;
 
-		Animation* m_CurrentAnimation;
-		Animation* m_BlendTargetAnimation = nullptr;
+		MEM::Ref<Animation> m_CurrentAnimation;
+		MEM::Ref<Animation> m_BlendTargetAnimation = nullptr;
 		float m_BlendDuration = 0.0f;
 		float m_BlendTime = 0.0f;
 		bool m_IsBlending = false;

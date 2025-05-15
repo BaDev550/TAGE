@@ -101,6 +101,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h" />
+    <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h" />
+    <ClInclude Include="src\TAGE\Renderer\Optimization\FrustumCulling.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Timeline.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h" />
@@ -599,6 +603,8 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp" />
     <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
     <ClCompile Include="src\TAGE\Core\Profiler\ProfilerTimer.cpp" />
     <ClCompile Include="src\TAGE\ECS\ECS\Systems\PhysicsSystem.cpp" />

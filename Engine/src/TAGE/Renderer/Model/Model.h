@@ -21,6 +21,7 @@ namespace TAGE::RENDERER {
 		MEM::Ref<VertexArrayBuffer> VAO;
 		MEM::Ref<Material> MaterialR;
 		int IndexCount;
+		float Radius;
 	};
 
 	enum class EMeshType {
@@ -44,13 +45,19 @@ namespace TAGE::RENDERER {
 		void Reset();
 		void LoadModel(const std::string& path);
 
-		Skeletal* GetSkeletal() { return _Skeletal.get(); }
+		MEM::Ref<Skeletal> GetSkeletal() const { return _Skeletal; }
+		glm::vec3 GetCenterOffset() const { return _CenterOffset; }
+		float GetBoundingRadius() const { return _BoundingRadius; }
+		std::string GetPath() const { return _Path; };
 	private:
 		std::vector<Mesh> _Meshes;
 		std::string _Directory;
-		MEM::Scope<Skeletal> _Skeletal;
+		std::string _Path;
+		MEM::Ref<Skeletal> _Skeletal;
 		EMeshType _MeshType;
 		glm::vec3 _CenterOffset;
+
+		float _BoundingRadius = 1.0f;
 
 		std::map<std::string, BoneInfo> m_BoneInfoMap;
 		MEM::Ref<VertexArrayBuffer> _Vao;

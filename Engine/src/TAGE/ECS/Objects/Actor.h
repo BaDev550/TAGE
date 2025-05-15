@@ -49,6 +49,7 @@ namespace TAGE::ECS {
         }
 
         virtual void Tick(float deltaTime) override {};
+        virtual bool IsGameObject() const { return false; }
 
         void AddChild(Actor* child);
         void SetParent(Actor* parent);

@@ -7,7 +7,7 @@
 
 namespace TAGE::ECS {
 	enum class ObjectType {
-		OBJECT_STATIC,
+		OBJECT_STATIC = 0,
 		OBJECT_PAWN,
 		OBJECT_WEAPON,
 		OBJECT_CAMERA
@@ -33,7 +33,15 @@ namespace TAGE::ECS {
 
 		void AddTag(const std::string& tag);
 		bool HasTag(const std::string& tag);
+		std::string GetClassName() const {
+			std::string name = typeid(*this).name();
+			const std::string prefix = "class ";
+			if (name.find(prefix) == 0)
+				name = name.substr(prefix.size());
+			return name;
+		}
 
+		bool IsGameObject() const override { return true; }
 	protected:
 		ObjectType _Type;
 		GameObjectManager* _manager;

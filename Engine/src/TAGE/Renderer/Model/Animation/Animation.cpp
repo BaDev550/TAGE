@@ -4,6 +4,8 @@
 namespace TAGE::RENDERER {
 	Animation::Animation(const std::string& animationPath, Model* model)
 	{
+		_Path = animationPath;
+
 		m_Skeletal = model->GetSkeletal();
 		Assimp::Importer importer;
 		const aiScene* scene = importer.ReadFile(animationPath,
@@ -17,6 +19,6 @@ namespace TAGE::RENDERER {
 		globalTransformation = globalTransformation.Inverse();
 		ReadHierarchyData(m_RootNode, scene->mRootNode);
 		ReadMissingBones(animation, *model);
-		BuildBoneHierarchy(m_RootNode, m_Skeletal);
+		BuildBoneHierarchy(m_RootNode, m_Skeletal.get());
 	}
 }

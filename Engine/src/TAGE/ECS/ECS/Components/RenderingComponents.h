@@ -55,7 +55,7 @@ namespace TAGE::ECS {
 		}
 		SkeletalMeshComponent() : MeshComponent(EMeshType::SKELETAL) {}
 
-		Skeletal* GetSkeleton() const { return GetModel()->GetSkeletal(); }
+		MEM::Ref<Skeletal> GetSkeleton() const { return GetModel()->GetSkeletal(); }
 	};
 
 	struct AnimatorComponent
@@ -63,7 +63,7 @@ namespace TAGE::ECS {
 		Animator* GetInstance() const { if(AnimatorInstance) return AnimatorInstance.get(); }
 
 		AnimatorComponent() = default;
-		AnimatorComponent(Skeletal* skeleton, Animation* animation) { AnimatorInstance = MEM::CreateRef<Animator>(skeleton, animation); }
+		AnimatorComponent(const MEM::Ref<Skeletal>& skeleton, const MEM::Ref<Animation>& animation) { AnimatorInstance = MEM::CreateRef<Animator>(skeleton, animation); }
 	private:
 		MEM::Ref<Animator> AnimatorInstance;
 	};
@@ -85,6 +85,7 @@ namespace TAGE::ECS {
 
 		MEM::Ref<Camera> GetCamera() const { if (_Camera) return _Camera; }
 		ECameraType GetType() const { return _Type; }
+		void SetType(ECameraType type) { _Type = type; }
 	private:
 		MEM::Ref<Camera> _Camera;
 		ECameraType _Type;

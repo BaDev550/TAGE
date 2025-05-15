@@ -2,6 +2,7 @@
 
 #include "World.h"
 
+#define SCENE_SAVE_FORMAT_JSON
 namespace TAGE::ECS {
 	class Scene
 	{

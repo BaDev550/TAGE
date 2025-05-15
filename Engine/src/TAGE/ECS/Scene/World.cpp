@@ -14,13 +14,16 @@ namespace TAGE::ECS {
 
 	void World::Update(float dt, SystemUpdateMode mode)
 	{
-		if (mode == SystemUpdateMode::GAME)
-			_GameObjectManager->UpdateGameObjects(dt);
+		if (mode != SystemUpdateMode::LOADING) {
 
-		for (auto& system : _systems)
-			system->Update(_entityRegistry->GetRegistry(), dt, mode);
+			if (mode == SystemUpdateMode::GAME)
+				_GameObjectManager->UpdateGameObjects(dt);
 
-		Timeline::Update(dt);
+			for (auto& system : _systems)
+				system->Update(_entityRegistry->GetRegistry(), dt, mode);
+
+			Timeline::Update(dt);
+		}
 	}
 
 	Actor* World::SpawnActor(const std::string& name)
@@ -57,5 +60,4 @@ namespace TAGE::ECS {
 	{
 		return _Actors;
 	}
-
 }

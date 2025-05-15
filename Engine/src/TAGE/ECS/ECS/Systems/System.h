@@ -17,7 +17,7 @@
 #define PHYSICS_DEBUGER_INCLUDED
 namespace TAGE::ECS {
     using namespace RENDERER;
-    enum class SystemUpdateMode { EDITOR, GAME };
+    enum class SystemUpdateMode { EDITOR, GAME, LOADING };
 
     class System : public Object {
     public:

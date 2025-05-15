@@ -37,6 +37,7 @@ namespace TAGE::RENDERER {
 		inline const AssimpNodeData& GetRootNode() { return m_RootNode; }
 		inline const std::map<std::string, BoneInfo>& GetBoneIDMap() { return m_BoneInfoMap; }
 		inline bool IsLooping() { return m_Loop; }
+		inline std::string GetPath() const { return _Path; }
 	private:
 		void ReadMissingBones(const aiAnimation* animation, Model& model) {
 			int size = animation->mNumChannels;
@@ -85,9 +86,10 @@ namespace TAGE::RENDERER {
 
 		float m_Duration = 0.0f;
 		int m_TicksPerSecond;
-		Skeletal* m_Skeletal;
+		MEM::Ref<Skeletal> m_Skeletal;
 		bool m_Loop = false;
 		AssimpNodeData m_RootNode;
+		std::string _Path;
 		std::map<std::string, BoneInfo> m_BoneInfoMap;
 	};
 }

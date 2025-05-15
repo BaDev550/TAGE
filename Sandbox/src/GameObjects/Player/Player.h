@@ -20,19 +20,17 @@ public:
 		ctc.LocalPosition.y += 1.4f;
 		ctc.LocalRotation.y += 90.0f;
 		
-		idleAnim = new TEAnim("Assets/Models/Arms/Idle.glb", SkeletalMesh->GetModel());
+		idleAnim = TAGE::MEM::CreateRef<TEAnim>("Assets/Models/Arms/Idle.glb", SkeletalMesh->GetModel());
 		idleAnim->SetLoop(true);
 
-		walkAnim = new TEAnim("Assets/Models/Arms/Idle.glb", SkeletalMesh->GetModel());
+		walkAnim = TAGE::MEM::CreateRef<TEAnim>("Assets/Models/Arms/Walk.glb", SkeletalMesh->GetModel());
 		walkAnim->SetLoop(true);
 
 		Animator = AddComponent<TAnimatorComponent>(SkeletalMesh->GetSkeleton(), idleAnim);
 	}
 	~Player() {
-		delete idleAnim;
-		delete walkAnim;
 	}
-
+	
 	TEHitResult Interact() {
 		auto& rb = GetComponent<TRigidBodyComponent>();
 		glm::vec3 start = Camera.GetWorldLocation();
@@ -45,8 +43,9 @@ public:
 
 	virtual void Tick(float deltaTime) override;;
 private:
-	TEAnim* idleAnim;
-	TEAnim* walkAnim;
+	TAGE::MEM::Ref<TEAnim> idleAnim;
+	TAGE::MEM::Ref<TEAnim> walkAnim;
 	TAnimatorComponent Animator;
 };
 
+REGISTER_GAMEOBJECT_CLASS(Player);

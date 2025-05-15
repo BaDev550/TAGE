@@ -7,6 +7,8 @@ namespace TAGE::ECS {
 		Actor(Application::Get().GetScene().GetWorld().SpawnActor(name)),
 		_manager(manager)
 	{
+		_Type = type;
+
 		if (!_manager)
 			_manager = &Application::Get().GetScene().GetWorld().GetGameObjectManager();
 
@@ -36,6 +38,7 @@ namespace TAGE::ECS {
 	}
 
 	bool GameObject::HasTag(const std::string& tag) {
+		if (!HasComponent<TagComponent>()) return false;
 		auto& tc = GetComponent<TagComponent>();
 		for (auto& tc_tag : tc.tags)
 			if (tc_tag == tag)

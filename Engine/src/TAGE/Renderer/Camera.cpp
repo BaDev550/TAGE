@@ -32,29 +32,4 @@ namespace TAGE::RENDERER {
         _ViewMatrix = glm::lookAt(_Position, _Position + direction, up);
         _ProjectionMatrix = glm::perspective(glm::radians(_FOV), _AspectRatio, _NearClip, _FarClip);
     }
-
-	void PerspectiveCamera::OnUpdate(float deltaTime) {
-	}
-
-	void EditorCamera::OnUpdate(float deltaTime) {
-        glm::vec2 mousePos = Input::GetMousePosition();
-        mousePos.y = -Input::GetMousePosition().y;
-        glm::vec2 delta = (mousePos - _LastMousePosition) * 0.1f;
-        _LastMousePosition = mousePos;
-        
-        if (Input::IsMouseButtonPressed(MouseButton::Right)) {
-            _Rotation.y += delta.x;
-            _Rotation.x += delta.y;
-            _Rotation.x = glm::clamp(_Rotation.x, -89.0f, 89.0f);
-        }
-
-        glm::vec3 right = glm::normalize(glm::cross(_Forward, glm::vec3(0, 1, 0)));
-
-        if (Input::IsKeyPressed(KeyCode::W)) _Position += _Forward * _MovementSpeed * deltaTime;
-        if (Input::IsKeyPressed(KeyCode::S)) _Position -= _Forward * _MovementSpeed * deltaTime;
-        if (Input::IsKeyPressed(KeyCode::A)) _Position -= right * _MovementSpeed * deltaTime;
-        if (Input::IsKeyPressed(KeyCode::D)) _Position += right * _MovementSpeed * deltaTime;
-
-        UpdateViewMatrix();
-	}
 }

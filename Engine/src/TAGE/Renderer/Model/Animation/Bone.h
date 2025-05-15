@@ -41,32 +41,41 @@ namespace TAGE::RENDERER {
 
 		int GetPositionIndex(float animationTime)
 		{
+			if (m_NumPositions == 0)
+				return 0;
+
 			for (int index = 0; index < m_NumPositions - 1; ++index)
 			{
 				if (animationTime < m_Positions[index + 1].timeStamp)
 					return index;
 			}
-			ENGINE_ASSERT(0, "Cant get Model Position");
+			return m_NumPositions - 2;
 		}
 
 		int GetRotationIndex(float animationTime)
 		{
+			if (m_NumRotations == 0)
+				return 0;
+
 			for (int index = 0; index < m_NumRotations - 1; ++index)
 			{
 				if (animationTime < m_Rotations[index + 1].timeStamp)
 					return index;
 			}
-			ENGINE_ASSERT(0, "Cant get Model Rotation");
+			return m_NumRotations - 2;
 		}
 
 		int GetScaleIndex(float animationTime)
 		{
+			if (m_NumScalings == 0)
+				return 0;
+
 			for (int index = 0; index < m_NumScalings - 1; ++index)
 			{
 				if (animationTime < m_Scales[index + 1].timeStamp)
 					return index;
 			}
-			ENGINE_ASSERT(0, "Cant get Model scale");
+			return m_NumScalings - 2;
 		}
 
 		void AddSocket(Socket& socket) { 
