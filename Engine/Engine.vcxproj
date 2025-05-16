@@ -58,7 +58,7 @@
       <PrecompiledHeaderFile>tagepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\ImGuizmo;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>tagepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\ImGuizmo;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -101,25 +101,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\TAGE\Core\Utilities\UUID.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h" />
-    <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h" />
-    <ClInclude Include="src\TAGE\Renderer\Optimization\FrustumCulling.h" />
-    <ClInclude Include="src\TAGE\Core\Utilities\Timeline.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\Character.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
-    <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
-    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
-    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\PawnCamera.h" />
-    <ClInclude Include="src\TAGE\TEvents.h" />
-    <ClInclude Include="src\TAGE\TMeshes.h" />
-    <ClInclude Include="src\TAGE\TObjects.h" />
-    <ClInclude Include="src\TAGE\TPhysics.h" />
-    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Skeletal.h" />
     <ClInclude Include="src\Platform\Windows\WindowsKeyCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsMouseCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -128,20 +109,33 @@
     <ClInclude Include="src\TAGE\Core\AssetManager\Asset.h" />
     <ClInclude Include="src\TAGE\Core\AssetManager\AssetManager.h" />
     <ClInclude Include="src\TAGE\Core\Defines.h" />
+    <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
+    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
+    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Logger.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Memory.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\PlatformDetection.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Random.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\RaycastUtils.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\TimeStep.h" />
+    <ClInclude Include="src\TAGE\Core\Utilities\Timeline.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Timer.h" />
+    <ClInclude Include="src\TAGE\Core\Utilities\UUID.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\Components\BaseComponents.h" />
+    <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h" />
+    <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\EntityRegistry.h" />
     <ClInclude Include="src\TAGE\ECS\ECS\Systems\System.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Actor.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\Character.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Object.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\PawnCamera.h" />
+    <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h" />
     <ClInclude Include="src\TAGE\ECS\Scene\Scene.h" />
     <ClInclude Include="src\TAGE\ECS\Scene\World.h" />
     <ClInclude Include="src\TAGE\Events\ApplicationEvents.h" />
@@ -162,12 +156,15 @@
     <ClInclude Include="src\TAGE\Renderer\Material\Material.h" />
     <ClInclude Include="src\TAGE\Renderer\Material\Texture.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\AnimData.h" />
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\AnimInstance.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Animation.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Animator.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Bone.h" />
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Skeletal.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Socket.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\AssimpGLMHelpers.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Model.h" />
+    <ClInclude Include="src\TAGE\Renderer\Optimization\FrustumCulling.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\Context.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\DebugRenderer.h" />
     <ClInclude Include="src\TAGE\Renderer\Render\Light.h" />
@@ -181,6 +178,10 @@
     <ClInclude Include="src\TAGE\Renderer\Skybox\Skybox.h" />
     <ClInclude Include="src\TAGE\TAGE.h" />
     <ClInclude Include="src\TAGE\TComponents.h" />
+    <ClInclude Include="src\TAGE\TEvents.h" />
+    <ClInclude Include="src\TAGE\TMeshes.h" />
+    <ClInclude Include="src\TAGE\TObjects.h" />
+    <ClInclude Include="src\TAGE\TPhysics.h" />
     <ClInclude Include="src\TAGE\Thread\ThreadPool.h" />
     <ClInclude Include="src\TAGE\Window\Window.h" />
     <ClInclude Include="src\tagepch.h" />
@@ -604,23 +605,22 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TAGE\Core\Utilities\UUID.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp" />
-    <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
-    <ClCompile Include="src\TAGE\Core\Profiler\ProfilerTimer.cpp" />
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\PhysicsSystem.cpp" />
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\RenderSystem.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObject.cpp" />
-    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp" />
+    <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
+    <ClCompile Include="src\TAGE\Core\Profiler\ProfilerTimer.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp" />
+    <ClCompile Include="src\TAGE\Core\Utilities\UUID.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\Utilities.cpp" />
+    <ClCompile Include="src\TAGE\ECS\ECS\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="src\TAGE\ECS\ECS\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\TAGE\ECS\ECS\Systems\System.cpp" />
     <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObject.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp" />
     <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp" />
     <ClCompile Include="src\TAGE\ECS\Scene\Scene.cpp" />
     <ClCompile Include="src\TAGE\ECS\Scene\World.cpp" />
     <ClCompile Include="src\TAGE\Events\Input.cpp" />
@@ -637,8 +637,10 @@
     <ClCompile Include="src\TAGE\Renderer\Camera.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Material\Material.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Material\Texture.cpp" />
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\AnimInstance.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Animation.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Bone.cpp" />
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Socket.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Model\Model.cpp" />
     <ClCompile Include="src\TAGE\Renderer\Render\Context.cpp" />
@@ -661,6 +663,9 @@
   <ItemGroup>
     <ProjectReference Include="thirdParty\imgui\ImGui.vcxproj">
       <Project>{C0FF640D-2C14-8DBE-F595-301E616989EF}</Project>
+    </ProjectReference>
+    <ProjectReference Include="thirdParty\ImGuizmo\ImGuiGizmo.vcxproj">
+      <Project>{C64C7BA4-B204-BDF1-1B0C-964D07E357E2}</Project>
     </ProjectReference>
     <ProjectReference Include="thirdParty\GLAD\GLAD.vcxproj">
       <Project>{5D4A857C-4981-860D-F26D-6C10DE83020F}</Project>

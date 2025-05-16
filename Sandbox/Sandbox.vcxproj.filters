@@ -1,26 +1,61 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="GameObjects">
-      <UniqueIdentifier>{09AE9FEC-7563-18E2-FE57-12B96A0C0FE6}</UniqueIdentifier>
+    <Filter Include="Games">
+      <UniqueIdentifier>{D2D93A0D-3EEE-62BE-0770-061E73435FEF}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameObjects\Player">
-      <UniqueIdentifier>{05DB2795-F1BE-E8EA-5A1F-E33D4622D36C}</UniqueIdentifier>
+    <Filter Include="Games\TestGame">
+      <UniqueIdentifier>{FB8BF32F-E759-E735-D0ED-575CBC5AC39A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\TestGame\GameObjects">
+      <UniqueIdentifier>{6E67AE1E-5A77-5AEF-C330-BF0DAF5F4988}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\TestGame\GameObjects\Common">
+      <UniqueIdentifier>{E60C2FD6-527B-8455-9B64-3F5507127AF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\TestGame\GameObjects\Enemies">
+      <UniqueIdentifier>{431C1F33-2F58-229D-986A-3A9484C5CAB7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\TestGame\GameObjects\Player">
+      <UniqueIdentifier>{CA7045F4-36DF-9A73-7FC8-5573EB75900F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\TestGame\Interfaces">
+      <UniqueIdentifier>{6E9DCBC2-DA5F-FF4C-2310-8ED98F11D82A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LevelEditor">
+      <UniqueIdentifier>{A4A34224-1059-BB19-994D-B5F00502B21D}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\GameObjects\Player\Player.h">
-      <Filter>GameObjects\Player</Filter>
+    <ClInclude Include="src\Games\TestGame\GameObjects\Common\BasicObject.h">
+      <Filter>Games\TestGame\GameObjects\Common</Filter>
     </ClInclude>
-    <ClInclude Include="src\GameObjects\Common\Wall.h" />
-    <ClInclude Include="src\GameObjects\Common\BasicObject.h" />
-    <ClInclude Include="src\Interfaces\Interaction.h" />
-    <ClInclude Include="src\GameObjects\Common\Door.h" />
-    <ClInclude Include="src\GameObjects\Enemies\npc_walkingguy.h" />
+    <ClInclude Include="src\Games\TestGame\GameObjects\Common\Door.h">
+      <Filter>Games\TestGame\GameObjects\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\TestGame\GameObjects\Common\Wall.h">
+      <Filter>Games\TestGame\GameObjects\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\TestGame\GameObjects\Enemies\npc_walkingguy.h">
+      <Filter>Games\TestGame\GameObjects\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\TestGame\GameObjects\Player\Player.h">
+      <Filter>Games\TestGame\GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\TestGame\GameObjects\Player\PlayerAnimInstance.h">
+      <Filter>Games\TestGame\GameObjects\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\TestGame\Interfaces\Interaction.h">
+      <Filter>Games\TestGame\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelEditor\LevelEditorLayer.h">
+      <Filter>LevelEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelEditor\Wall.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GameObjects\Player\Player.cpp">
-      <Filter>GameObjects\Player</Filter>
+    <ClCompile Include="src\Games\TestGame\GameObjects\Player\Player.cpp">
+      <Filter>Games\TestGame\GameObjects\Player</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>

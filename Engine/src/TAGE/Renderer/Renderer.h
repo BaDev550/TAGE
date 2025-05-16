@@ -16,6 +16,11 @@ namespace TAGE::RENDERER {
 	struct RenderSceneData {
 		glm::mat4 viewProjectionMatrix;
 	};
+	enum class RenderMode {
+		FULL,
+		WIREFRAME,
+		VIEWPORT
+	};
 	class Renderer {
 	public:
 		Renderer() {}
@@ -35,11 +40,13 @@ namespace TAGE::RENDERER {
 		static void DrawIndexed(uint32_t count);
 		static void DrawVertex(uint32_t size);
 		static void Submit(const MEM::Ref<Shader>& shader, MEM::Ref<VertexArrayBuffer> vao, glm::mat4 transform);
-		static RenderSceneData GetSceneData() { return _SceneData; }
 		void SetLight(const Light& light);
 
 		Framebuffer* GetFramebuffer() { return _Framebuffer.get(); }
 		Light _SceneLight;
+
+		static RenderMode _RenderMode;
+		static RenderSceneData _SceneData;
 	private:
 		MEM::Ref<Shader> _Shader;
 		MEM::Ref<Shader> _ShadowShader;
@@ -54,6 +61,5 @@ namespace TAGE::RENDERER {
 		MEM::Ref<RenderPass> _ScenePass;
 		MEM::Ref<PostProcessPass> _PostProcessPass;
 		PostProcessEffects _PostProcessEffects;
-		static RenderSceneData _SceneData;
 	};
 }

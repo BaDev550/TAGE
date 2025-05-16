@@ -16,12 +16,13 @@ namespace TAGE::RENDERER {
 			Bloom(bloom),
 			MotionBlur(motionBlur) {}
 	};
+	enum class RenderMode;
 	class PostProcessPass
 	{
 	public:
 		PostProcessPass(const MEM::Ref<Framebuffer>& inputFramebuffer, const MEM::Ref<Shader>& postShader);
 		
-		void Execute(PostProcessEffects effects = PostProcessEffects());
+		void Execute(RenderMode mode, PostProcessEffects effects = PostProcessEffects());
 
 	private:
 		MEM::Ref<Framebuffer> _InputFramebuffer;

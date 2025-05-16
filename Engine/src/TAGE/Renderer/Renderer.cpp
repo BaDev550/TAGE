@@ -7,6 +7,7 @@
 
 namespace TAGE::RENDERER {
 	RenderSceneData Renderer::_SceneData;
+	RenderMode Renderer::_RenderMode;
 
 	void Renderer::Init(Window* window)
 	{
@@ -57,7 +58,7 @@ namespace TAGE::RENDERER {
 	void Renderer::EndScene()
 	{
 		_ScenePass->End();
-		_PostProcessPass->Execute(_PostProcessEffects);
+		_PostProcessPass->Execute(_RenderMode, _PostProcessEffects);
 	}
 
 	void Renderer::BeginShadowMap()

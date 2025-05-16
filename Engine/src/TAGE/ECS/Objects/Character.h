@@ -19,6 +19,7 @@ namespace TAGE::ECS {
 			PHYSICS::RAYCAST::Raycaster::CurrentCaller = this;
 			PHYSICS::RAYCAST::RaycastHit hit = PHYSICS::RAYCAST::Raycaster::Raycast(start, end, true);
 			PHYSICS::RAYCAST::Raycaster::CurrentCaller = nullptr;
+
 			return hit.hit;
 		}
 
@@ -35,6 +36,14 @@ namespace TAGE::ECS {
 			Camera.AddPitch(-delta.y);
 
 			Camera.ProcessCamera(tc, deltaTime);
+
+			auto cam = Camera.GetCamera().GetCamera();
+			if (_bUseControllYawRotation || _bUseControllPitchRotation || _bUseControllRollRotation)
+				tc.Rotation = glm::vec3(
+					_bUseControllPitchRotation ?   cam->GetRotation().x : tc.Rotation.x,
+					_bUseControllYawRotation   ?  -cam->GetRotation().y : tc.Rotation.y,
+					_bUseControllRollRotation  ?   cam->GetRotation().z : tc.Rotation.z
+				);
 
 			glm::vec3 forward = Camera.GetForward();
 			forward.y = 0.0f;
@@ -58,11 +67,14 @@ namespace TAGE::ECS {
 			}
 		}
 
-	protected:
+		bool  _bUseControllYawRotation = false;
+		bool  _bUseControllPitchRotation = false;
+		bool  _bUseControllRollRotation = false;
 		float _MoveSpeed = 1700.0f;
 		float _JumpForce = 5.0f;
-
+	protected:
 		PawnCamera Camera;
 		glm::vec2 _LastMousePosition = glm::vec2(0.0f);
+
 	};
 }

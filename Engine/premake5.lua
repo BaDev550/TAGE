@@ -27,12 +27,13 @@ project "Engine"
         "../%{IncludeDir.GLFW}",
         "../%{IncludeDir.GLAD}",
         "../%{IncludeDir.ImGui}",
+        "../%{IncludeDir.ImGizmo}",
         "../%{IncludeDir.Assimp}",
         "../%{IncludeDir.entt}",
         "../%{IncludeDir.glm}",
         "../%{IncludeDir.log}",
         "../%{IncludeDir.json}",
-        "../%{IncludeDir.Bullet}",
+        "../%{IncludeDir.Bullet}"
     }
 
     defines 
@@ -43,6 +44,7 @@ project "Engine"
     links {
             "opengl32.lib",
             "ImGui",
+            "ImGuiGizmo",
             "GLAD",
             "GLFW",
             "Assimp",

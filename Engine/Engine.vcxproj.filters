@@ -22,6 +22,9 @@
     <Filter Include="src\TAGE\Core\AssetManager">
       <UniqueIdentifier>{DF91BEB8-CBA1-6A89-345B-CFA7208A5922}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\TAGE\Core\Profiler">
+      <UniqueIdentifier>{270CEE87-1306-17DA-FC72-ADEAE80B7D46}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\TAGE\Core\Utilities">
       <UniqueIdentifier>{E069C7E4-4CA1-0F7C-55AB-739FC1613675}</UniqueIdentifier>
     </Filter>
@@ -31,11 +34,20 @@
     <Filter Include="src\TAGE\ECS\ECS">
       <UniqueIdentifier>{51C76B9E-3DC0-8AF0-66F2-6F75524A6AFC}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\TAGE\ECS\ECS\Components">
+      <UniqueIdentifier>{C6D74EED-32E5-7CD3-BBCB-78BE27D8488A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\TAGE\ECS\ECS\Systems">
+      <UniqueIdentifier>{58DE7CE8-4403-CC68-6D4E-B1F859D2CA86}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\TAGE\ECS\Objects">
       <UniqueIdentifier>{409DA03E-2C2C-2A08-D54A-3E03C1B83AAE}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\TAGE\ECS\Scene">
       <UniqueIdentifier>{E41D8AE9-D001-4B3F-3962-4592256535C1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\TAGE\ECS\Scene\IO">
+      <UniqueIdentifier>{0BD5AE05-7741-6A00-4035-025EAC608C68}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\TAGE\Events">
       <UniqueIdentifier>{01B21594-6D3D-8358-764E-064DE258DF58}</UniqueIdentifier>
@@ -60,6 +72,9 @@
     </Filter>
     <Filter Include="src\TAGE\Renderer\Model\Animation">
       <UniqueIdentifier>{329DE850-9E0B-3ED0-E7F4-F8CF53A2336C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\TAGE\Renderer\Optimization">
+      <UniqueIdentifier>{39A8FAC0-25CE-C427-0E14-4AF3FAD8E9F3}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\TAGE\Renderer\Render">
       <UniqueIdentifier>{120265D3-FE26-B453-2772-99E313F6B271}</UniqueIdentifier>
@@ -129,6 +144,15 @@
     <ClInclude Include="src\TAGE\Core\Defines.h">
       <Filter>src\TAGE\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h">
+      <Filter>src\TAGE\Core\Profiler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h">
+      <Filter>src\TAGE\Core\Profiler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h">
+      <Filter>src\TAGE\Core\Profiler</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\Core\Utilities\Logger.h">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClInclude>
@@ -147,22 +171,43 @@
     <ClInclude Include="src\TAGE\Core\Utilities\TimeStep.h">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Core\Utilities\Timeline.h">
+      <Filter>src\TAGE\Core\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\Core\Utilities\Timer.h">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Core\Utilities\UUID.h">
+      <Filter>src\TAGE\Core\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\ECS\ECS\Components\BaseComponents.h">
-      <Filter>src\TAGE\ECS\ECS</Filter>
+      <Filter>src\TAGE\ECS\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h">
+      <Filter>src\TAGE\ECS\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h">
+      <Filter>src\TAGE\ECS\ECS\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\ECS\ECS\EntityRegistry.h">
       <Filter>src\TAGE\ECS\ECS</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\ECS\ECS\Systems\System.h">
-      <Filter>src\TAGE\ECS\ECS</Filter>
+      <Filter>src\TAGE\ECS\ECS\Systems</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\ECS\Objects\Actor.h">
       <Filter>src\TAGE\ECS\Objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\Objects\Character.h">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h">
       <Filter>src\TAGE\ECS\Objects</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h">
@@ -170,6 +215,15 @@
     </ClInclude>
     <ClInclude Include="src\TAGE\ECS\Objects\Object.h">
       <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\Objects\PawnCamera.h">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h">
+      <Filter>src\TAGE\ECS\Scene\IO</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\ECS\Scene\Scene.h">
       <Filter>src\TAGE\ECS\Scene</Filter>
@@ -231,6 +285,9 @@
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\AnimData.h">
       <Filter>src\TAGE\Renderer\Model\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\AnimInstance.h">
+      <Filter>src\TAGE\Renderer\Model\Animation</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Animation.h">
       <Filter>src\TAGE\Renderer\Model\Animation</Filter>
     </ClInclude>
@@ -240,11 +297,20 @@
     <ClInclude Include="src\TAGE\Renderer\Model\Animation\Bone.h">
       <Filter>src\TAGE\Renderer\Model\Animation</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Skeletal.h">
+      <Filter>src\TAGE\Renderer\Model\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Socket.h">
+      <Filter>src\TAGE\Renderer\Model\Animation</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\Renderer\Model\AssimpGLMHelpers.h">
       <Filter>src\TAGE\Renderer\Model</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\Renderer\Model\Model.h">
       <Filter>src\TAGE\Renderer\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\Renderer\Optimization\FrustumCulling.h">
+      <Filter>src\TAGE\Renderer\Optimization</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\Renderer\Render\Context.h">
       <Filter>src\TAGE\Renderer\Render</Filter>
@@ -280,6 +346,21 @@
       <Filter>src\TAGE\Renderer\Skybox</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\TAGE.h">
+      <Filter>src\TAGE</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\TComponents.h">
+      <Filter>src\TAGE</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\TEvents.h">
+      <Filter>src\TAGE</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\TMeshes.h">
+      <Filter>src\TAGE</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\TObjects.h">
+      <Filter>src\TAGE</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TAGE\TPhysics.h">
       <Filter>src\TAGE</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\Thread\ThreadPool.h">
@@ -1545,27 +1626,6 @@
     <ClInclude Include="thirdParty\stb\stb_image.h">
       <Filter>thirdParty\stb</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Socket.h" />
-    <ClInclude Include="src\TAGE\Renderer\Model\Animation\Skeletal.h" />
-    <ClInclude Include="src\TAGE\TPhysics.h" />
-    <ClInclude Include="src\TAGE\TObjects.h" />
-    <ClInclude Include="src\TAGE\TComponents.h" />
-    <ClInclude Include="src\TAGE\TEvents.h" />
-    <ClInclude Include="src\TAGE\TMeshes.h" />
-    <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
-    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
-    <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\Character.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\PawnCamera.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h" />
-    <ClInclude Include="src\TAGE\Core\Utilities\Timeline.h" />
-    <ClInclude Include="src\TAGE\Renderer\Optimization\FrustumCulling.h" />
-    <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h" />
-    <ClInclude Include="src\TAGE\Core\Utilities\UUID.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1577,20 +1637,44 @@
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp">
       <Filter>src\TAGE\Core\AssetManager</Filter>
     </ClCompile>
+    <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp">
+      <Filter>src\TAGE\Core\Profiler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\Core\Profiler\ProfilerTimer.cpp">
+      <Filter>src\TAGE\Core\Profiler</Filter>
+    </ClCompile>
     <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp">
+      <Filter>src\TAGE\Core\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\Core\Utilities\UUID.cpp">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\Core\Utilities\Utilities.cpp">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="src\TAGE\ECS\ECS\Systems\PhysicsSystem.cpp">
+      <Filter>src\TAGE\ECS\ECS\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\ECS\ECS\Systems\RenderSystem.cpp">
+      <Filter>src\TAGE\ECS\ECS\Systems</Filter>
+    </ClCompile>
     <ClCompile Include="src\TAGE\ECS\ECS\Systems\System.cpp">
-      <Filter>src\TAGE\ECS\ECS</Filter>
+      <Filter>src\TAGE\ECS\ECS\Systems</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp">
       <Filter>src\TAGE\ECS\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObject.cpp">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp">
+      <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClCompile>
     <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp">
       <Filter>src\TAGE\ECS\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp">
+      <Filter>src\TAGE\ECS\Scene\IO</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\ECS\Scene\Scene.cpp">
       <Filter>src\TAGE\ECS\Scene</Filter>
@@ -1640,10 +1724,19 @@
     <ClCompile Include="src\TAGE\Renderer\Material\Texture.cpp">
       <Filter>src\TAGE\Renderer\Material</Filter>
     </ClCompile>
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\AnimInstance.cpp">
+      <Filter>src\TAGE\Renderer\Model\Animation</Filter>
+    </ClCompile>
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Animation.cpp">
       <Filter>src\TAGE\Renderer\Model\Animation</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\Renderer\Model\Animation\Bone.cpp">
+      <Filter>src\TAGE\Renderer\Model\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp">
+      <Filter>src\TAGE\Renderer\Model\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Socket.cpp">
       <Filter>src\TAGE\Renderer\Model\Animation</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\Renderer\Model\Model.cpp">
@@ -1691,15 +1784,5 @@
     <ClCompile Include="thirdParty\stb\stb_image.cpp">
       <Filter>thirdParty\stb</Filter>
     </ClCompile>
-    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Socket.cpp" />
-    <ClCompile Include="src\TAGE\Renderer\Model\Animation\Skeletal.cpp" />
-    <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />
-    <ClCompile Include="src\TAGE\Core\Profiler\ProfilerTimer.cpp" />
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\RenderSystem.cpp" />
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\PhysicsSystem.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObject.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp" />
-    <ClCompile Include="src\TAGE\Core\Utilities\UUID.cpp" />
   </ItemGroup>
 </Project>

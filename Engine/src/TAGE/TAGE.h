@@ -30,6 +30,9 @@ using TEProfilerLayer = TAGE::DEBUG::ProfilerLayer;
 using TETimeLine = TAGE::Timeline;
 using TESceneSL = TAGE::ECS::IO::SceneSerializer;
 using TEScene = TAGE::ECS::Scene;
+using TERenderer = TAGE::RENDERER::Renderer;
+using TERenderMode = TAGE::RENDERER::RenderMode;
+using TEFramebuffer = TAGE::RENDERER::Framebuffer;
 
 using TELayer = TAGE::Layer;
 using TEImGuiLayer = TAGE::ImGuiLayer;
@@ -37,5 +40,13 @@ using TEWorld = TAGE::ECS::World;
 inline TEWorld& GetWorld() { return TAGE::Application::Get().GetScene().GetWorld(); }
 inline TEScene& GetScene() { return TAGE::Application::Get().GetScene(); }
 inline TEApplication& GetApp() { return TAGE::Application::Get(); }
+inline TEFramebuffer* GetMainFramebuffer() { return TAGE::Application::Get().GetRenderer().GetFramebuffer(); }
 inline TEWindow& GetMainWindow() { return TAGE::Application::Get().GetWindow(); }
 inline float GetDeltaTime() { return (float)TAGE::Application::Get().GetDeltaTime(); }
+
+namespace CastHelper {
+	inline glm::vec3 ScreenToRay(glm::vec2 delta, glm::mat4 view, glm::mat4 projection) { 
+		return TAGE::RAYHELPER::ScreenPointToRay(delta, 
+			GetMainFramebuffer()->GetWidth(),
+			GetMainFramebuffer()->GetHeight(), view, projection); }
+}

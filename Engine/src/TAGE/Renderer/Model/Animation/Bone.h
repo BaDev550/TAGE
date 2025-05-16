@@ -35,7 +35,7 @@ namespace TAGE::RENDERER {
 
 		void SetParentBone(Bone* parent) { m_ParentBone = parent; }
 		void Update(float animationTime);
-		glm::mat4 GetLocalTransform() { return m_LocalTransform; }
+		glm::mat4& GetLocalTransform() { return m_LocalTransform; }
 		std::string GetBoneName() const { return m_Name.c_str(); }
 		int GetBoneID() { return m_ID; }
 
@@ -94,6 +94,10 @@ namespace TAGE::RENDERER {
 			return m_FinalTransform;
 		}
 
+		glm::mat4 GetLocalTransform() const {
+			return m_LocalTransform;
+		}
+
 		std::vector<Socket> GetAllSockets() const { return m_Sockets; }
 
 		void SetChannel(const aiNodeAnim* channel) {
@@ -134,6 +138,8 @@ namespace TAGE::RENDERER {
 				m_Scales.push_back(data);
 			}
 		}
+
+		Bone* Parent() const { return m_ParentBone; }
 	private:
 
 		float GetScaleFactor(float lastTimeStamp, float nextTimeStamp, float animationTime)

@@ -17,6 +17,7 @@ project "Sandbox"
         "../%{IncludeDir.GLFW}",
         "../%{IncludeDir.GLAD}",
         "../%{IncludeDir.ImGui}",
+        "../%{IncludeDir.ImGizmo}",
         "../%{IncludeDir.Assimp}",
         "../%{IncludeDir.entt}",
         "../%{IncludeDir.glm}",

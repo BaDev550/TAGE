@@ -15,7 +15,7 @@ namespace TAGE::RENDERER {
 	{
 	public:
 		Animation() = default;
-		Animation(const std::string& animationPath, Model* model);
+		Animation(const std::string& animationPath, MEM::Ref<Model> model);
 		~Animation() {
 		}
 

@@ -33,10 +33,10 @@ namespace TAGE::ECS {
 			model = MEM::CreateScope<Model>(modelPath, meshType);
 		}
 
-		Model* GetModel() const { return model ? model.get() : nullptr; }
+		MEM::Ref<Model> GetModel() const { return model ? model : nullptr; }
 		bool IsVisible = true;
 	private:
-		MEM::Scope<Model> model;
+		MEM::Ref<Model> model;
 		EMeshType meshType = EMeshType::STATIC;
 	};
 

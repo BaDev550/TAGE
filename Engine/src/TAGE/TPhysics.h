@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TAGE/ECS/Objects/Actor.h"
+#include "TAGE/Core/Utilities/RaycastUtils.h"
 #include "TAGE/Physics/Raycaster.h"
 #include "TAGE/ECS/ECS/Components/PhysicsComponents.h"
 #include "TObjects.h"

@@ -30,7 +30,6 @@ namespace TAGE::ECS {
 			glm::vec2 targetRot = glm::vec2(_pitch, _yaw);
 			_currentRot = glm::mix(_currentRot, targetRot, _rotationLagSpeed * deltaTime);
 
-			transform.Rotation = -glm::vec3(_pitch, _yaw, 0.0f);
 			Component->GetCamera()->SetRotation((_cameraLagRotationEnabled ? glm::vec3(_currentRot.x, _currentRot.y, 0.0f) : glm::vec3(_pitch, _yaw, 0.0f)) + GetComponent<TransformComponent>().LocalRotation);
 			Component->GetCamera()->SetPosition(_cameraLagPositionEnabled ? _currentPos : desiredPos + GetComponent<TransformComponent>().LocalPosition);
 		}

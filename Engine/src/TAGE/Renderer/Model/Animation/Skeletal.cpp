@@ -1,5 +1,6 @@
 #include "tagepch.h"
 #include "Skeletal.h"
+#include "AnimInstance.h"
 #include "TAGE/Renderer/Model/Model.h"
 #include "TAGE/Renderer/Model/Animation/Animation.h"
 
@@ -81,5 +82,21 @@ namespace TAGE::RENDERER {
         for (const auto& child : node.children) {
             BuildBoneHierarchy(child, node.name);
         }
+    }
+
+    glm::mat4 Skeletal::GetBoneWorldTransform(const std::string& boneName, const glm::mat4& modelTransform)
+    {
+        const Bone* bone = GetBone(boneName);
+        if (!bone)
+            return glm::mat4(1.0f);
+
+        glm::mat4 boneLocal = bone->GetLocalTransform();
+        Bone* parent = bone->Parent();
+        while (parent) {
+            boneLocal = parent->GetLocalTransform() * boneLocal;
+            parent = parent->Parent();
+        }
+
+        return modelTransform * boneLocal;
     }
 }

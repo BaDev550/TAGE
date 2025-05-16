@@ -3,6 +3,7 @@
 #include "TAGE/Renderer/Shader/ShaderLibrary.h"
 #include "TAGE/Core/Application/Application.h"
 #include "TAGE/Renderer/Optimization/FrustumCulling.h"
+#include "TAGE/Renderer/Model/Animation/AnimInstance.h"
 
 namespace TAGE::ECS{
 #ifndef PHYSICS_DEBUGER_INCLUDED
@@ -32,7 +33,7 @@ namespace TAGE::ECS{
     void RenderSystem::RenderScene(entt::registry& registry, float dt, const MEM::Ref<Shader>& shader) {
         TE_PROFILE_SCOPE("Scene Render");
 
-        auto viewProj = Renderer::GetSceneData().viewProjectionMatrix;
+        auto viewProj = Renderer::_SceneData.viewProjectionMatrix;
         auto frustum = FRUSTUM::ExtractFrustumPlanes(viewProj);
 
         auto isInFrustum = [&](const glm::mat4& matrix, const glm::vec3& localCenter, float localRadius) -> bool {
@@ -51,23 +52,19 @@ namespace TAGE::ECS{
             static_model.Draw(shader, transform.GetMatrix());
             });
 
-        auto animatedSkeletalView = registry.view<TransformComponent, SkeletalMeshComponent, AnimatorComponent>();
-        animatedSkeletalView.each([&](auto entity, TransformComponent& transform, SkeletalMeshComponent& skeletal_model, AnimatorComponent& animatorComp) {
+        auto SkeletalView = registry.view<TransformComponent, SkeletalMeshComponent>();
+        SkeletalView.each([&](auto entity, TransformComponent& transform, SkeletalMeshComponent& skeletal_model) {
             auto model = skeletal_model.GetModel();
+            auto animInstance = skeletal_model.GetSkeleton()->GetAnimInstance();
 
-            auto* animator = animatorComp.GetInstance();
-            animator->UpdateAnimation(dt);
-            skeletal_model.GetSkeleton()->Update(animator->GetCurrentAnimationTime());
-            shader->SetUniformArray("finalBonesMatrices", animator->GetFinalBoneMatrices().data(), animator->GetFinalBoneMatrices().size());
-            shader->SetUniform("u_PlayAnimation", true);
-            skeletal_model.Draw(shader, transform.GetMatrix());
-            });
+            if (animInstance) {
+                animInstance->UpdateAnimInstance(dt);
+                auto* animator = animInstance->GetAnimator().GetInstance();
+                shader->SetUniformArray("finalBonesMatrices", animator->GetFinalBoneMatrices().data(), animator->GetFinalBoneMatrices().size());
+                shader->SetUniform("u_PlayAnimation", true);
+            }
 
-        auto nonAnimatedSkeletalView = registry.view<TransformComponent, SkeletalMeshComponent>(entt::exclude<AnimatorComponent>);
-        nonAnimatedSkeletalView.each([&](auto entity, TransformComponent& transform, SkeletalMeshComponent& skeletal_model) {
-            auto model = skeletal_model.GetModel();
-
-            shader->SetUniform("u_PlayAnimation", false);
+            shader->SetUniform("u_PlayAnimation", animInstance ? true : false);
             skeletal_model.Draw(shader, transform.GetMatrix());
             });
     }
@@ -92,9 +89,9 @@ namespace TAGE::ECS{
         }
 
         RenderScene(registry, dt, _Shader);
+        _PhysicsDebugRenderer.Flush(dt);
         _Renderer->EndScene();
 
-        _PhysicsDebugRenderer.Flush(dt);
         Application::Get().UpdateLayers(dt);
 
         UpdateCamera(registry);

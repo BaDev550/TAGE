@@ -26,6 +26,7 @@ namespace TAGE::ECS {
 		inline glm::vec3& GetWorldLocation() { return GetComponent<TransformComponent>().Position; }
 		inline glm::vec3& GetWorldRotation() { return GetComponent<TransformComponent>().Rotation; }
 		inline glm::vec3& GetWorldScale() { return GetComponent<TransformComponent>().Scale; }
+		inline glm::mat4& GetTransformMatrix() { return GetComponent<TransformComponent>().GetMatrix(); }
 
 		inline glm::vec3& GetLocalLocation() { return GetComponent<TransformComponent>().LocalPosition; }
 		inline glm::vec3& GetLocalRotation() { return GetComponent<TransformComponent>().LocalRotation; }
