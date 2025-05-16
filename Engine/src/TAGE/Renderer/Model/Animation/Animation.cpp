@@ -17,8 +17,6 @@ namespace TAGE::RENDERER {
 		m_TicksPerSecond = animation->mTicksPerSecond;
 		aiMatrix4x4 globalTransformation = scene->mRootNode->mTransformation;
 		globalTransformation = globalTransformation.Inverse();
-		ReadHierarchyData(m_RootNode, scene->mRootNode);
-		ReadMissingBones(animation, *model);
-		BuildBoneHierarchy(m_RootNode, m_Skeletal.get());
+		ReadMissingBones(animation);
 	}
 }

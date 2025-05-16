@@ -5,6 +5,7 @@
 #include "TAGE/Renderer/Model/Model.h"
 #include "TAGE/Renderer/Model/Animation/Animator.h"
 #include "TAGE/Renderer/Camera.h"
+#include "TAGE/Core/AssetManager/AssetManager.h"
 
 namespace TAGE::ECS {
 	using namespace RENDERER;
@@ -22,18 +23,17 @@ namespace TAGE::ECS {
 		void Draw(MEM::Ref<Shader> shader, const glm::mat4& transform) {
 			if (IsVisible) {
 				shader->Bind();
-				shader->SetUniform("u_SkeletalMesh", meshType == EMeshType::SKELETAL);
+
 				model->Draw(transform, shader);
 			}
 		}
 
 		void LoadModel(const std::string& modelPath) {
 			model->Reset();
-			model = nullptr;
 			model = MEM::CreateScope<Model>(modelPath, meshType);
 		}
 
-		Model* GetModel() const { if (model) return model.get(); }
+		Model* GetModel() const { return model ? model.get() : nullptr; }
 		bool IsVisible = true;
 	private:
 		MEM::Scope<Model> model;
@@ -60,7 +60,7 @@ namespace TAGE::ECS {
 
 	struct AnimatorComponent
 	{
-		Animator* GetInstance() const { if(AnimatorInstance) return AnimatorInstance.get(); }
+		Animator* GetInstance() const { return AnimatorInstance ? AnimatorInstance.get() : nullptr; }
 
 		AnimatorComponent() = default;
 		AnimatorComponent(const MEM::Ref<Skeletal>& skeleton, const MEM::Ref<Animation>& animation) { AnimatorInstance = MEM::CreateRef<Animator>(skeleton, animation); }

@@ -9,6 +9,7 @@
 #include "Bone.h"
 #include "Skeletal.h"
 #include "TAGE/Core/Profiler/Profiler.h"
+#include <glm/gtx/matrix_decompose.hpp>
 
 namespace TAGE::RENDERER {
 	class Animator
@@ -46,7 +47,7 @@ namespace TAGE::RENDERER {
 				float blendFactor = glm::clamp(m_BlendTime / m_BlendDuration, 0.0f, 1.0f);
 
 				glm::mat4 identity(1.0f);
-				BlendBoneTransform(&m_CurrentAnimation->GetRootNode(), &m_BlendTargetAnimation->GetRootNode(), identity, blendFactor);
+				BlendBoneTransform(&m_Skeletal->m_RootNode, &m_Skeletal->m_RootNode, identity, blendFactor);
 
 				if (blendFactor >= 1.0f)
 				{
@@ -59,7 +60,7 @@ namespace TAGE::RENDERER {
 			else
 			{
 				glm::mat4 identity(1.0f);
-				CalculateBoneTransform(&m_CurrentAnimation->GetRootNode(), identity);
+				CalculateBoneTransform(&m_Skeletal->m_RootNode, identity);
 			}
 		}
 
@@ -93,7 +94,8 @@ namespace TAGE::RENDERER {
 
 			const glm::mat4 globalTransformation = parentTransform * nodeTransform;
 
-			const auto& boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+			const auto& boneInfoMap = m_Skeletal->GetBoneInfoMap();
+
 			if (auto it = boneInfoMap.find(nodeName.data()); it != boneInfoMap.end()) {
 				const int index = it->second.id;
 				const glm::mat4& offset = it->second.offset;
@@ -107,12 +109,26 @@ namespace TAGE::RENDERER {
 
 		inline glm::mat4 MixMat4(const glm::mat4& a, const glm::mat4& b, float t)
 		{
-			glm::mat4 result;
-			for (int i = 0; i < 4; ++i)
-				result[i] = glm::mix(a[i], b[i], t);
+			glm::vec3 transA, scaleA, transB, scaleB;
+			glm::quat rotA, rotB;
 
-			return result;
+			glm::vec3 skew;
+			glm::vec4 perspective;
+
+			glm::decompose(a, scaleA, rotA, transA, skew, perspective);
+			glm::decompose(b, scaleB, rotB, transB, skew, perspective);
+
+			glm::vec3 finalTrans = glm::mix(transA, transB, t);
+			glm::vec3 finalScale = glm::mix(scaleA, scaleB, t);
+			glm::quat finalRot = glm::slerp(rotA, rotB, t);
+
+			glm::mat4 translationMat = glm::translate(glm::mat4(1.0f), finalTrans);
+			glm::mat4 rotationMat = glm::toMat4(finalRot);
+			glm::mat4 scaleMat = glm::scale(glm::mat4(1.0f), finalScale);
+
+			return translationMat * rotationMat * scaleMat;
 		}
+
 
 		void BlendBoneTransform(const AssimpNodeData* fromNode, const AssimpNodeData* toNode, const glm::mat4& parentTransform, float blendFactor)
 		{
@@ -135,7 +151,8 @@ namespace TAGE::RENDERER {
 			glm::mat4 finalTransform = MixMat4(fromTransform, toTransform, blendFactor);
 			glm::mat4 globalTransform = parentTransform * finalTransform;
 
-			const auto& boneInfoMap = m_CurrentAnimation->GetBoneIDMap();
+			const auto& boneInfoMap = m_Skeletal->GetBoneInfoMap();
+
 			if (auto it = boneInfoMap.find(nodeName); it != boneInfoMap.end())
 			{
 				int index = it->second.id;

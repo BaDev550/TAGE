@@ -1,14 +1,18 @@
 #include "tagepch.h"
 #include "Model.h"
 #include "TAGE/Renderer/Shader/ShaderLibrary.h"
+#include "TAGE/Renderer/Model/Animation/Animation.h"
 
 namespace TAGE::RENDERER {
 	Model::Model(const std::string& path, EMeshType type)
 		: _MeshType(type)
 	{
 		_Path = path;
-
 		_Vao = MEM::CreateRef<VertexArrayBuffer>();
+
+		if (type == EMeshType::SKELETAL)
+			_Skeletal = MEM::CreateScope<Skeletal>(this);
+
 		LoadModel(path);
 
 		if (type == EMeshType::SKELETAL)
@@ -28,19 +32,21 @@ namespace TAGE::RENDERER {
 
 	void Model::Reset()
 	{
+		_Importer.FreeScene();
+		_Scene = nullptr;
+
 		_Meshes.clear();
-		m_BoneInfoMap.clear();
 	}
 
 	void Model::LoadSkeletalModel()
 	{
-		_Skeletal = MEM::CreateScope<Skeletal>(this);
+		_Skeletal->ReadHierarchyData(_Skeletal->m_RootNode, _Scene->mRootNode);
+		_Skeletal->BuildBoneHierarchy(_Skeletal->m_RootNode);
 	}
 
 	void Model::LoadModel(const std::string& path)
 	{
-		Assimp::Importer importer;
-		const aiScene* _Scene = importer.ReadFile(path,
+		_Scene = _Importer.ReadFile(path,
 			aiProcess_Triangulate |
 			aiProcess_FlipUVs |
 			aiProcess_CalcTangentSpace |
@@ -53,6 +59,9 @@ namespace TAGE::RENDERER {
 
 		ENGINE_ASSERT(_Scene && _Scene->mRootNode, "Failed to load model: {}", path);
 		_Directory = path.substr(0, path.find_last_of('/'));
+
+		if (_MeshType == EMeshType::SKELETAL)
+			_Skeletal->LoadBonesFromMesh(_Scene);
 
 		ProcessNode(_Scene->mRootNode, _Scene);
 
@@ -156,15 +165,9 @@ namespace TAGE::RENDERER {
 		MEM::Ref<Material> material = LoadMaterial(scene->mMaterials[mesh->mMaterialIndex], scene);
 		CORE_LOG_INFO("Mesh vertex count: {}", mesh->mNumVertices);
 
-		glm::vec3 center = (minBounds + maxBounds) * 0.5f;
-		for (auto& v : vertices) {
-			glm::vec3 p(v.Position[0], v.Position[1], v.Position[2]);
-			glm::vec3 centered = p - center;
-			v.Position[0] = centered.x;
-			v.Position[1] = centered.y;
-			v.Position[2] = centered.z;
-		}
-		_CenterOffset = center;
+		glm::mat4 rootTransform = AssimpGLMHelpers::aiMatToGlm(scene->mRootNode->mTransformation);
+		glm::vec3 modelOrigin = glm::vec3(rootTransform[3]);
+		_CenterOffset = modelOrigin;
 
 		return { _Vao, material, (int)indices.size(), meshRadius };
 	}
@@ -243,27 +246,17 @@ namespace TAGE::RENDERER {
 	}
 	void Model::ExtractBoneWeightForVertices(std::vector<Vertex>& vertices, aiMesh* mesh, const aiScene* scene)
 	{
-		auto& boneInfoMap = m_BoneInfoMap;
-		int& boneCount = m_BoneCounter;
-		
+		auto& boneInfoMap = _Skeletal->GetBoneInfoMap();
+
 		for (int boneIndex = 0; boneIndex < mesh->mNumBones; ++boneIndex)
 		{
-			int boneID = -1;
 			std::string boneName = mesh->mBones[boneIndex]->mName.C_Str();
-			if (boneInfoMap.find(boneName) == boneInfoMap.end())
-			{
-				BoneInfo newBoneInfo;
-				newBoneInfo.id = boneCount;
-				newBoneInfo.offset = AssimpGLMHelpers::ConvertMatrixToGLMFormat(mesh->mBones[boneIndex]->mOffsetMatrix);
-				boneInfoMap[boneName] = newBoneInfo;
-				boneID = boneCount;
-				boneCount++;
-			}
-			else
-			{
-				boneID = boneInfoMap[boneName].id;
-			}
-			ENGINE_ASSERT(boneID != -1, "Invanlid bone ID");
+
+			auto it = boneInfoMap.find(boneName);
+			ENGINE_ASSERT(it != boneInfoMap.end(), "Bone not found in boneInfoMap!");
+
+			int boneID = it->second.id;
+
 			auto weights = mesh->mBones[boneIndex]->mWeights;
 			int numWeights = mesh->mBones[boneIndex]->mNumWeights;
 
@@ -271,11 +264,12 @@ namespace TAGE::RENDERER {
 			{
 				int vertexId = weights[weightIndex].mVertexId;
 				float weight = weights[weightIndex].mWeight;
-				ENGINE_ASSERT(vertexId <= vertices.size(), "vertexId out of bound");
+				ENGINE_ASSERT(vertexId < vertices.size(), "vertexId out of bound");
 				SetVertexBoneData(vertices[vertexId], boneID, weight);
 			}
 		}
 	}
+
 
 	MEM::Ref<Texture2D> Model::LoadEmbeddedTexture(const aiTexture* texture) {
 		if (texture->mHeight == 0) {

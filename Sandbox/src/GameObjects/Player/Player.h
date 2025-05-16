@@ -14,7 +14,7 @@ public:
 	Player() : TCharacter("Player") {
 		SkeletalMesh->LoadModel("Assets/Models/Arms/Arms.glb");
 
-		GetLocalLocation().y += 1.36f;
+		GetLocalLocation().y += 1.3f;
 
 		auto& ctc = Camera.GetComponent<TTransformComponent>();
 		ctc.LocalPosition.y += 1.4f;
@@ -22,9 +22,6 @@ public:
 		
 		idleAnim = TAGE::MEM::CreateRef<TEAnim>("Assets/Models/Arms/Idle.glb", SkeletalMesh->GetModel());
 		idleAnim->SetLoop(true);
-
-		walkAnim = TAGE::MEM::CreateRef<TEAnim>("Assets/Models/Arms/Walk.glb", SkeletalMesh->GetModel());
-		walkAnim->SetLoop(true);
 
 		Animator = AddComponent<TAnimatorComponent>(SkeletalMesh->GetSkeleton(), idleAnim);
 	}

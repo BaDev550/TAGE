@@ -20,7 +20,7 @@ out mat3 TBN;
 uniform mat4 u_Model;
 uniform mat4 viewProj;
 uniform mat4 u_LightSpaceMatrix;
-uniform bool u_SkeletalMesh;
+uniform bool u_PlayAnimation;
 
 const int MAX_BONES = 100;
 const int MAX_BONE_INFLUENCE = 4;
@@ -33,7 +33,7 @@ void main()
     vec3 localTangent;
     vec3 localBitangent;
 
-    if (u_SkeletalMesh)
+    if (u_PlayAnimation)
     {
         vec4 totalPosition = vec4(0.0);
         vec3 animatedNormal = vec3(0.0);

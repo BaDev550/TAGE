@@ -46,10 +46,8 @@ namespace TAGE::ECS{
         auto staticmeshview = registry.view<TransformComponent, StaticMeshComponent>();
         staticmeshview.each([&](auto entity, const TransformComponent& transform, StaticMeshComponent& static_model) {
             auto model = static_model.GetModel();
-             
-            if (!isInFrustum(transform.GetMatrix(), model->GetCenterOffset(), model->GetBoundingRadius()))
-                return;
 
+            shader->SetUniform("u_PlayAnimation", false);
             static_model.Draw(shader, transform.GetMatrix());
             });
 
@@ -57,13 +55,11 @@ namespace TAGE::ECS{
         animatedSkeletalView.each([&](auto entity, TransformComponent& transform, SkeletalMeshComponent& skeletal_model, AnimatorComponent& animatorComp) {
             auto model = skeletal_model.GetModel();
 
-            if (!isInFrustum(transform.GetMatrix(), model->GetCenterOffset(), model->GetBoundingRadius()))
-                return;
-
             auto* animator = animatorComp.GetInstance();
             animator->UpdateAnimation(dt);
             skeletal_model.GetSkeleton()->Update(animator->GetCurrentAnimationTime());
             shader->SetUniformArray("finalBonesMatrices", animator->GetFinalBoneMatrices().data(), animator->GetFinalBoneMatrices().size());
+            shader->SetUniform("u_PlayAnimation", true);
             skeletal_model.Draw(shader, transform.GetMatrix());
             });
 
@@ -71,9 +67,7 @@ namespace TAGE::ECS{
         nonAnimatedSkeletalView.each([&](auto entity, TransformComponent& transform, SkeletalMeshComponent& skeletal_model) {
             auto model = skeletal_model.GetModel();
 
-            if (!isInFrustum(transform.GetMatrix(), model->GetCenterOffset(), model->GetBoundingRadius()))
-                return;
-
+            shader->SetUniform("u_PlayAnimation", false);
             skeletal_model.Draw(shader, transform.GetMatrix());
             });
     }

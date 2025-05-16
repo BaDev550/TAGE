@@ -16,6 +16,7 @@
     <ClInclude Include="src\GameObjects\Common\BasicObject.h" />
     <ClInclude Include="src\Interfaces\Interaction.h" />
     <ClInclude Include="src\GameObjects\Common\Door.h" />
+    <ClInclude Include="src\GameObjects\Enemies\npc_walkingguy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GameObjects\Player\Player.cpp">

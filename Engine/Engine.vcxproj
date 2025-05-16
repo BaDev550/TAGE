@@ -101,6 +101,7 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\Core\Utilities\UUID.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h" />
     <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h" />
@@ -603,6 +604,7 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TAGE\Core\Utilities\UUID.cpp" />
     <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp" />
     <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp" />
     <ClCompile Include="src\TAGE\Core\Profiler\Profiler.cpp" />

@@ -39,9 +39,6 @@ namespace TAGE::RENDERER {
 		void Draw(glm::mat4 transform, const MEM::Ref<RENDERER::Shader>& shader) const;
 		virtual ASSET::AssetType GetType() const override { return ASSET::AssetType::MODEL; }
 
-		auto& GetBoneInfoMap() { return m_BoneInfoMap; }
-		int& GetBoneCount() { return m_BoneCounter; }
-
 		void Reset();
 		void LoadModel(const std::string& path);
 
@@ -57,11 +54,12 @@ namespace TAGE::RENDERER {
 		EMeshType _MeshType;
 		glm::vec3 _CenterOffset;
 
-		float _BoundingRadius = 1.0f;
+		Assimp::Importer _Importer;
+		const aiScene* _Scene;
 
-		std::map<std::string, BoneInfo> m_BoneInfoMap;
+		float _BoundingRadius = 1.0f;
+		
 		MEM::Ref<VertexArrayBuffer> _Vao;
-		int m_BoneCounter = 0;
 
 		void LoadSkeletalModel();
 		void ProcessNode(aiNode* node, const aiScene* scene);

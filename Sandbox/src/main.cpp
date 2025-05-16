@@ -8,6 +8,8 @@
 #include "GameObjects/Common/Wall.h"
 #include "GameObjects/Common/Door.h"
 
+#include "GameObjects/Enemies/npc_walkingguy.h"
+
 class SandboxLayer : public TELayer {
 public:
 	SandboxLayer(TEApplication* instance) : TELayer("Sandbox Layer"), _AppInstance(instance) {
@@ -154,7 +156,6 @@ public:
 			}
 		}
 		ImGui::End();
-
 
 	}
 

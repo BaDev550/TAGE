@@ -1565,6 +1565,7 @@
     <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h" />
+    <ClInclude Include="src\TAGE\Core\Utilities\UUID.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1699,5 +1700,6 @@
     <ClCompile Include="src\TAGE\ECS\Objects\GameObject.cpp" />
     <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp" />
     <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp" />
+    <ClCompile Include="src\TAGE\Core\Utilities\UUID.cpp" />
   </ItemGroup>
 </Project>
