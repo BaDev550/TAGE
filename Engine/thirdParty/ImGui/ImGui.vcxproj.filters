@@ -6,6 +6,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ImGuiFileDialog.h" />
+    <ClInclude Include="ImGuiFileDialogConfig.h" />
     <ClInclude Include="backends\imgui_impl_dx11.h">
       <Filter>backends</Filter>
     </ClInclude>
@@ -26,6 +28,7 @@
     <ClInclude Include="imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ImGuiFileDialog.cpp" />
     <ClCompile Include="backends\imgui_impl_dx11.cpp">
       <Filter>backends</Filter>
     </ClCompile>

@@ -28,6 +28,7 @@ namespace TAGE
 			_TestScene->GetWorld().AddSystem(renderSystem);
 			_TestScene->GetWorld().AddSystem(physicsSystem);
 			_TestScene->GetWorld().AddSystem(transformSystem);
+			_SceneLoader = MEM::CreateRef<ECS::IO::SceneSerializer>(_TestScene.get());
 		}
 
 		_AppThreadPool = MEM::CreateScope<THREAD::ThreadPool>();
@@ -63,6 +64,13 @@ namespace TAGE
 			float time = timer.Elapsed();
 			_DeltaTime = time - _LastFrameTime;
 			_LastFrameTime = time;
+
+			//if (_Window->IsWindowIconifyed()) {
+			//	SetEngineMode(ECS::SystemUpdateMode::LOADING);
+			//}
+			//else if (!_Window->IsWindowIconifyed()) {
+			//	SetEngineMode(ECS::SystemUpdateMode::EDITOR);
+			//}
 
 			_TestScene->OnUpdate(_DeltaTime, _EngineMode);
 

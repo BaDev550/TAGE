@@ -16,6 +16,7 @@
 #include "TAGE/Renderer/Camera.h"
 
 #include "TAGE/ECS/Scene/Scene.h"
+#include "TAGE/ECS/Scene/IO/SceneSerializer.h"
 #include "TAGE/ECS/ECS/Systems/System.h"
 
 #include "TAGE/Thread/ThreadPool.h"
@@ -37,11 +38,11 @@ namespace TAGE
 
 		Window& GetWindow() const { return *_Window; }
 		ECS::Scene& GetScene() const { return *_TestScene; }
+		ECS::IO::SceneSerializer& GetSceneSerializer() const { return *_SceneLoader; }
 		ECS::PhysicsSystem& GetPhysicsSystem() const { return _TestScene->GetWorld().GetPhysicsSystem(); }
 		ECS::RenderSystem& GetRenderSystem() const { return _TestScene->GetWorld().GetRenderSystem(); }
 		RENDERER::Renderer& GetRenderer() const { return *_Renderer; }
 		THREAD::ThreadPool& GetThreadPool() const { return *_AppThreadPool; }
-
 		TimeStep GetDeltaTime() const { return _DeltaTime; }
 		static Application& Get() { return *_Instance; }
 		void UpdateLayers(float dt);
@@ -60,6 +61,7 @@ namespace TAGE
 		MEM::Scope<RENDERER::Renderer> _Renderer;
 		MEM::Scope<RENDERER::Camera> _Camera;
 		MEM::Ref<ECS::Scene> _TestScene;
+		MEM::Ref<ECS::IO::SceneSerializer> _SceneLoader;
 		MEM::Ref<ImGuiLayer> _ImGuiLayer;
 		ECS::SystemUpdateMode _EngineMode = ECS::SystemUpdateMode::GAME;
 

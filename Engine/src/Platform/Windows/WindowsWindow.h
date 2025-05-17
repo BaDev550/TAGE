@@ -17,6 +17,11 @@ namespace TAGE {
 
 		virtual void SwapBuffers() const override;
 		virtual void EnableCursor(bool enable) const override;
+		virtual void IconifyWindow() override;
+		virtual bool IsWindowIconifyed() override;
+		virtual void RestoreWindow(bool maximized) override;
+		virtual void SetWindowPos(int x,  int y) override;
+		virtual void GetWindowPos(int* x, int* y) override;
 
 		void SetEventCallback(const EventCallbackFn& callback) override { _Data.EventCallback = callback; }
 		void* GetNativeWindow() const override { return static_cast<void*>(_Window); }

@@ -15,6 +15,7 @@
 #include "TAGE/Layers/Layer.h"
 #include "TAGE/Core/Defines.h"
 #include "TAGE/ECS/Scene/IO/SceneSerializer.h"
+#include "TAGE/Renderer/Material/Texture.h"
 
 #include "TAGE/ECS/Scene/World.h"
 
@@ -33,6 +34,7 @@ using TEScene = TAGE::ECS::Scene;
 using TERenderer = TAGE::RENDERER::Renderer;
 using TERenderMode = TAGE::RENDERER::RenderMode;
 using TEFramebuffer = TAGE::RENDERER::Framebuffer;
+using TETexture2D = TAGE::RENDERER::Texture2D;
 
 using TELayer = TAGE::Layer;
 using TEImGuiLayer = TAGE::ImGuiLayer;

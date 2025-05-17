@@ -153,6 +153,9 @@
     <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h">
       <Filter>src\TAGE\Core\Profiler</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\Core\Utilities\LogSink.h">
+      <Filter>src\TAGE\Core\Utilities</Filter>
+    </ClInclude>
     <ClInclude Include="src\TAGE\Core\Utilities\Logger.h">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClInclude>

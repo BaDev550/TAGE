@@ -17,6 +17,7 @@
 #include "TAGE/Core/Utilities/Logger.h"
 #include "TAGE/Core/Defines.h"
 
+#define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 #if (LOG_GRAPICHS_ERROR)
 #define DEBUG_BUFFER
 #endif

@@ -26,16 +26,18 @@ namespace TAGE::ECS::IO {
 		ordered_json j;
 
 		j["Scene"]["Name"] = _Scene->GetName();
-		auto& actorsArray = j["Scene"]["GameObjects"];
+		auto& actorsArray = j["Scene"]["Actors"];
+		std::unordered_set<entt::entity> serializedEntities;
+
+		for (GameObject* obj : _Scene->GetWorld().GetGameObjectManager().GetGameObjects()) {
+			if (!obj || !obj->IsValid()) continue;
+			actorsArray.push_back(SerializeGameObject(obj));
+			serializedEntities.insert(obj->GetEntity());
+		}
 
 		for (Actor* actor : _Scene->GetWorld().GetAllActors()) {
-			if (actor->IsGameObject()) {
-				auto* obj = static_cast<GameObject*>(actor);
-				actorsArray.push_back(SerializeGameObject(obj));
-			}
-			else {
-				actorsArray.push_back(SerializeGameObject(actor));
-			}
+			if (!actor || !actor->IsValid() || serializedEntities.count(actor->GetEntity())) continue;
+			actorsArray.push_back(SerializeGameObject(actor));
 		}
 
 		std::ofstream file(path);
@@ -51,8 +53,8 @@ namespace TAGE::ECS::IO {
 		using namespace ECS;
 		ordered_json j = SerializeBaseActor(actor);
 
-		if (dynamic_cast<ECS::GameObject*>(actor)){
-			ECS::GameObject* obj = dynamic_cast<ECS::GameObject*>(actor);
+		ECS::GameObject* obj = dynamic_cast<ECS::GameObject*>(actor);
+		if (obj) {
 			j["Type"] = static_cast<int>(obj->GetType());
 			j["Class"] = obj->GetClassNameW();
 		}
@@ -143,34 +145,51 @@ namespace TAGE::ECS::IO {
 			return;
 		}
 
-		json j;
+		ordered_json j;
 		file >> j;
 		file.close();
 
+		if (!j.contains("Scene")) {
+			CORE_LOG_ERROR("JSON file missing 'Scene' key.");
+			return;
+		}
 		const auto& sceneData = j["Scene"];
-		const auto& actorsArray = sceneData["GameObjects"];
+
+		if (!sceneData.contains("Actors")) {
+			CORE_LOG_ERROR("Scene JSON missing 'GameObjects' key.");
+			return;
+		}
+		const auto& actorsArray = sceneData["Actors"];
 
 		for (const auto& actorData : actorsArray) {
 			DeserializeActor(actorData);
 		}
 		CORE_LOG_INFO("Scene: {} Loaded", path);
-		Application::Get().SetEngineMode(SystemUpdateMode::GAME);
+		Application::Get().SetEngineMode(SystemUpdateMode::EDITOR);
 	}
 	void SceneSerializer::DeserializeActor(const json& data)
 	{
 		std::string name = data.value("Name", "UnnamedActor");
-		ObjectType type = static_cast<ObjectType>(data["Type"]);
+		Actor* actor = nullptr;
 
-		GameObject* gameObject = GameObjectFactory::Create(data["Class"]);
-		if (gameObject) {
-			_Scene->GetWorld().GetGameObjectManager().RegisterGameObject(gameObject);
+		if (data.contains("Class")) {
+			GameObject* gameObject = GameObjectFactory::Create(data["Class"]);
+			if (gameObject) {
+				_Scene->GetWorld().GetGameObjectManager().RegisterGameObject(gameObject);
+				actor = gameObject;
+			}
+		}
+		else {
+			actor = _Scene->GetWorld().SpawnActor(name);
+		}
 
+		if (actor) {
 			if (data.contains("Tags")) {
-				if (!gameObject->HasComponent<TagComponent>()) {
-					gameObject->AddComponent<TagComponent>();
+				if (!actor->HasComponent<TagComponent>()) {
+					actor->AddComponent<TagComponent>();
 				}
 				auto& tagsJson = data["Tags"];
-				auto& tags = gameObject->GetComponent<TagComponent>().tags;
+				auto& tags = actor->GetComponent<TagComponent>().tags;
 				tags.clear();
 				for (auto& tag : tagsJson) {
 					tags.push_back(tag.get<std::string>());
@@ -182,15 +201,15 @@ namespace TAGE::ECS::IO {
 
 			if (comps.contains("TransformComponent")) {
 				const auto& t = comps["TransformComponent"];
-				auto& tc = gameObject->GetComponent<TransformComponent>();
+				auto& tc = actor->GetComponent<TransformComponent>();
 				tc.Position = glm::vec3(t["Position"][0], t["Position"][1], t["Position"][2]);
 				tc.Rotation = glm::vec3(t["Rotation"][0], t["Rotation"][1], t["Rotation"][2]);
 				tc.Scale = glm::vec3(t["Scale"][0], t["Scale"][1], t["Scale"][2]);
 			}
 
 			if (comps.contains("StaticMeshComponent")) {
-				if (gameObject->HasComponent<StaticMeshComponent>()) {
-					auto& mesh = gameObject->GetComponent<StaticMeshComponent>();
+				if (actor->HasComponent<StaticMeshComponent>()) {
+					auto& mesh = actor->GetComponent<StaticMeshComponent>();
 					std::string path = comps["StaticMeshComponent"]["Path"];
 					if (!path.empty()) {
 						mesh.LoadModel(path);
@@ -199,15 +218,15 @@ namespace TAGE::ECS::IO {
 				else {
 					std::string path = comps["StaticMeshComponent"]["Path"];
 					if (!path.empty()) {
-						gameObject->AddComponent<StaticMeshComponent>(path);
+						actor->AddComponent<StaticMeshComponent>(path);
 					}
 				}
 			}
 
 			if (comps.contains("SkeletalMeshComponent")) {
 				std::string path = comps["SkeletalMeshComponent"]["Path"];
-				if (gameObject->HasComponent<SkeletalMeshComponent>()) {
-					auto& mesh = gameObject->GetComponent<SkeletalMeshComponent>();
+				if (actor->HasComponent<SkeletalMeshComponent>()) {
+					auto& mesh = actor->GetComponent<SkeletalMeshComponent>();
 					if (!path.empty()) {
 						mesh.LoadModel(path);
 					}
@@ -216,25 +235,25 @@ namespace TAGE::ECS::IO {
 						std::string animPath = comps["AnimatorComponent"]["Animation"];
 						if (!animPath.empty()) {
 							auto skeletal = mesh.GetSkeleton();
-							if (!gameObject->HasComponent<AnimatorComponent>()) {
+							if (!actor->HasComponent<AnimatorComponent>()) {
 								auto animation = MEM::CreateRef<Animation>(animPath, mesh.GetModel());
-								gameObject->AddComponent<AnimatorComponent>(skeletal, animation);
+								actor->AddComponent<AnimatorComponent>(skeletal, animation);
 							}
 							else {
-								auto& animator = gameObject->GetComponent<AnimatorComponent>();
+								auto& animator = actor->GetComponent<AnimatorComponent>();
 							}
 						}
 					}
 				}
 				else {
 					if (!path.empty()) {
-						auto& mesh = gameObject->AddComponent<SkeletalMeshComponent>(path);
+						auto& mesh = actor->AddComponent<SkeletalMeshComponent>(path);
 						if (comps.contains("AnimatorComponent")) {
 							std::string animPath = comps["AnimatorComponent"]["Animation"];
 							if (!animPath.empty()) {
 								auto skeletal = mesh.GetSkeleton();
 								auto animation = MEM::CreateRef<Animation>(animPath, mesh.GetModel());
-								gameObject->AddComponent<AnimatorComponent>(skeletal, animation);
+								actor->AddComponent<AnimatorComponent>(skeletal, animation);
 							}
 						}
 					}
@@ -243,14 +262,14 @@ namespace TAGE::ECS::IO {
 
 			if (comps.contains("ColliderComponent")) {
 				const auto& c = comps["ColliderComponent"];
-				if (gameObject->HasComponent<ColliderComponent>()) {
-					auto& cc = gameObject->GetComponent<ColliderComponent>();
+				if (actor->HasComponent<ColliderComponent>()) {
+					auto& cc = actor->GetComponent<ColliderComponent>();
 					cc.Shape = static_cast<ColliderShapeType>(c["Shape"].get<int>());
 					cc.Size = glm::vec3(c["Size"][0], c["Size"][1], c["Size"][2]);
 					cc.ResponseType = static_cast<CollisionResponseType>(c["ResponseType"].get<int>());
 				}
 				else {
-					auto& cc = gameObject->AddComponent<ColliderComponent>();
+					auto& cc = actor->AddComponent<ColliderComponent>();
 					cc.Shape = static_cast<ColliderShapeType>(c["Shape"].get<int>());
 					cc.Size = glm::vec3(c["Size"][0], c["Size"][1], c["Size"][2]);
 					cc.ResponseType = static_cast<CollisionResponseType>(c["ResponseType"].get<int>());
@@ -258,18 +277,18 @@ namespace TAGE::ECS::IO {
 			}
 
 			if (comps.contains("RigidBodyComponent")) {
-				if (!gameObject->HasComponent<RigidBodyComponent>()) {
-					_Scene->GetWorld().GetPhysicsSystem().CreateRigidBody(gameObject, comps["RigidBodyComponent"]["Mass"].get<float>());
+				if (!actor->HasComponent<RigidBodyComponent>()) {
+					_Scene->GetWorld().GetPhysicsSystem().CreateRigidBody(actor, comps["RigidBodyComponent"]["Mass"].get<float>());
 				}
-				if (gameObject->HasComponent<RigidBodyComponent>()) {
-					auto& rb = gameObject->GetComponent<RigidBodyComponent>();
+				if (actor->HasComponent<RigidBodyComponent>()) {
+					auto& rb = actor->GetComponent<RigidBodyComponent>();
 					rb.BodyType = static_cast<PhysicsBodyType>(comps["RigidBodyComponent"]["Type"].get<int>());
 				}
 			}
 
 			if (comps.contains("CameraComponent")) {
-				if (!gameObject->HasComponent<CameraComponent>()) {
-					auto& cc = gameObject->AddComponent<CameraComponent>(static_cast<ECameraType>(data["CameraComponent"]["Type"].get<int>()));
+				if (!actor->HasComponent<CameraComponent>()) {
+					auto& cc = actor->AddComponent<CameraComponent>(static_cast<ECameraType>(comps["CameraComponent"]["Type"].get<int>()));
 				}
 			}
 		}

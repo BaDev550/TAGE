@@ -1,7 +1,7 @@
 {
   "Scene": {
     "Name": "Test Map",
-    "GameObjects": [
+    "Actors": [
       {
         "Class": "TAGE::ECS::EditorCamera",
         "Components": {
@@ -9,8 +9,8 @@
             "Type": 0
           },
           "TransformComponent": {
-            "Position": [0.0, 0.0, 0.0],
-            "Rotation": [0.0, 0.0, 0.0],
+            "Position": [-0.5731427073478699, 0.6302160620689392, 3.503382921218872],
+            "Rotation": [-20.5, -74.60003662109375, 0.0],
             "Scale": [1.0, 1.0, 1.0]
           }
         },
@@ -20,104 +20,34 @@
         "Type": 3
       },
       {
-        "Class": "Player",
         "Components": {
-          "AnimatorComponent": {
-            "Animation": "Assets/Models/Arms/Idle.glb"
-          },
-          "ColliderComponent": {
-            "ResponseType": 2,
-            "Shape": 2,
-            "Size": [1.0, 1.5, 1.0]
-          },
-          "RigidBodyComponent": {
-            "Mass": 1.0,
-            "Type": 1
-          },
-          "SkeletalMeshComponent": {
-            "Path": "Assets/Models/Arms/Arms.glb"
+          "StaticMeshComponent": {
+            "Path": "E:\\dev\\TAGE\\Sandbox\\Assets\\Models\\Cube\\cube.obj"
           },
           "TransformComponent": {
-            "Position": [0.0, 0.0, 0.0],
-            "Rotation": [0.0, 0.0, 0.0],
-            "Scale": [1.0, 1.0, 1.0]
+            "Position": [-0.042787373065948486, -1.1886436939239502, -0.09745720028877258],
+            "Rotation": [0.0, -0.0, 0.0],
+            "Scale": [5.965905666351318, 0.02071027085185051, 7.75301456451416]
           }
         },
         "Entity": 1,
-        "Name": "Player",
-        "Tags": [],
-        "Type": 1
+        "Name": "Actor (1)",
+        "Tags": []
       },
       {
-        "Class": "TAGE::ECS::PawnCamera",
         "Components": {
-          "CameraComponent": {
-            "Type": 1
+          "SkeletalMeshComponent": {
+            "Path": "E:\\dev\\TAGE\\Sandbox\\Assets\\Models\\Character\\Char.glb"
           },
           "TransformComponent": {
-            "Position": [0.0, 0.0, 0.0],
-            "Rotation": [0.0, 0.0, 0.0],
-            "Scale": [1.0, 1.0, 1.0]
+            "Position": [0.3919631838798523, -0.9322534203529358, 0.8287847638130188],
+            "Rotation": [0.0, -0.0, 0.0],
+            "Scale": [0.5199999809265137, 0.5199999809265137, 0.5199999809265137]
           }
         },
         "Entity": 2,
-        "Name": "Pawn Camera",
-        "Tags": [],
-        "Type": 3
-      },
-      {
-        "Class": "Wall",
-        "Components": {
-          "ColliderComponent": {
-            "ResponseType": 2,
-            "Shape": 0,
-            "Size": [50.0, 0.5, 50.0]
-          },
-          "RigidBodyComponent": {
-            "Mass": 0.0,
-            "Type": 1
-          },
-          "StaticMeshComponent": {
-            "Path": "Assets/Models/Cube/Cube.obj"
-          },
-          "TransformComponent": {
-            "Position": [0.0, -1.0, 0.0],
-            "Rotation": [0.0, 0.0, 0.0],
-            "Scale": [25.0, 0.25, 25.0]
-          }
-        },
-        "Entity": 3,
-        "Name": "Wall",
-        "Tags": [],
-        "Type": 0
-      },
-      {
-        "Class": "Door",
-        "Components": {
-          "ColliderComponent": {
-            "ResponseType": 2,
-            "Shape": 0,
-            "Size": [0.5, 2.0, 1.0]
-          },
-          "RigidBodyComponent": {
-            "Mass": 0.0,
-            "Type": 1
-          },
-          "StaticMeshComponent": {
-            "Path": "Assets/Models/Cube/Cube.obj"
-          },
-          "TransformComponent": {
-            "Position": [0.0, 0.0, 0.0],
-            "Rotation": [0.0, 0.0, 0.0],
-            "Scale": [0.25, 1.0, 0.5]
-          }
-        },
-        "Entity": 4,
-        "Name": "Door",
-        "Tags": [
-          "Interactable"
-        ],
-        "Type": 0
+        "Name": "Actor (2)",
+        "Tags": []
       }
     ]
   }

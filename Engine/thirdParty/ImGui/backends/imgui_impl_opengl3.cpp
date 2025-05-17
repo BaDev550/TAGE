@@ -194,7 +194,6 @@
 #else
 #define GL_CALL(_CALL)      _CALL   // Call without error check
 #endif
-#include "glad/glad.h"
 
 // OpenGL Data
 struct ImGui_ImplOpenGL3_Data

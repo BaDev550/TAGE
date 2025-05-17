@@ -55,16 +55,21 @@ namespace TAGE::ECS{
         auto SkeletalView = registry.view<TransformComponent, SkeletalMeshComponent>();
         SkeletalView.each([&](auto entity, TransformComponent& transform, SkeletalMeshComponent& skeletal_model) {
             auto model = skeletal_model.GetModel();
-            auto animInstance = skeletal_model.GetSkeleton()->GetAnimInstance();
+            bool playAnimation = false;
 
-            if (animInstance) {
-                animInstance->UpdateAnimInstance(dt);
-                auto* animator = animInstance->GetAnimator().GetInstance();
-                shader->SetUniformArray("finalBonesMatrices", animator->GetFinalBoneMatrices().data(), animator->GetFinalBoneMatrices().size());
-                shader->SetUniform("u_PlayAnimation", true);
+            if (auto skeleton = skeletal_model.GetSkeleton()) {
+                if (auto animInstance = skeleton->GetAnimInstance()) {
+                    animInstance->UpdateAnimInstance(dt);
+                    if (auto* animator = animInstance->GetAnimator().GetInstance()) {
+                        shader->SetUniformArray("finalBonesMatrices",
+                            animator->GetFinalBoneMatrices().data(),
+                            animator->GetFinalBoneMatrices().size());
+                        playAnimation = true;
+                    }
+                }
             }
 
-            shader->SetUniform("u_PlayAnimation", animInstance ? true : false);
+            shader->SetUniform("u_PlayAnimation", playAnimation);
             skeletal_model.Draw(shader, transform.GetMatrix());
             });
     }

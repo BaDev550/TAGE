@@ -30,7 +30,7 @@ namespace TAGE::RENDERER {
         const std::vector<Bone>& GetBones() const { return m_Bones; }
 		const std::map<std::string, BoneInfo>& GetBoneInfoMap() const { return m_BoneInfoMap; }
 		std::map<std::string, BoneInfo>& GetBoneInfoMap() { return m_BoneInfoMap; }
-		AnimInstance* GetAnimInstance() const { return _AnimInstance.get(); }
+		AnimInstance* GetAnimInstance() const { return _AnimInstance ? _AnimInstance.get() : nullptr; }
 
         void LoadBonesFromMesh(const aiScene* scene);
         void ReadHierarchyData(AssimpNodeData& dest, const aiNode* src);

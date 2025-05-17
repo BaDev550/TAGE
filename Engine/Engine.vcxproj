@@ -112,6 +112,7 @@
     <ClInclude Include="src\TAGE\Core\Profiler\Profiler.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\ProfilerLayer.h" />
     <ClInclude Include="src\TAGE\Core\Profiler\ProfilerTimer.h" />
+    <ClInclude Include="src\TAGE\Core\Utilities\LogSink.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Logger.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Memory.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\PlatformDetection.h" />

@@ -93,6 +93,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Games\FPS\FPSGameLayer.h" />
+    <ClInclude Include="src\Games\FPS\entitys\player\animinstance_player.h" />
+    <ClInclude Include="src\Games\FPS\entitys\player\entity_player.h" />
     <ClInclude Include="src\Games\TestGame\GameObjects\Common\BasicObject.h" />
     <ClInclude Include="src\Games\TestGame\GameObjects\Common\Door.h" />
     <ClInclude Include="src\Games\TestGame\GameObjects\Common\Wall.h" />
@@ -101,10 +104,17 @@
     <ClInclude Include="src\Games\TestGame\GameObjects\Player\PlayerAnimInstance.h" />
     <ClInclude Include="src\Games\TestGame\Interfaces\Interaction.h" />
     <ClInclude Include="src\LevelEditor\LevelEditorLayer.h" />
-    <ClInclude Include="src\LevelEditor\Wall.h" />
+    <ClInclude Include="src\LevelEditor\Panels\ContentBrowserPanel.h" />
+    <ClInclude Include="src\LevelEditor\Panels\LogPanel.h" />
+    <ClInclude Include="src\LevelEditor\Panels\MainMenuBar.h" />
+    <ClInclude Include="src\LevelEditor\Panels\Panel.h" />
+    <ClInclude Include="src\LevelEditor\Panels\ScenePanel.h" />
+    <ClInclude Include="src\LevelEditor\TeGui.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Games\FPS\entitys\player\entity_player.cpp" />
     <ClCompile Include="src\Games\TestGame\GameObjects\Player\Player.cpp" />
+    <ClCompile Include="src\LevelEditor\Panels\ContentBrowserPanel.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>

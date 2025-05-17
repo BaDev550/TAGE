@@ -25,6 +25,11 @@ namespace TAGE {
 		virtual int GetHeight() const = 0;
 		virtual bool ShoudClose() const = 0;
 		virtual void EnableCursor(bool enable) const = 0;
+		virtual void IconifyWindow() = 0;
+		virtual bool IsWindowIconifyed() = 0;
+		virtual void RestoreWindow(bool maximized) = 0;
+		virtual void SetWindowPos(int x,  int y) = 0;
+		virtual void GetWindowPos(int* x, int* y) = 0;
 
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 		virtual void SwapBuffers() const = 0;

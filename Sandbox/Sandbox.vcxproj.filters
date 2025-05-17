@@ -4,6 +4,15 @@
     <Filter Include="Games">
       <UniqueIdentifier>{D2D93A0D-3EEE-62BE-0770-061E73435FEF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Games\FPS">
+      <UniqueIdentifier>{0A6DF27F-76D7-A6F6-BF15-589C2BBF844B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\FPS\entitys">
+      <UniqueIdentifier>{6905C2A2-D51B-C038-1E93-4B5A8AE890C0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Games\FPS\entitys\player">
+      <UniqueIdentifier>{853AB713-715F-0694-9AAA-EB23862E05B2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Games\TestGame">
       <UniqueIdentifier>{FB8BF32F-E759-E735-D0ED-575CBC5AC39A}</UniqueIdentifier>
     </Filter>
@@ -25,8 +34,20 @@
     <Filter Include="LevelEditor">
       <UniqueIdentifier>{A4A34224-1059-BB19-994D-B5F00502B21D}</UniqueIdentifier>
     </Filter>
+    <Filter Include="LevelEditor\Panels">
+      <UniqueIdentifier>{76D360AE-62B7-2104-CB17-1C57B71A0C86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Games\FPS\FPSGameLayer.h">
+      <Filter>Games\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\FPS\entitys\player\animinstance_player.h">
+      <Filter>Games\FPS\entitys\player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Games\FPS\entitys\player\entity_player.h">
+      <Filter>Games\FPS\entitys\player</Filter>
+    </ClInclude>
     <ClInclude Include="src\Games\TestGame\GameObjects\Common\BasicObject.h">
       <Filter>Games\TestGame\GameObjects\Common</Filter>
     </ClInclude>
@@ -51,11 +72,34 @@
     <ClInclude Include="src\LevelEditor\LevelEditorLayer.h">
       <Filter>LevelEditor</Filter>
     </ClInclude>
-    <ClInclude Include="src\LevelEditor\Wall.h" />
+    <ClInclude Include="src\LevelEditor\Panels\ContentBrowserPanel.h">
+      <Filter>LevelEditor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelEditor\Panels\LogPanel.h">
+      <Filter>LevelEditor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelEditor\Panels\MainMenuBar.h">
+      <Filter>LevelEditor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelEditor\Panels\Panel.h">
+      <Filter>LevelEditor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelEditor\Panels\ScenePanel.h">
+      <Filter>LevelEditor\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LevelEditor\TeGui.h">
+      <Filter>LevelEditor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Games\FPS\entitys\player\entity_player.cpp">
+      <Filter>Games\FPS\entitys\player</Filter>
+    </ClCompile>
     <ClCompile Include="src\Games\TestGame\GameObjects\Player\Player.cpp">
       <Filter>Games\TestGame\GameObjects\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LevelEditor\Panels\ContentBrowserPanel.cpp">
+      <Filter>LevelEditor\Panels</Filter>
     </ClCompile>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>

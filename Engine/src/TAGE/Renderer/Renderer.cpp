@@ -106,10 +106,16 @@ namespace TAGE::RENDERER {
 	}
 	void Renderer::Submit(const MEM::Ref<Shader>& shader, MEM::Ref<VertexArrayBuffer> vao, glm::mat4 transform)
 	{
+		if (_RenderMode == RenderMode::WIREFRAME)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		shader->Bind();
 		shader->SetUniform("u_Model", transform);
 		vao->Bind();
 		DrawIndexed(vao->GetIndexBuffer()->GetCount());
+
+		if (_RenderMode == RenderMode::FULL)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 	void Renderer::SetLight(const Light& light)
 	{

@@ -4,6 +4,7 @@
 #include "TAGE/TEvents.h"
 
 #include "LevelEditor/LevelEditorLayer.h"
+#include "Games/FPS/FPSGameLayer.h"
 
 #include "imgui.h"
 
@@ -11,7 +12,8 @@ class Sandbox : public TEApplication {
 public:
 	Sandbox() : Application("Sandbox") {
         PushLayer(new LEVELEDITOR::LevelEditorLayer());
-		PushLayer(new TEProfilerLayer());
+        //PushLayer(new FPSGameLayer());
+        //PushLayer(new TEProfilerLayer());
     }
 
     ~Sandbox() override = default;

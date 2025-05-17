@@ -33,7 +33,7 @@ namespace TAGE {
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
 			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-			glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+			glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
 			glfwWindowHint(GLFW_SAMPLES, 4);
 			glfwSetErrorCallback(GLFWErrorCallback);
 			s_WindowClassRegistered = true;
@@ -42,6 +42,19 @@ namespace TAGE {
 		_Window = glfwCreateWindow(_Data.Width, _Data.Height, _Data.Title.c_str(), NULL, NULL);
 		ENGINE_ASSERT(_Window != NULL, "Failed to create GLFW window");
 		glfwSetWindowUserPointer(_Window, &_Data);
+		GLFWmonitor* primaryMonitor = glfwGetPrimaryMonitor();
+		if (primaryMonitor) {
+			GLFWvidmode const* mode = glfwGetVideoMode(primaryMonitor);
+			if (mode) {
+				int monitorX, monitorY;
+				glfwGetMonitorPos(primaryMonitor, &monitorX, &monitorY);
+
+				int windowX = monitorX + (mode->width - _Data.Width) / 2;
+				int windowY = monitorY + (mode->height - _Data.Height) / 2;
+
+				glfwSetWindowPos(_Window, windowX, windowY);
+			}
+		}
 
 		_Context = MEM::CreateRef<RENDERER::Context>((GLFWwindow*)_Window);
 		_Context->Init();
@@ -140,6 +153,36 @@ namespace TAGE {
 	void WindowsWindow::EnableCursor(bool enable) const
 	{
 		glfwSetInputMode(_Window, GLFW_CURSOR, enable ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+	}
+
+	void WindowsWindow::IconifyWindow()
+	{
+		glfwIconifyWindow(_Window);
+	}
+
+	bool WindowsWindow::IsWindowIconifyed()
+	{
+		return glfwGetWindowAttrib(_Window, GLFW_ICONIFIED);
+	}
+
+	void WindowsWindow::RestoreWindow(bool maximized)
+	{
+		if (maximized) {
+			glfwRestoreWindow(_Window);
+		}
+		else {
+			glfwMaximizeWindow(_Window);
+		}
+	}
+
+	void WindowsWindow::SetWindowPos(int x, int y)
+	{
+		glfwSetWindowPos(_Window, x, y);
+	}
+
+	void WindowsWindow::GetWindowPos(int* x, int* y)
+	{
+		glfwGetWindowPos(_Window, x, y);
 	}
 
 	void GLFWErrorCallback(int err, const char* desc)
