@@ -1,25 +1,18 @@
 #pragma once
 
-#include "GameObject.h"
-#include "PawnCamera.h"
+#include "TAGE/ECS/World/World.h"
 
-namespace TAGE::ECS {
-	class Pawn : public GameObject
-	{
+namespace TAGE {
+	class Pawn {
 	public:
-		Pawn(const std::string& name) : GameObject(name, ObjectType::OBJECT_PAWN) {
-			SkeletalMesh = &AddComponent<SkeletalMeshComponent>();
-			Collider = &AddComponent<ColliderComponent>();
-			Collider->Shape = ColliderShapeType::CAPSULE;
-			Collider->Size.y = 1.5f;
+		Pawn(Entity e) : _Entity(e) {}
+		virtual ~Pawn() = default;
 
-			Application::Get().GetPhysicsSystem().CreateRigidBody(this, 1.0f);
-			RigidBody = &GetComponent<RigidBodyComponent>();
-		}
+		virtual void Tick(float dt) = 0;
+
+		Entity GetEntity() const { return _Entity; }
 
 	protected:
-		SkeletalMeshComponent* SkeletalMesh;
-		ColliderComponent* Collider;
-		RigidBodyComponent* RigidBody;
+		Entity _Entity;
 	};
 }

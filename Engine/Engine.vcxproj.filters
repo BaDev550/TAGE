@@ -183,55 +183,25 @@
     <ClInclude Include="src\TAGE\Core\Utilities\UUID.h">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\BaseComponents.h">
+    <ClInclude Include="src\TAGE\ECS\Components\BaseComponents.h">
       <Filter>src\TAGE\ECS\ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h">
+    <ClInclude Include="src\TAGE\ECS\Components\PhysicsComponents.h">
       <Filter>src\TAGE\ECS\ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h">
+    <ClInclude Include="src\TAGE\ECS\Components\RenderingComponents.h">
       <Filter>src\TAGE\ECS\ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\ECS\EntityRegistry.h">
+    <ClInclude Include="src\TAGE\ECS\Objects\EntityRegistry.h">
       <Filter>src\TAGE\ECS\ECS</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\ECS\Systems\System.h">
+    <ClInclude Include="src\TAGE\ECS\Systems\System.h">
       <Filter>src\TAGE\ECS\ECS\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\Actor.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\Character.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\Object.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Objects\PawnCamera.h">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h">
+    <ClInclude Include="src\TAGE\ECS\World\IO\SceneSerializer.h">
       <Filter>src\TAGE\ECS\Scene\IO</Filter>
     </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Scene\Scene.h">
-      <Filter>src\TAGE\ECS\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="src\TAGE\ECS\Scene\World.h">
+    <ClInclude Include="src\TAGE\ECS\World\World.h">
       <Filter>src\TAGE\ECS\Scene</Filter>
     </ClInclude>
     <ClInclude Include="src\TAGE\Events\ApplicationEvents.h">
@@ -1629,6 +1599,14 @@
     <ClInclude Include="thirdParty\stb\stb_image.h">
       <Filter>thirdParty\stb</Filter>
     </ClInclude>
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameInstance.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\Entity.h" />
+    <ClInclude Include="src\TAGE\ECS\GSM\ServiceLocator.h" />
+    <ClInclude Include="src\TAGE\ECS\GSM\EventSystem.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameMode.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\PlayerController.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameState.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1655,34 +1633,19 @@
     <ClCompile Include="src\TAGE\Core\Utilities\Utilities.cpp">
       <Filter>src\TAGE\Core\Utilities</Filter>
     </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\PhysicsSystem.cpp">
+    <ClCompile Include="src\TAGE\ECS\Systems\PhysicsSystem.cpp">
       <Filter>src\TAGE\ECS\ECS\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\RenderSystem.cpp">
+    <ClCompile Include="src\TAGE\ECS\Systems\RenderSystem.cpp">
       <Filter>src\TAGE\ECS\ECS\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\System.cpp">
+    <ClCompile Include="src\TAGE\ECS\Systems\System.cpp">
       <Filter>src\TAGE\ECS\ECS\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObject.cpp">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp">
-      <Filter>src\TAGE\ECS\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp">
+    <ClCompile Include="src\TAGE\ECS\World\IO\SceneSerializer.cpp">
       <Filter>src\TAGE\ECS\Scene\IO</Filter>
     </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\Scene\Scene.cpp">
-      <Filter>src\TAGE\ECS\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TAGE\ECS\Scene\World.cpp">
+    <ClCompile Include="src\TAGE\ECS\World\World.cpp">
       <Filter>src\TAGE\ECS\Scene</Filter>
     </ClCompile>
     <ClCompile Include="src\TAGE\Events\Input.cpp">
@@ -1787,5 +1750,7 @@
     <ClCompile Include="thirdParty\stb\stb_image.cpp">
       <Filter>thirdParty\stb</Filter>
     </ClCompile>
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameInstance.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GSM\ServiceLocator.cpp" />
   </ItemGroup>
 </Project>

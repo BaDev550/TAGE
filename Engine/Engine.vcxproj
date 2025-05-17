@@ -101,6 +101,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameMode.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameState.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\PlayerController.h" />
+    <ClInclude Include="src\TAGE\ECS\GSM\EventSystem.h" />
+    <ClInclude Include="src\TAGE\ECS\GSM\ServiceLocator.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameInstance.h" />
     <ClInclude Include="src\Platform\Windows\WindowsKeyCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsMouseCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -122,23 +128,15 @@
     <ClInclude Include="src\TAGE\Core\Utilities\Timeline.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\Timer.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\UUID.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\BaseComponents.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\PhysicsComponents.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Components\RenderingComponents.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\EntityRegistry.h" />
-    <ClInclude Include="src\TAGE\ECS\ECS\Systems\System.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\Actor.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\Character.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\EditorCamera.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObject.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectFactory.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\GameObjectManager.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\Object.h" />
+    <ClInclude Include="src\TAGE\ECS\Components\BaseComponents.h" />
+    <ClInclude Include="src\TAGE\ECS\Components\PhysicsComponents.h" />
+    <ClInclude Include="src\TAGE\ECS\Components\RenderingComponents.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\Entity.h" />
+    <ClInclude Include="src\TAGE\ECS\Objects\EntityRegistry.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
-    <ClInclude Include="src\TAGE\ECS\Objects\PawnCamera.h" />
-    <ClInclude Include="src\TAGE\ECS\Scene\IO\SceneSerializer.h" />
-    <ClInclude Include="src\TAGE\ECS\Scene\Scene.h" />
-    <ClInclude Include="src\TAGE\ECS\Scene\World.h" />
+    <ClInclude Include="src\TAGE\ECS\Systems\System.h" />
+    <ClInclude Include="src\TAGE\ECS\World\IO\SceneSerializer.h" />
+    <ClInclude Include="src\TAGE\ECS\World\World.h" />
     <ClInclude Include="src\TAGE\Events\ApplicationEvents.h" />
     <ClInclude Include="src\TAGE\Events\Event.h" />
     <ClInclude Include="src\TAGE\Events\Input.h" />
@@ -606,6 +604,8 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TAGE\ECS\GSM\ServiceLocator.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameInstance.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp" />
@@ -614,16 +614,11 @@
     <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\UUID.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\Utilities.cpp" />
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\PhysicsSystem.cpp" />
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\RenderSystem.cpp" />
-    <ClCompile Include="src\TAGE\ECS\ECS\Systems\System.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\Actor.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObject.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectFactory.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Objects\GameObjectManager.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Scene\IO\SceneSerializer.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Scene\Scene.cpp" />
-    <ClCompile Include="src\TAGE\ECS\Scene\World.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Systems\PhysicsSystem.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Systems\RenderSystem.cpp" />
+    <ClCompile Include="src\TAGE\ECS\Systems\System.cpp" />
+    <ClCompile Include="src\TAGE\ECS\World\IO\SceneSerializer.cpp" />
+    <ClCompile Include="src\TAGE\ECS\World\World.cpp" />
     <ClCompile Include="src\TAGE\Events\Input.cpp" />
     <ClCompile Include="src\TAGE\Layers\ImGuiBuild.cpp" />
     <ClCompile Include="src\TAGE\Layers\ImGuiLayer.cpp" />

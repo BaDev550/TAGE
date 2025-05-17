@@ -4,14 +4,16 @@
 #include "TAGE/Core/Utilities/Timeline.h"
 
 #include "TAGE/Renderer/Camera.h"
-#include "TAGE/ECS/ECS/EntityRegistry.h"
-#include "TAGE/ECS/ECS/Systems/System.h"
+#include "TAGE/ECS/Systems/System.h"
 #include "TAGE/Physics/PhysicsWorld.h"
-#include "TAGE/ECS/Objects/GameObjectManager.h"
+#include "TAGE/ECS/Objects/EntityRegistry.h"
+#include "TAGE/ECS/Objects/Entity.h"
 
 #include <vector>
 
-namespace TAGE::ECS {
+#define SCENE_SAVE_FORMAT_JSON
+namespace TAGE {
+	using namespace ECS;
 	class World
 	{
 	public:
@@ -20,15 +22,14 @@ namespace TAGE::ECS {
 
 		void Init();
 		void Update(float dt, SystemUpdateMode mode);
-		
-		Actor* SpawnActor(const std::string& name = "Actor");
-		void DestroyActor(const Actor& actor);
-		void RegisterActor(Actor* actor) {}
-		std::vector<Actor*> GetAllActors();
+		void FixedUpdate(float dt, SystemUpdateMode mode);
 
-		void AddSystem(const MEM::Ref<System>& system) {
-			_systems.push_back(system);
-		}
+		Entity* SpawnActor(const std::string& name = "Actor");
+		Entity* FindEntityByName(const std::string& name);
+		void DestroyActor(const Entity& actor);
+
+		std::vector<MEM::Scope<Entity>> GetEntitys() const { return _Entitys; }
+		void AddSystem(const MEM::Ref<System>& system) { _systems.push_back(system); }
 
 		template<typename T>
 		MEM::Ref<T> GetSystem() const {
@@ -42,19 +43,15 @@ namespace TAGE::ECS {
 
 		ECS::PhysicsSystem& GetPhysicsSystem() const { return *GetSystem<ECS::PhysicsSystem>(); }
 		ECS::RenderSystem& GetRenderSystem() const { return *GetSystem<ECS::RenderSystem>(); }
-		GameObjectManager& GetGameObjectManager() const { return *_GameObjectManager; }
 
-		void Clear() {
-			_entityRegistry->ClearEntitys();
-		}
+		void Clear() { _entityRegistry->ClearEntitys(); }
 
 		PHYSICS::PhysicsWorld& GetPhysicsWorld() { return _PWorld; }
 		MEM::Scope<EntityRegistry>& GetRegistry() { return _entityRegistry; }
 	private:
 		MEM::Scope<EntityRegistry> _entityRegistry;
-		MEM::Scope<GameObjectManager> _GameObjectManager;
 		std::vector<MEM::Ref<System>> _systems;
-		std::vector<Actor*> _Actors;
+		std::vector<MEM::Scope<Entity>> _Entitys;
 		PHYSICS::PhysicsWorld _PWorld;
 	};
 }

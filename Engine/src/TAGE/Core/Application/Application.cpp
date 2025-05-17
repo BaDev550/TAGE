@@ -72,8 +72,6 @@ namespace TAGE
 			//	SetEngineMode(ECS::SystemUpdateMode::EDITOR);
 			//}
 
-			_TestScene->OnUpdate(_DeltaTime, _EngineMode);
-
 			_Window->SwapBuffers();
 		}
 	}
