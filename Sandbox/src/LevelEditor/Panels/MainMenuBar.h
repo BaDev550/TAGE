@@ -160,28 +160,28 @@ public:
 
 				ImGui::SetCursorPosX(centerPosX);
 
-				//if (!_Playing) {
-				//	if (ImGui::ImageButton("Play", (ImTextureID)(void*)GetIcon("I_Play"), ImVec2(iconSize, iconSize)))
-				//	{
-				//		_Playing = true;
-				//		GetApp().SetEngineMode(TEEngineMode::GAME);
-				//	}
-				//	ImGui::SameLine();
-				//}
+				if (!_Playing) {
+					if (ImGui::ImageButton("Play", (ImTextureID)(void*)GetIcon("I_Play"), ImVec2(iconSize, iconSize)))
+					{
+						_Playing = true;
+						GetApp().SetEngineMode(TEEngineMode::GAME);
+					}
+					ImGui::SameLine();
+				}
 
-				//if (_Playing) {
-				//	if (ImGui::ImageButton("Pause", (ImTextureID)(void*)GetIcon("I_Pause"), ImVec2(iconSize, iconSize)))
-				//	{
-				//		GetApp().SetEngineMode(TEEngineMode::EDITOR);
-				//		_Playing = false;
-				//	}
-				//	ImGui::SameLine();
-				//}
+				if (_Playing) {
+					if (ImGui::ImageButton("Pause", (ImTextureID)(void*)GetIcon("I_Pause"), ImVec2(iconSize, iconSize)))
+					{
+						GetApp().SetEngineMode(TEEngineMode::EDITOR);
+						_Playing = false;
+					}
+					ImGui::SameLine();
+				}
 
-				//if (ImGui::ImageButton("Stop", (ImTextureID)(void*)GetIcon("I_Stop"), ImVec2(iconSize, iconSize)))
-				//{
-				//	GetApp().SetEngineMode(TEEngineMode::EDITOR);
-				//}
+				if (ImGui::ImageButton("Stop", (ImTextureID)(void*)GetIcon("I_Stop"), ImVec2(iconSize, iconSize)))
+				{
+					GetApp().SetEngineMode(TEEngineMode::EDITOR);
+				}
 
 				ImGui::EndMenuBar();
 			}
