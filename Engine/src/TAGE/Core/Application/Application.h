@@ -15,9 +15,7 @@
 #include "TAGE/Renderer/Renderer.h"
 #include "TAGE/Renderer/Camera.h"
 
-#include "TAGE/ECS/Scene/Scene.h"
-#include "TAGE/ECS/Scene/IO/SceneSerializer.h"
-#include "TAGE/ECS/ECS/Systems/System.h"
+#include "TAGE/ECS/GameFactory/GameInstance.h"
 
 #include "TAGE/Thread/ThreadPool.h"
 #include "TAGE/Core/Profiler/Profiler.h"
@@ -37,10 +35,8 @@ namespace TAGE
 		void PushOverlay(Layer* layer);
 
 		Window& GetWindow() const { return *_Window; }
-		ECS::Scene& GetScene() const { return *_TestScene; }
-		ECS::IO::SceneSerializer& GetSceneSerializer() const { return *_SceneLoader; }
-		ECS::PhysicsSystem& GetPhysicsSystem() const { return _TestScene->GetWorld().GetPhysicsSystem(); }
-		ECS::RenderSystem& GetRenderSystem() const { return _TestScene->GetWorld().GetRenderSystem(); }
+		ECS::PhysicsSystem& GetPhysicsSystem() const { return _GameInstance->GetCurrentWorld()->GetPhysicsSystem(); }
+		ECS::RenderSystem& GetRenderSystem() const { return _GameInstance->GetCurrentWorld()->GetRenderSystem(); }
 		RENDERER::Renderer& GetRenderer() const { return *_Renderer; }
 		THREAD::ThreadPool& GetThreadPool() const { return *_AppThreadPool; }
 		TimeStep GetDeltaTime() const { return _DeltaTime; }
@@ -60,8 +56,7 @@ namespace TAGE
 		MEM::Scope<THREAD::ThreadPool> _AppThreadPool;
 		MEM::Scope<RENDERER::Renderer> _Renderer;
 		MEM::Scope<RENDERER::Camera> _Camera;
-		MEM::Ref<ECS::Scene> _TestScene;
-		MEM::Ref<ECS::IO::SceneSerializer> _SceneLoader;
+		MEM::Ref<GAMEFACTORY::GameInstance> _GameInstance;
 		MEM::Ref<ImGuiLayer> _ImGuiLayer;
 		ECS::SystemUpdateMode _EngineMode = ECS::SystemUpdateMode::GAME;
 

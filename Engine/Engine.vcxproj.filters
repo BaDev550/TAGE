@@ -1607,6 +1607,8 @@
     <ClInclude Include="src\TAGE\ECS\GameFactory\PlayerController.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
     <ClInclude Include="src\TAGE\ECS\GameFactory\GameState.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\BaseClasses\DefaultGameMode.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\BaseClasses\DefaultPlayerController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">
@@ -1752,5 +1754,8 @@
     </ClCompile>
     <ClCompile Include="src\TAGE\ECS\GameFactory\GameInstance.cpp" />
     <ClCompile Include="src\TAGE\ECS\GSM\ServiceLocator.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameMode.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameState.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\PlayerController.cpp" />
   </ItemGroup>
 </Project>

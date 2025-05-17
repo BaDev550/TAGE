@@ -6,17 +6,17 @@
 namespace TAGE {
 	class PlayerController {
 	public:
-		PlayerController(Entity owner) : _Owner(owner) {}
+		PlayerController() = default;
 		virtual ~PlayerController() = default;
 
-		virtual void SetupInput() = 0;
-		virtual void Tick(float dt) = 0;
+		virtual void Init(World* world);
+		virtual void Tick(float dt);
 
-		void Possess(MEM::Ref<Pawn> pawn);
-		Entity GetOwnerEntity() const { return _Owner; }
+		void Possess(Entity* pawn) { _Pawn = pawn; }
+		Entity* GetPawn() const { return _Pawn; }
 
 	protected:
-		Entity _Owner;
-		MEM::Ref<Pawn> _ControlledPawn;
+		Entity* _Pawn = nullptr;
+		World* _World = nullptr;
 	};
 }

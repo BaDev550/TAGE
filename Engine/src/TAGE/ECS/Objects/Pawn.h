@@ -1,18 +1,15 @@
 #pragma once
 
 #include "TAGE/ECS/World/World.h"
+#include "TAGE/ECS/Objects/Entity.h"
 
 namespace TAGE {
-	class Pawn {
+	class Pawn : public Entity {
 	public:
-		Pawn(Entity e) : _Entity(e) {}
-		virtual ~Pawn() = default;
+		Pawn(entt::entity handle, entt::registry* registry)
+			: Entity(handle, registry) {
+		}
 
-		virtual void Tick(float dt) = 0;
-
-		Entity GetEntity() const { return _Entity; }
-
-	protected:
-		Entity _Entity;
+		virtual void Tick(float dt) {}
 	};
 }

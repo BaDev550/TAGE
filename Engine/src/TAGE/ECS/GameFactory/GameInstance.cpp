@@ -13,6 +13,9 @@ namespace TAGE::GAMEFACTORY {
 	}
 	void GameInstance::Update(float dt)
 	{
+		if (_GameMode)
+			_GameMode->Tick(dt);
+
 		_CurrentWorld->Update(dt, SystemUpdateMode::GAME);
 		_Accumulator += dt;
 		while (_Accumulator >= _FixedDeltaTime) {

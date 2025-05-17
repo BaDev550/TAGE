@@ -1,6 +1,7 @@
 #include "tagepch.h"
 #include "Application.h"
 #include "imgui.h"
+#include "TAGE/ECS/GameFactory/BaseClasses/DefaultGameMode.h"
 
 namespace TAGE
 {
@@ -19,16 +20,17 @@ namespace TAGE
 		_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 		_Renderer = MEM::CreateScope<RENDERER::Renderer>();
 		_Renderer->Init(_Window.get());
+		_GameInstance = MEM::CreateScope<TAGE::GAMEFACTORY::GameInstance>();
+		_GameInstance->Init();
+		_GameInstance->SetGameMode<DefaultGameMode>();
 
-		_TestScene = MEM::CreateRef<ECS::Scene>("Test Map");
-		if (_TestScene) {
+		if (_GameInstance->GetCurrentWorld()) {
 			MEM::Ref<ECS::RenderSystem> renderSystem =  MEM::CreateRef<ECS::RenderSystem>(_Renderer.get());
-			MEM::Ref<ECS::PhysicsSystem> physicsSystem = MEM::CreateRef<ECS::PhysicsSystem>(_TestScene->GetWorld().GetPhysicsWorld());
+			MEM::Ref<ECS::PhysicsSystem> physicsSystem = MEM::CreateRef<ECS::PhysicsSystem>(_GameInstance->GetCurrentWorld()->GetPhysicsWorld());
 			MEM::Ref<ECS::TransformSystem> transformSystem = MEM::CreateRef<ECS::TransformSystem>();
-			_TestScene->GetWorld().AddSystem(renderSystem);
-			_TestScene->GetWorld().AddSystem(physicsSystem);
-			_TestScene->GetWorld().AddSystem(transformSystem);
-			_SceneLoader = MEM::CreateRef<ECS::IO::SceneSerializer>(_TestScene.get());
+			_GameInstance->GetCurrentWorld()->AddSystem(renderSystem);
+			_GameInstance->GetCurrentWorld()->AddSystem(physicsSystem);
+			_GameInstance->GetCurrentWorld()->AddSystem(transformSystem);
 		}
 
 		_AppThreadPool = MEM::CreateScope<THREAD::ThreadPool>();
@@ -40,6 +42,7 @@ namespace TAGE
 	{
 		CORE_LOG_WARN("Application terminated!");
 
+		_GameInstance->Shutdown();
 		_LayerStack.Clear();
 
 		CORE_LOG_INFO("Exiting...");
@@ -71,6 +74,7 @@ namespace TAGE
 			//else if (!_Window->IsWindowIconifyed()) {
 			//	SetEngineMode(ECS::SystemUpdateMode::EDITOR);
 			//}
+			_GameInstance->Update(_DeltaTime);
 
 			_Window->SwapBuffers();
 		}

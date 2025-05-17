@@ -12,12 +12,15 @@ namespace TAGE {
 		virtual ~GameMode() = default;
 
 		virtual void Init(World* world);
-		virtual void OnPlayerJoin(Entity playerEntity);
+		virtual void Tick(float dt);
 
-		virtual MEM::Ref<PlayerController> CreatePlayerController(Entity playerEntity);
-		virtual MEM::Ref<Pawn> CreateDefaultPawn(Entity playerEntity);
+		virtual void OnPlayerJoined(MEM::Ref<PlayerController> controller) {}
+		virtual void OnPlayerLeave(MEM::Ref<PlayerController> controller) {}
+
+		MEM::Ref<GameState> GetGameState() const { return _GameState; }
 
 	protected:
+		MEM::Ref<GameState> _GameState;
 		World* _World = nullptr;
 	};
 }

@@ -101,6 +101,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\TAGE\ECS\GameFactory\BaseClasses\DefaultGameMode.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\BaseClasses\DefaultPlayerController.h" />
     <ClInclude Include="src\TAGE\ECS\GameFactory\GameMode.h" />
     <ClInclude Include="src\TAGE\ECS\GameFactory\GameState.h" />
     <ClInclude Include="src\TAGE\ECS\GameFactory\PlayerController.h" />
@@ -604,6 +606,9 @@
     <ClInclude Include="thirdParty\stb\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameMode.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameState.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\PlayerController.cpp" />
     <ClCompile Include="src\TAGE\ECS\GSM\ServiceLocator.cpp" />
     <ClCompile Include="src\TAGE\ECS\GameFactory\GameInstance.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
