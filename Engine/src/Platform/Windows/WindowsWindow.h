@@ -22,6 +22,7 @@ namespace TAGE {
 		virtual void RestoreWindow(bool maximized) override;
 		virtual void SetWindowPos(int x,  int y) override;
 		virtual void GetWindowPos(int* x, int* y) override;
+		virtual void SetWindowIcon(const std::string& iconPath) override;
 
 		void SetEventCallback(const EventCallbackFn& callback) override { _Data.EventCallback = callback; }
 		void* GetNativeWindow() const override { return static_cast<void*>(_Window); }

@@ -58,7 +58,7 @@
       <PrecompiledHeaderFile>tagepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\ImGuizmo;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\ImGuizmo;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;thirdParty\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>tagepch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\ImGuizmo;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>thirdParty;thirdParty\spdlog;src;thirdParty\GLFW\include;thirdParty\GLAD\include;thirdParty\imgui;thirdParty\ImGuizmo;thirdParty\assimp\include;thirdParty\entt\include;thirdParty\glm;thirdParty\spdlog;thirdParty\json;thirdParty\bullet-physics\src;thirdParty\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -101,14 +101,8 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\TAGE\ECS\GameFactory\BaseClasses\DefaultGameMode.h" />
-    <ClInclude Include="src\TAGE\ECS\GameFactory\BaseClasses\DefaultPlayerController.h" />
-    <ClInclude Include="src\TAGE\ECS\GameFactory\GameMode.h" />
-    <ClInclude Include="src\TAGE\ECS\GameFactory\GameState.h" />
-    <ClInclude Include="src\TAGE\ECS\GameFactory\PlayerController.h" />
-    <ClInclude Include="src\TAGE\ECS\GSM\EventSystem.h" />
-    <ClInclude Include="src\TAGE\ECS\GSM\ServiceLocator.h" />
-    <ClInclude Include="src\TAGE\ECS\GameFactory\GameInstance.h" />
+    <ClInclude Include="src\TAGE\Project\IniReader.h" />
+    <ClInclude Include="src\TAGE\Project\ProjectCreator.h" />
     <ClInclude Include="src\Platform\Windows\WindowsKeyCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsMouseCodes.h" />
     <ClInclude Include="src\Platform\Windows\WindowsWindow.h" />
@@ -131,13 +125,23 @@
     <ClInclude Include="src\TAGE\Core\Utilities\Timer.h" />
     <ClInclude Include="src\TAGE\Core\Utilities\UUID.h" />
     <ClInclude Include="src\TAGE\ECS\Components\BaseComponents.h" />
+    <ClInclude Include="src\TAGE\ECS\Components\InputComponent.h" />
     <ClInclude Include="src\TAGE\ECS\Components\PhysicsComponents.h" />
     <ClInclude Include="src\TAGE\ECS\Components\RenderingComponents.h" />
+    <ClInclude Include="src\TAGE\ECS\GSM\EventSystem.h" />
+    <ClInclude Include="src\TAGE\ECS\GSM\ServiceLocator.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\BaseClasses\DefaultGameMode.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\BaseClasses\DefaultPlayerController.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\CameraManager.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameInstance.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameMode.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\GameState.h" />
+    <ClInclude Include="src\TAGE\ECS\GameFactory\PlayerController.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Entity.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\EntityRegistry.h" />
     <ClInclude Include="src\TAGE\ECS\Objects\Pawn.h" />
     <ClInclude Include="src\TAGE\ECS\Systems\System.h" />
-    <ClInclude Include="src\TAGE\ECS\World\IO\SceneSerializer.h" />
+    <ClInclude Include="src\TAGE\ECS\World\Scene.h" />
     <ClInclude Include="src\TAGE\ECS\World\World.h" />
     <ClInclude Include="src\TAGE\Events\ApplicationEvents.h" />
     <ClInclude Include="src\TAGE\Events\Event.h" />
@@ -604,13 +608,10 @@
     <ClInclude Include="thirdParty\glm\glm\vec4.hpp" />
     <ClInclude Include="thirdParty\glm\glm\vector_relational.hpp" />
     <ClInclude Include="thirdParty\stb\stb_image.h" />
+    <ClInclude Include="src\TAGE\Renderer\Model\Thumbnail\ThumbnailRenderer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\TAGE\ECS\GameFactory\GameMode.cpp" />
-    <ClCompile Include="src\TAGE\ECS\GameFactory\GameState.cpp" />
-    <ClCompile Include="src\TAGE\ECS\GameFactory\PlayerController.cpp" />
-    <ClCompile Include="src\TAGE\ECS\GSM\ServiceLocator.cpp" />
-    <ClCompile Include="src\TAGE\ECS\GameFactory\GameInstance.cpp" />
+    <ClCompile Include="src\TAGE\Project\ProjectCreator.cpp" />
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp" />
     <ClCompile Include="src\TAGE\Core\Application\Application.cpp" />
     <ClCompile Include="src\TAGE\Core\AssetManager\AssetManager.cpp" />
@@ -619,10 +620,15 @@
     <ClCompile Include="src\TAGE\Core\Utilities\RaycastUtils.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\UUID.cpp" />
     <ClCompile Include="src\TAGE\Core\Utilities\Utilities.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GSM\ServiceLocator.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameInstance.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameMode.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\GameState.cpp" />
+    <ClCompile Include="src\TAGE\ECS\GameFactory\PlayerController.cpp" />
     <ClCompile Include="src\TAGE\ECS\Systems\PhysicsSystem.cpp" />
     <ClCompile Include="src\TAGE\ECS\Systems\RenderSystem.cpp" />
     <ClCompile Include="src\TAGE\ECS\Systems\System.cpp" />
-    <ClCompile Include="src\TAGE\ECS\World\IO\SceneSerializer.cpp" />
+    <ClCompile Include="src\TAGE\ECS\World\Scene.cpp" />
     <ClCompile Include="src\TAGE\ECS\World\World.cpp" />
     <ClCompile Include="src\TAGE\Events\Input.cpp" />
     <ClCompile Include="src\TAGE\Layers\ImGuiBuild.cpp" />
@@ -660,6 +666,7 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="thirdParty\stb\stb_image.cpp" />
+    <ClCompile Include="src\TAGE\Renderer\Model\Thumbnail\ThumbnailRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="thirdParty\imgui\ImGui.vcxproj">
@@ -685,6 +692,9 @@
     </ProjectReference>
     <ProjectReference Include="thirdParty\bullet-physics\LinearMath.vcxproj">
       <Project>{EAF25DFD-D6AA-9F4A-3FB2-78A62B893A3B}</Project>
+    </ProjectReference>
+    <ProjectReference Include="thirdParty\yaml-cpp\yaml-cpp.vcxproj">
+      <Project>{88F1A057-74BE-FB62-9DD7-E90A890331F1}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

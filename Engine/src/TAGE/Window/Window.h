@@ -30,6 +30,7 @@ namespace TAGE {
 		virtual void RestoreWindow(bool maximized) = 0;
 		virtual void SetWindowPos(int x,  int y) = 0;
 		virtual void GetWindowPos(int* x, int* y) = 0;
+		virtual void SetWindowIcon(const std::string& iconPath) = 0;
 
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 		virtual void SwapBuffers() const = 0;

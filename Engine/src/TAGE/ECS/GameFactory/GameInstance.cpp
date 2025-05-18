@@ -2,13 +2,17 @@
 #include "GameInstance.h"
 
 namespace TAGE::GAMEFACTORY {
+	GameInstance* GameInstance::s_Instance = nullptr;
+
 	void GameInstance::Init()
 	{
+		s_Instance = this;
+
 		CORE_LOG_INFO("GameInstance initializing...");
 		auto eventSystem = MEM::CreateRef<EventSystem>();
 		ServiceLocator::RegisterService<EventSystem>(eventSystem);
 
-		_CurrentWorld = MEM::CreateScope<World>();
+		_CurrentWorld = MEM::CreateRef<World>();
 		_CurrentWorld->Init();
 	}
 	void GameInstance::Update(float dt)

@@ -109,10 +109,10 @@ namespace TAGE::RENDERER {
 			for (int positionIndex = 0; positionIndex < m_NumPositions; ++positionIndex)
 			{
 				aiVector3D aiPosition = channel->mPositionKeys[positionIndex].mValue;
-				float timeStamp = channel->mPositionKeys[positionIndex].mTime;
+				double timeStamp = channel->mPositionKeys[positionIndex].mTime;
 				KeyPosition data;
 				data.position = AssimpGLMHelpers::GetGLMVec(aiPosition);
-				data.timeStamp = timeStamp;
+				data.timeStamp = (float)timeStamp;
 				m_Positions.push_back(data);
 			}
 
@@ -120,10 +120,10 @@ namespace TAGE::RENDERER {
 			for (int rotationIndex = 0; rotationIndex < m_NumRotations; ++rotationIndex)
 			{
 				aiQuaternion aiOrientation = channel->mRotationKeys[rotationIndex].mValue;
-				float timeStamp = channel->mRotationKeys[rotationIndex].mTime;
+				double timeStamp = channel->mRotationKeys[rotationIndex].mTime;
 				KeyRotation data;
 				data.orientation = AssimpGLMHelpers::GetGLMQuat(aiOrientation);
-				data.timeStamp = timeStamp;
+				data.timeStamp = (float)timeStamp;
 				m_Rotations.push_back(data);
 			}
 
@@ -131,10 +131,10 @@ namespace TAGE::RENDERER {
 			for (int keyIndex = 0; keyIndex < m_NumScalings; ++keyIndex)
 			{
 				aiVector3D scale = channel->mScalingKeys[keyIndex].mValue;
-				float timeStamp = channel->mScalingKeys[keyIndex].mTime;
+				double timeStamp = channel->mScalingKeys[keyIndex].mTime;
 				KeyScale data;
 				data.scale = AssimpGLMHelpers::GetGLMVec(scale);
-				data.timeStamp = timeStamp;
+				data.timeStamp = (float)timeStamp;
 				m_Scales.push_back(data);
 			}
 		}

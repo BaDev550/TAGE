@@ -13,7 +13,6 @@
 
 #include "TAGE/Window/Window.h"
 #include "TAGE/Renderer/Renderer.h"
-#include "TAGE/Renderer/Camera.h"
 
 #include "TAGE/ECS/GameFactory/GameInstance.h"
 
@@ -35,8 +34,9 @@ namespace TAGE
 		void PushOverlay(Layer* layer);
 
 		Window& GetWindow() const { return *_Window; }
-		ECS::PhysicsSystem& GetPhysicsSystem() const { return _GameInstance->GetCurrentWorld()->GetPhysicsSystem(); }
-		ECS::RenderSystem& GetRenderSystem() const { return _GameInstance->GetCurrentWorld()->GetRenderSystem(); }
+		GAMEFACTORY::GameInstance& GetGameInstance() const { return *_GameInstance; }
+		ECS::PhysicsSystem& GetPhysicsSystem() const { return _GameInstance->GetCurrentWorld()->GetScene()->GetPhysicsSystem(); }
+		ECS::RenderSystem& GetRenderSystem() const { return _GameInstance->GetCurrentWorld()->GetScene()->GetRenderSystem(); }
 		RENDERER::Renderer& GetRenderer() const { return *_Renderer; }
 		THREAD::ThreadPool& GetThreadPool() const { return *_AppThreadPool; }
 		TimeStep GetDeltaTime() const { return _DeltaTime; }
@@ -57,6 +57,7 @@ namespace TAGE
 		MEM::Scope<RENDERER::Renderer> _Renderer;
 		MEM::Scope<RENDERER::Camera> _Camera;
 		MEM::Ref<GAMEFACTORY::GameInstance> _GameInstance;
+		MEM::Ref<ECS::Scene> _TestScene;
 		MEM::Ref<ImGuiLayer> _ImGuiLayer;
 		ECS::SystemUpdateMode _EngineMode = ECS::SystemUpdateMode::GAME;
 

@@ -21,6 +21,7 @@ namespace TAGE::RENDERER {
 		virtual const glm::vec3& GetRotation() const = 0;
 		virtual const glm::vec3& GetFront() const = 0;
 		virtual const glm::vec3& GetRight() const = 0;
+		virtual void Update() = 0;
 	};
 
 	class PerspectiveCamera : public Camera {
@@ -34,6 +35,7 @@ namespace TAGE::RENDERER {
 		const glm::mat4& GetViewMatrix() const override { return _ViewMatrix; }
 		const glm::mat4& GetProjectionMatrix() const override { return _ProjectionMatrix; }
 		void SetAspectRatio(float ar) override { _AspectRatio = ar; }
+		virtual void Update() override {};
 
 		const glm::vec3& GetPosition() const override { return _Position; }
 		const glm::vec3& GetRotation() const override { return _Rotation; }
@@ -62,6 +64,8 @@ namespace TAGE::RENDERER {
 		EditorCamera()
 		{
 		}
+
+		virtual void Update() override;
 	private:
 		float _Distance = 10.0f;
 		glm::vec3 _FocalPoint = glm::vec3(0.0f);

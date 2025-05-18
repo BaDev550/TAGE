@@ -33,7 +33,8 @@ project "Engine"
         "../%{IncludeDir.glm}",
         "../%{IncludeDir.log}",
         "../%{IncludeDir.json}",
-        "../%{IncludeDir.Bullet}"
+        "../%{IncludeDir.Bullet}",
+        "../%{IncludeDir.yamlcpp}"
     }
 
     defines 
@@ -50,7 +51,8 @@ project "Engine"
             "Assimp",
             "BulletDynamics",
             "BulletCollision",
-            "LinearMath"
+            "LinearMath",
+            "yaml-cpp"
         }
 
     buildoptions "/utf-8"

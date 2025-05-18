@@ -20,18 +20,24 @@ namespace TAGE
 		_Window->SetEventCallback(BIND_EVENT_FN(Application::OnEvent));
 		_Renderer = MEM::CreateScope<RENDERER::Renderer>();
 		_Renderer->Init(_Window.get());
-		_GameInstance = MEM::CreateScope<TAGE::GAMEFACTORY::GameInstance>();
-		_GameInstance->Init();
-		_GameInstance->SetGameMode<DefaultGameMode>();
 
-		if (_GameInstance->GetCurrentWorld()) {
-			MEM::Ref<ECS::RenderSystem> renderSystem =  MEM::CreateRef<ECS::RenderSystem>(_Renderer.get());
-			MEM::Ref<ECS::PhysicsSystem> physicsSystem = MEM::CreateRef<ECS::PhysicsSystem>(_GameInstance->GetCurrentWorld()->GetPhysicsWorld());
+		_GameInstance = MEM::CreateScope<TAGE::GAMEFACTORY::GameInstance>();
+
+		_TestScene = MEM::CreateRef<ECS::Scene>();
+		_TestScene->Init();
+
+		if (_TestScene) {
+			MEM::Ref<ECS::RenderSystem> renderSystem =  MEM::CreateRef<ECS::RenderSystem>();
+			MEM::Ref<ECS::PhysicsSystem> physicsSystem = MEM::CreateRef<ECS::PhysicsSystem>();
 			MEM::Ref<ECS::TransformSystem> transformSystem = MEM::CreateRef<ECS::TransformSystem>();
-			_GameInstance->GetCurrentWorld()->AddSystem(renderSystem);
-			_GameInstance->GetCurrentWorld()->AddSystem(physicsSystem);
-			_GameInstance->GetCurrentWorld()->AddSystem(transformSystem);
+			_TestScene->AddSystem(renderSystem);
+			_TestScene->AddSystem(physicsSystem);
+			_TestScene->AddSystem(transformSystem);
 		}
+
+		_GameInstance->Init();
+		_GameInstance->GetCurrentWorld()->SetScene(_TestScene);
+		_GameInstance->SetGameMode<DefaultGameMode>();
 
 		_AppThreadPool = MEM::CreateScope<THREAD::ThreadPool>();
 		_ImGuiLayer = MEM::CreateRef<ImGuiLayer>();

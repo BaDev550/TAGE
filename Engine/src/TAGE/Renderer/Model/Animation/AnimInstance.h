@@ -1,16 +1,16 @@
 #pragma once
 
-#include "TAGE/ECS/Objects/GameObject.h"
+#include "TAGE/ECS/Objects/Entity.h"
 #include "TAGE/Renderer/Model/Animation/Skeletal.h"
 #include "TAGE/Renderer/Model/Animation/Animation.h"
-#include "TAGE/ECS/ECS/Components/RenderingComponents.h"
+#include "TAGE/ECS/Components/RenderingComponents.h"
 #include "glm/glm.hpp"
 
 namespace TAGE::RENDERER {
 	class AnimInstance
 	{
 	public:
-		AnimInstance(ECS::GameObject* owner, const MEM::Ref<Model>& model);
+		AnimInstance(Entity* owner, const MEM::Ref<Model>& model);
 		virtual ~AnimInstance() = default;
 
 		virtual void Update(float dt) = 0;
@@ -39,6 +39,6 @@ namespace TAGE::RENDERER {
 		std::unordered_map<std::string, glm::vec3>  _Vec3Params;
 		MEM::Ref<Skeletal> _Skeletal;
 		MEM::Ref<Model> _Model;
-		ECS::GameObject* _Owner;
+		Entity* _Owner;
 	};
 }

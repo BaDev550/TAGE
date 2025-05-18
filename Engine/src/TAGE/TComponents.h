@@ -1,8 +1,8 @@
 #pragma once
 
-#include "TAGE/ECS/ECS/Components/PhysicsComponents.h"
-#include "TAGE/ECS/ECS/Components/RenderingComponents.h"
-#include "TAGE/ECS/ECS/Components/BaseComponents.h"
+#include "TAGE/ECS/Components/PhysicsComponents.h"
+#include "TAGE/ECS/Components/RenderingComponents.h"
+#include "TAGE/ECS/Components/BaseComponents.h"
 
 using TStaticMeshComponent = TAGE::ECS::StaticMeshComponent;
 using TSkeletalMeshComponent = TAGE::ECS::SkeletalMeshComponent;

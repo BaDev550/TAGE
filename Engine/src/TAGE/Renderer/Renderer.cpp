@@ -7,7 +7,7 @@
 
 namespace TAGE::RENDERER {
 	RenderSceneData Renderer::_SceneData;
-	RenderMode Renderer::_RenderMode;
+	RenderMode Renderer::_RenderMode = RenderMode::VIEWPORT;
 
 	void Renderer::Init(Window* window)
 	{

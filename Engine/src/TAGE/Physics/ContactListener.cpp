@@ -1,6 +1,6 @@
 #include "tagepch.h"
 #include "ContactListener.h"
-#include "TAGE/ECS/ECS/Components/PhysicsComponents.h"
+#include "TAGE/ECS/Components/PhysicsComponents.h"
 
 namespace TAGE::PHYSICS {
     void PhysicsContactListener::CheckContacts(btDynamicsWorld* world, entt::registry& registry)
@@ -16,8 +16,8 @@ namespace TAGE::PHYSICS {
                 auto* compB = static_cast<ECS::RigidBodyComponent*>(obB->getUserPointer());
 
                 if (compA && compB) {
-                    auto& colA = registry.get<ECS::ColliderComponent>(compA->Owner->GetEntity());
-                    auto& colB = registry.get<ECS::ColliderComponent>(compB->Owner->GetEntity());
+                    auto& colA = registry.get<ECS::ColliderComponent>(compA->Owner->GetHandle());
+                    auto& colB = registry.get<ECS::ColliderComponent>(compB->Owner->GetHandle());
 
                     bool isTrigger = colA.IsTrigger() || colB.IsTrigger();
 

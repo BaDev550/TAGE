@@ -1,7 +1,7 @@
 #pragma once
 
 #include <btBulletDynamicsCommon.h>
-#include "TAGE/ECS/Objects/Actor.h"
+#include "TAGE/ECS/Objects/Entity.h"
 #include <glm/glm.hpp>
 
 namespace TAGE::ECS {
@@ -23,9 +23,9 @@ namespace TAGE::ECS {
 		btDefaultMotionState* MotionState = nullptr;
 		btCollisionShape* CollisionShape = nullptr;
 		PhysicsBodyType BodyType = PhysicsBodyType::DYNAMIC;
-		Actor* Owner;
+		Entity* Owner;
 
-		RigidBodyComponent(btRigidBody* body, btDefaultMotionState* motion, btCollisionShape* shape, Actor* owner) : Body(body), MotionState(motion), CollisionShape(shape), Owner(owner) {
+		RigidBodyComponent(btRigidBody* body, btDefaultMotionState* motion, btCollisionShape* shape, Entity* owner) : Body(body), MotionState(motion), CollisionShape(shape), Owner(owner) {
 			body->setUserPointer(Owner);
 		}
 

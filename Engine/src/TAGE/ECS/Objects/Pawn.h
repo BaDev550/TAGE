@@ -9,6 +9,7 @@ namespace TAGE {
 		Pawn(entt::entity handle, entt::registry* registry)
 			: Entity(handle, registry) {
 		}
+		virtual ~Pawn() = default;
 
 		virtual void Tick(float dt) {}
 	};

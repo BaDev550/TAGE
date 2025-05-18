@@ -11,6 +11,7 @@ namespace TAGE {
 		Entity(entt::entity handle, entt::registry* registry)
 			: _handle(handle), _registry(registry) {
 		}
+		virtual ~Entity() = default;
 
         template<typename T, typename... Args>
         T& AddComponent(Args&&... args) { return _registry->emplace<T>(_handle, std::forward<Args>(args)...); }

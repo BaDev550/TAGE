@@ -19,7 +19,7 @@ namespace TAGE {
         }
 
         virtual void OnPlayerJoined(MEM::Ref<PlayerController> controller) override {
-            auto pawnEntity = _World->SpawnActor("MyPawn");
+            auto pawnEntity = _World->GetScene()->CreateEntity("MyPawn");
             controller->Possess(pawnEntity);
         }
     };

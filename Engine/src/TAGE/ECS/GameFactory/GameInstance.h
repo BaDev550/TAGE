@@ -4,6 +4,7 @@
 #include "TAGE/ECS/GameFactory/GameMode.h"
 #include "TAGE/ECS/GSM/EventSystem.h"
 #include "TAGE/ECS/GSM/ServiceLocator.h"
+#include "TAGE/ECS/GameFactory/CameraManager.h"
 
 namespace TAGE::GAMEFACTORY {
 	class GameInstance
@@ -17,6 +18,7 @@ namespace TAGE::GAMEFACTORY {
 		void Shutdown();
 
 		World* GetCurrentWorld() const { return _CurrentWorld.get(); };
+		CameraManager& GetCameraManager() { return _CameraManager; }
 
 		template<typename T>
 		void SetGameMode() {
@@ -30,11 +32,15 @@ namespace TAGE::GAMEFACTORY {
 			Init();
 		}
 
+		static GameInstance* Get() { return s_Instance; }
 	private:
-		MEM::Scope<World> _CurrentWorld = nullptr;
+		MEM::Ref<World> _CurrentWorld = nullptr;
 		MEM::Ref<GameMode> _GameMode;
+		CameraManager _CameraManager;
 
 		float _FixedDeltaTime = 1.0f / 60.0f;
 		float _Accumulator = 1.0f;
+
+		static GameInstance* s_Instance;
 	};
 }

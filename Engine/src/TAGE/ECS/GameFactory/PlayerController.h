@@ -2,6 +2,7 @@
 
 #include "TAGE/ECS/World/World.h"
 #include "TAGE/ECS/Objects/Pawn.h"
+#include "TAGE/ECS/Components/InputComponent.h"
 
 namespace TAGE {
 	class PlayerController {
@@ -18,5 +19,6 @@ namespace TAGE {
 	protected:
 		Entity* _Pawn = nullptr;
 		World* _World = nullptr;
+		MEM::Ref<ECS::InputComponent> _InputComponent;
 	};
 }

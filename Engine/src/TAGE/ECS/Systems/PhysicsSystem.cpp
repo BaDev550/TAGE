@@ -8,72 +8,20 @@ namespace TAGE::ECS {
     extern PHYSICS::DEBUG::PhysicsDebugRenderer _PhysicsDebugRenderer;
 #endif
 
-    PhysicsSystem::PhysicsSystem(PHYSICS::PhysicsWorld& world)
-        : _PhysicsWorld(world) {
-        _PhysicsWorld.GetWorld()->setDebugDrawer(&_PhysicsDebugRenderer);
-        PHYSICS::RAYCAST::Raycaster::Init(_PhysicsWorld, _PhysicsDebugRenderer);
+    PhysicsSystem::PhysicsSystem() : _PhysicsWorld(PHYSICS::PhysicsWorld()) {
     }
 
-    void PhysicsSystem::Update(entt::registry& registry, float dt, SystemUpdateMode mode)
+    void PhysicsSystem::Init()
     {
-        TE_PROFILE_SCOPE("Physics System");
-
-        if (mode == SystemUpdateMode::EDITOR) {
-            _PhysicsWorld.GetWorld()->debugDrawWorld();
-
-            auto rigidView = registry.view<TransformComponent, RigidBodyComponent>();
-            for (auto entity : rigidView) {
-                auto& tc = rigidView.get<TransformComponent>(entity);
-                auto& rb = rigidView.get<RigidBodyComponent>(entity);
-
-                glm::vec3 position = tc.Position;
-                glm::vec3 rotation = tc.Rotation;
-
-                btTransform transform;
-                transform.setOrigin(btVector3(position.x, position.y, position.z));
-
-                glm::quat q = glm::quat(glm::radians(rotation));
-                transform.setRotation(btQuaternion(q.x, q.y, q.z, q.w));
-
-                rb.Body->getMotionState()->setWorldTransform(transform);
-                rb.Body->setWorldTransform(transform);
-            }
-            RefreshDirtyBodies(registry);
-            return;
+        if (auto scene = _Scene.lock()) {
+            _PhysicsWorld = scene->GetPhysicsWorld();
+            _PhysicsWorld.GetWorld()->setDebugDrawer(&_PhysicsDebugRenderer);
+            PHYSICS::RAYCAST::Raycaster::Init(_PhysicsWorld, _PhysicsDebugRenderer);
         }
+    }
 
-        RefreshDirtyBodies(registry);
-        _PhysicsWorld.StepSimulation(dt);
-
-        auto rigidView = registry.view<TransformComponent, RigidBodyComponent>();
-
-        for (auto entity : rigidView) {
-            auto& transform = rigidView.get<TransformComponent>(entity);
-            auto& rb = rigidView.get<RigidBodyComponent>(entity);
-
-            if (rb.Body->isKinematicObject() || rb.Body->isStaticObject()) {
-                glm::vec3 position = transform.Position;
-                glm::vec3 rotation = transform.Rotation;
-
-                btTransform transform;
-                transform.setOrigin(btVector3(position.x, position.y, position.z));
-
-                glm::quat q = glm::quat(glm::radians(rotation));
-                transform.setRotation(btQuaternion(q.x, q.y, q.z, q.w));
-
-                rb.Body->getMotionState()->setWorldTransform(transform);
-                rb.Body->setWorldTransform(transform);
-            }
-
-            btTransform bulletTransform;
-            rb.Body->getMotionState()->getWorldTransform(bulletTransform);
-            btVector3 pos = bulletTransform.getOrigin();
-            btQuaternion rot = bulletTransform.getRotation();
-
-            glm::quat q(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
-            transform.Position = glm::vec3(pos.getX(), pos.getY(), pos.getZ());
-            transform.Rotation = glm::eulerAngles(q) * (180.0f / glm::pi<float>());
-        }
+    void PhysicsSystem::Update(float dt)
+    {
     }
 
     btCollisionShape* CreateShapeFromCollider(const ColliderComponent& collider, const MeshComponent& mesh)
@@ -108,49 +56,66 @@ namespace TAGE::ECS {
         }
     }
 
-    btRigidBody* PhysicsSystem::CreateRigidBody(Actor* actor, float mass)
+    void PhysicsSystem::FixedUpdate(float dt)
     {
-        auto& transform = actor->GetComponent<TransformComponent>();
-        auto& collider = actor->GetComponent<ColliderComponent>();
+        if (auto scene = _Scene.lock()) {
+            const auto registry = scene->GetRegistry().GetRegistry();
+            TE_PROFILE_SCOPE("Physics System");
+            //_PhysicsWorld.GetWorld()->debugDrawWorld();
 
-        btCollisionShape* shape;
-        if (actor->HasComponent<StaticMeshComponent>())
-            shape = CreateShapeFromCollider(collider, actor->GetComponent<StaticMeshComponent>());
-        else
-            shape = CreateShapeFromCollider(collider, actor->GetComponent<SkeletalMeshComponent>());
+            //auto rigidView = registry.view<TransformComponent, RigidBodyComponent>();
+            //for (auto entity : rigidView) {
+            //    auto& tc = rigidView.get<TransformComponent>(entity);
+            //    auto& rb = rigidView.get<RigidBodyComponent>(entity);
 
-        btTransform startTransform;
-        startTransform.setIdentity();
-        startTransform.setOrigin(btVector3(transform.Position.x, transform.Position.y, transform.Position.z));
-        btQuaternion rotation = btQuaternion::getIdentity();
+            //    glm::vec3 position = tc.Position;
+            //    glm::vec3 rotation = tc.Rotation;
 
-        btDefaultMotionState* motion = new btDefaultMotionState(startTransform);
+            //    btTransform transform;
+            //    transform.setOrigin(btVector3(position.x, position.y, position.z));
 
-        btVector3 inertia(0, 0, 0);
-        if (mass > 0.0f)
-            shape->calculateLocalInertia(mass, inertia);
+            //    glm::quat q = glm::quat(glm::radians(rotation));
+            //    transform.setRotation(btQuaternion(q.x, q.y, q.z, q.w));
 
-        btRigidBody::btRigidBodyConstructionInfo info(mass, motion, shape, inertia);
-        btRigidBody* body = new btRigidBody(info);
-        body->setAngularFactor(btVector3(0, 0, 0));
+            //    rb.Body->getMotionState()->setWorldTransform(transform);
+            //    rb.Body->setWorldTransform(transform);
+            //}
+            //RefreshDirtyBodies(registry);
+            //return;
 
-        int flags = body->getCollisionFlags();
-        switch (collider.ResponseType)
-        {
-        case CollisionResponseType::NONE:
-            flags |= btCollisionObject::CF_NO_CONTACT_RESPONSE;
-            break;
-        case CollisionResponseType::OVERLAP:
-            flags |= btCollisionObject::CF_NO_CONTACT_RESPONSE;
-            break;
-        case CollisionResponseType::BLOCK:
-            break;
+            RefreshDirtyBodies(*registry);
+            scene->GetPhysicsWorld().StepSimulation(dt);
+
+            auto rigidView = registry->view<TransformComponent, RigidBodyComponent>();
+
+            for (auto entity : rigidView) {
+                auto& transform = rigidView.get<TransformComponent>(entity);
+                auto& rb = rigidView.get<RigidBodyComponent>(entity);
+
+                if (rb.Body->isKinematicObject() || rb.Body->isStaticObject()) {
+                    glm::vec3 position = transform.Position;
+                    glm::vec3 rotation = transform.Rotation;
+
+                    btTransform transform;
+                    transform.setOrigin(btVector3(position.x, position.y, position.z));
+
+                    glm::quat q = glm::quat(glm::radians(rotation));
+                    transform.setRotation(btQuaternion(q.x, q.y, q.z, q.w));
+
+                    rb.Body->getMotionState()->setWorldTransform(transform);
+                    rb.Body->setWorldTransform(transform);
+                }
+
+                btTransform bulletTransform;
+                rb.Body->getMotionState()->getWorldTransform(bulletTransform);
+                btVector3 pos = bulletTransform.getOrigin();
+                btQuaternion rot = bulletTransform.getRotation();
+
+                glm::quat q(rot.getW(), rot.getX(), rot.getY(), rot.getZ());
+                transform.Position = glm::vec3(pos.getX(), pos.getY(), pos.getZ());
+                transform.Rotation = glm::eulerAngles(q) * (180.0f / glm::pi<float>());
+            }
         }
-        body->setCollisionFlags(flags);
-
-        _PhysicsWorld.GetWorld()->addRigidBody(body);
-        actor->AddComponent<RigidBodyComponent>(body, motion, shape, actor);
-        return body;
     }
 
     void PhysicsSystem::UpdateRigidBodyShape(entt::registry& registry, entt::entity entity)
@@ -207,4 +172,48 @@ namespace TAGE::ECS {
         }
     }
 
+    btRigidBody* PhysicsSystem::CreateRigidBody(Entity* actor, float mass)
+    {
+        auto& transform = actor->GetComponent<TransformComponent>();
+        auto& collider = actor->GetComponent<ColliderComponent>();
+
+        btCollisionShape* shape;
+        if (actor->HasComponent<StaticMeshComponent>())
+            shape = CreateShapeFromCollider(collider, actor->GetComponent<StaticMeshComponent>());
+        else
+            shape = CreateShapeFromCollider(collider, actor->GetComponent<SkeletalMeshComponent>());
+
+        btTransform startTransform;
+        startTransform.setIdentity();
+        startTransform.setOrigin(btVector3(transform.Position.x, transform.Position.y, transform.Position.z));
+        btQuaternion rotation = btQuaternion::getIdentity();
+
+        btDefaultMotionState* motion = new btDefaultMotionState(startTransform);
+
+        btVector3 inertia(0, 0, 0);
+        if (mass > 0.0f)
+            shape->calculateLocalInertia(mass, inertia);
+
+        btRigidBody::btRigidBodyConstructionInfo info(mass, motion, shape, inertia);
+        btRigidBody* body = new btRigidBody(info);
+        body->setAngularFactor(btVector3(0, 0, 0));
+
+        int flags = body->getCollisionFlags();
+        switch (collider.ResponseType)
+        {
+        case CollisionResponseType::NONE:
+            flags |= btCollisionObject::CF_NO_CONTACT_RESPONSE;
+            break;
+        case CollisionResponseType::OVERLAP:
+            flags |= btCollisionObject::CF_NO_CONTACT_RESPONSE;
+            break;
+        case CollisionResponseType::BLOCK:
+            break;
+        }
+        body->setCollisionFlags(flags);
+
+        _PhysicsWorld.GetWorld()->addRigidBody(body);
+        actor->AddComponent<RigidBodyComponent>(body, motion, shape, actor);
+        return body;
+    }
 }

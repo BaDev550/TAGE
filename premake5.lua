@@ -1,6 +1,6 @@
 workspace "TAGE"
    architecture "x64"
-   startproject "Sandbox"
+   startproject "Editor"
 
    configurations
    {
@@ -22,6 +22,7 @@ workspace "TAGE"
    IncludeDir["log"] = "Engine/thirdParty/spdlog/"
    IncludeDir["json"] =  "Engine/thirdParty/json/"
    IncludeDir["Bullet"] = "Engine/thirdParty/bullet-physics/src"
+   IncludeDir["yamlcpp"] = "Engine/thirdParty/yaml-cpp/include"
 
    group "Dependencies"
       include "Engine/thirdParty/imgui"
@@ -30,12 +31,13 @@ workspace "TAGE"
       include "Engine/thirdParty/GLFW"
       include "Engine/thirdParty/assimp/"
       include "Engine/thirdParty/bullet-physics/"
+      include "Engine/thirdParty/yaml-cpp/"
    group ""
 
    group "Engine"
       include "Engine"
    group ""
     
-   group "Game"
-      include "Sandbox"
+   group "Editor"
+      include "Editor"
    group ""

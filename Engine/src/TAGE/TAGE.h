@@ -14,10 +14,12 @@
 #include "TAGE/Layers/ImGuiLayer.h"
 #include "TAGE/Layers/Layer.h"
 #include "TAGE/Core/Defines.h"
-#include "TAGE/ECS/Scene/IO/SceneSerializer.h"
 #include "TAGE/Renderer/Material/Texture.h"
+#include "TAGE/Renderer/Camera.h"
+#include "TAGE/Project/ProjectCreator.h"
+#include "TAGE/Renderer/Model/Thumbnail/ThumbnailRenderer.h"
 
-#include "TAGE/ECS/Scene/World.h"
+#include "TAGE/ECS/World/World.h"
 
 #include <btBulletDynamicsCommon.h>
 
@@ -29,18 +31,21 @@ using TEKey = TAGE::KeyCode;
 using TEMouseButton = TAGE::MouseButton;
 using TEProfilerLayer = TAGE::DEBUG::ProfilerLayer;
 using TETimeLine = TAGE::Timeline;
-using TESceneSL = TAGE::ECS::IO::SceneSerializer;
 using TEScene = TAGE::ECS::Scene;
 using TERenderer = TAGE::RENDERER::Renderer;
 using TERenderMode = TAGE::RENDERER::RenderMode;
 using TEFramebuffer = TAGE::RENDERER::Framebuffer;
 using TETexture2D = TAGE::RENDERER::Texture2D;
+using TEEditorCamera = TAGE::RENDERER::EditorCamera;
+using TEPerfectiveCamera = TAGE::RENDERER::PerspectiveCamera;
+using TEProjectCreator = TAGE::PROJECT::ProjectCreator;
+using TEThubnailRenderer = TAGE::RENDERER::ThumbnailRenderer;
 
 using TELayer = TAGE::Layer;
 using TEImGuiLayer = TAGE::ImGuiLayer;
-using TEWorld = TAGE::ECS::World;
-inline TEWorld& GetWorld() { return TAGE::Application::Get().GetScene().GetWorld(); }
-inline TEScene& GetScene() { return TAGE::Application::Get().GetScene(); }
+using TEWorld = TAGE::World;
+inline TEWorld* GetWorld() { return TAGE::Application::Get().GetGameInstance().GetCurrentWorld(); }
+inline TAGE::MEM::Ref<TEScene> GetScene() { return TAGE::Application::Get().GetGameInstance().GetCurrentWorld()->GetScene(); }
 inline TEApplication& GetApp() { return TAGE::Application::Get(); }
 inline TEFramebuffer* GetMainFramebuffer() { return TAGE::Application::Get().GetRenderer().GetFramebuffer(); }
 inline TEWindow& GetMainWindow() { return TAGE::Application::Get().GetWindow(); }

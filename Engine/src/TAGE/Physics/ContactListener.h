@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TAGE/ECS/Objects/Actor.h"
+#include "TAGE/ECS/Objects/Entity.h"
 #include <btBulletDynamicsCommon.h>
 
 namespace TAGE::PHYSICS {
@@ -13,8 +13,8 @@ namespace TAGE::PHYSICS {
         };
 
         struct Contact {
-            ECS::Actor* EntityA;
-            ECS::Actor* EntityB;
+            Entity* EntityA;
+            Entity* EntityB;
             ContactType Type;
         };
 

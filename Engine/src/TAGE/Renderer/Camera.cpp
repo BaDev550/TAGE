@@ -1,5 +1,6 @@
 #include "tagepch.h"
 #include "Camera.h"
+#include "TAGE/Core/Application/Application.h"
 
 namespace TAGE::RENDERER {
 
@@ -32,4 +33,36 @@ namespace TAGE::RENDERER {
         _ViewMatrix = glm::lookAt(_Position, _Position + direction, up);
         _ProjectionMatrix = glm::perspective(glm::radians(_FOV), _AspectRatio, _NearClip, _FarClip);
     }
+
+
+	void EditorCamera::Update() {
+		if (Input::IsMouseButtonPressed(MouseButton::Right))
+		{
+			glm::vec2 mousePos = Input::GetMousePosition();
+			mousePos.y = -mousePos.y;
+			glm::vec2 delta = (mousePos - _LastMousePosition) * 1.0f;
+			_LastMousePosition = mousePos;
+
+			_Rotation.x += delta.y * _RotationSpeed;
+			_Rotation.y += delta.x * _RotationSpeed;
+
+			_Rotation.x = glm::clamp(_Rotation.x, -89.0f, 89.0f);
+		}
+
+		glm::vec3 forward = GetFront();
+		forward.y = 0.0f;
+		forward = glm::normalize(forward);
+		glm::vec3 right = glm::normalize(glm::cross(forward, glm::vec3(0, 1, 0)));
+
+		glm::vec3 moveDirection(0.0f);
+
+		if (Input::IsKeyPressed(KeyCode::W)) moveDirection += forward;
+		if (Input::IsKeyPressed(KeyCode::S)) moveDirection -= forward;
+		if (Input::IsKeyPressed(KeyCode::A)) moveDirection -= right;
+		if (Input::IsKeyPressed(KeyCode::D)) moveDirection += right;
+
+		_Position += moveDirection * _MovementSpeed * (float)TAGE::Application::Get().GetDeltaTime();
+
+		UpdateViewMatrix();
+	}
 }

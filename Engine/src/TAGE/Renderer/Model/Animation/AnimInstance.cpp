@@ -2,7 +2,7 @@
 #include "AnimInstance.h"
 
 namespace TAGE::RENDERER {
-	AnimInstance::AnimInstance(ECS::GameObject* owner, const MEM::Ref<Model>& model) {
+	AnimInstance::AnimInstance(Entity* owner, const MEM::Ref<Model>& model) {
 		_Owner = owner;
 		_Model = model;
 		_Skeletal = model->GetSkeletal();

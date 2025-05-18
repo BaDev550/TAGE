@@ -1,8 +1,7 @@
 #pragma once
 
 #include "PhysicsWorld.h"
-#include "TAGE/ECS/Objects/Actor.h"
-#include "TAGE/ECS/Objects/GameObject.h"
+#include "TAGE/ECS/Objects/Entity.h"
 #include "glm/glm.hpp"
 
 namespace TAGE::PHYSICS::DEBUG { class PhysicsDebugRenderer; }
@@ -18,7 +17,7 @@ namespace TAGE::PHYSICS::RAYCAST {
 
 	struct RaycastHit
 	{
-		ECS::GameObject* actor;
+		Entity* HitEntity;
 		glm::vec3 point;
 		glm::vec3 normal;
 		float distance;
@@ -43,7 +42,7 @@ namespace TAGE::PHYSICS::RAYCAST {
 	public:
 		static void Init(PHYSICS::PhysicsWorld& world, PHYSICS::DEBUG::PhysicsDebugRenderer& _debugRenderer);
 		static RaycastHit Raycast(const glm::vec3& from, const glm::vec3& to, bool ignoreSelf = true, RayDrawType draw = RayDrawType::FOR_FRAME, float draw_time = 0.0f);
-		static thread_local ECS::Actor* CurrentCaller;
+		static thread_local Entity* CurrentCaller;
 	private:
 		static PHYSICS::PhysicsWorld* _World;
 		static PHYSICS::DEBUG::PhysicsDebugRenderer* _DebugRenderer;

@@ -5,6 +5,8 @@
 #include "TAGE/Events/ApplicationEvents.h"
 #include "TAGE/Events/InputEvents.h"
 
+#include "stb/stb_image.h"
+
 namespace TAGE {
 	static bool s_WindowClassRegistered = false;
 	static void GLFWErrorCallback(int err, const char* desc);
@@ -183,6 +185,26 @@ namespace TAGE {
 	void WindowsWindow::GetWindowPos(int* x, int* y)
 	{
 		glfwGetWindowPos(_Window, x, y);
+	}
+
+	void WindowsWindow::SetWindowIcon(const std::string& iconPath)
+	{
+		int width, height, channels;
+		unsigned char* pixels = stbi_load(iconPath.c_str(), &width, &height, &channels, 4); // 4 = RGBA
+
+		if (!pixels)
+		{
+			CORE_LOG_ERROR("Failed to load window icon: {0}", iconPath);
+			return;
+		}
+
+		GLFWimage icon;
+		icon.width = width;
+		icon.height = height;
+		icon.pixels = pixels;
+		glfwSetWindowIcon(_Window, 1, &icon);
+
+		stbi_image_free(pixels);
 	}
 
 	void GLFWErrorCallback(int err, const char* desc)
