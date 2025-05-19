@@ -1,0 +1,6 @@
+importSource: scene.gltf
+importSettings:
+  scale: 1
+  optimizeMesh: true
+  generateNormals: false
+  generateTangents: true

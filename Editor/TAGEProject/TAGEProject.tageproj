@@ -1,0 +1,6 @@
+ProjectName: TAGEProject
+Version: 1.0.0
+ContentDir: Content
+SavedDir: Saved
+ConfigDir: Config
+SettingsFile: settings.ini

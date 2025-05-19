@@ -30,7 +30,7 @@ namespace TAGE::PROJECT {
 		static void CreateProjectFiles();
 		static void SetRootPath(const std::filesystem::path& path) { rootPath = path; }
 		static const std::filesystem::path& GetRootPath() { return rootPath; }
-		static const std::filesystem::path& GetContentPath() { return rootPath / data.ContentDir; }
+		static const std::filesystem::path& GetContentPath() { return (GetRootPath() / data.ContentDir); }
 
 	private:
 		inline static std::filesystem::path rootPath;

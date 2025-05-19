@@ -42,6 +42,17 @@ namespace TAGE
 		_AppThreadPool = MEM::CreateScope<THREAD::ThreadPool>();
 		_ImGuiLayer = MEM::CreateRef<ImGuiLayer>();
 		PushOverlay(_ImGuiLayer.get());
+
+		ASSET::AssetManager::RegisterImporter(MEM::CreateRef<ASSET::ModelImporter>());
+		ASSET::AssetManager::RegisterImporter(MEM::CreateRef<ASSET::TextureImporter>());
+		//ASSET::AssetManager::RegisterImporter(MEM::CreateScope<ASSET::MaterialImporter>());
+		//ASSET::AssetManager::RegisterImporter(MEM::CreateScope<ASSET::ShaderImporter>());
+		//ASSET::AssetManager::RegisterImporter(MEM::CreateScope<ASSET::AnimationImporter>());
+		//ASSET::AssetManager::RegisterImporter(MEM::CreateScope<ASSET::SceneImporter>());
+		//ASSET::AssetManager::RegisterImporter(MEM::CreateScope<ASSET::AudioImporter>());
+		//ASSET::AssetManager::RegisterImporter(MEM::CreateScope<ASSET::FontImporter>());
+		//ASSET::AssetManager::RegisterImporter(MEM::CreateScope<ASSET::ScriptImporter>());
+		//ASSET::AssetManager::RegisterImporter(MEM::CreateScope<ASSET::PrefabImporter>());
 	}
 
 	Application::~Application()
@@ -55,9 +66,6 @@ namespace TAGE
 	}
 
 	void Application::UpdateLayers(float dt) {
-		for (Layer* layer : _LayerStack)
-			layer->OnUpdate(dt);
-
 		_ImGuiLayer->Begin();
 		for (Layer* layer : _LayerStack)
 			layer->OnImGuiRender();
@@ -73,6 +81,9 @@ namespace TAGE
 			float time = timer.Elapsed();
 			_DeltaTime = time - _LastFrameTime;
 			_LastFrameTime = time;
+
+			for (Layer* layer : _LayerStack)
+				layer->OnUpdate(_DeltaTime);
 
 			//if (_Window->IsWindowIconifyed()) {
 			//	SetEngineMode(ECS::SystemUpdateMode::LOADING);

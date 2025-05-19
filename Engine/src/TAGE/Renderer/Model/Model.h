@@ -1,7 +1,5 @@
 #pragma once
 
-#include "TAGE/Core/AssetManager/Asset.h"
-#include "TAGE/Core/AssetManager/AssetManager.h"
 #include "TAGE/Renderer/Buffers/Buffers.h"
 #include "TAGE/Renderer/Buffers/VertexArrayBuffer.h"
 #include "TAGE/Renderer/Model/Animation/Socket.h"

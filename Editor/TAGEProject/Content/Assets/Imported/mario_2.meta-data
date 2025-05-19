@@ -1,0 +1,6 @@
+importSource: mario_2.obj
+importSettings:
+  scale: 1
+  optimizeMesh: true
+  generateNormals: false
+  generateTangents: true

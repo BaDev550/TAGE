@@ -16,12 +16,13 @@ namespace TAGE::ECS {
 	public:
 		MeshComponent(const std::string& modelPath, EMeshType type = EMeshType::STATIC) {
 			meshType = type;
-			model = MEM::CreateScope<Model>(modelPath, meshType);
+			auto asset = ASSET::AssetManager::ImportAsset(modelPath);
+			model = std::dynamic_pointer_cast<Model>(asset);
 		}
 		MeshComponent(EMeshType type = EMeshType::STATIC) { meshType = type; model = MEM::CreateScope<Model>(type); }
 
 		void Draw(MEM::Ref<Shader> shader, const glm::mat4& transform) {
-			if (IsVisible) {
+			if (IsVisible && model) {
 				shader->Bind();
 
 				model->Draw(transform, shader);
@@ -30,7 +31,8 @@ namespace TAGE::ECS {
 
 		void LoadModel(const std::string& modelPath) {
 			model->Reset();
-			model = MEM::CreateScope<Model>(modelPath, meshType);
+			auto asset = ASSET::AssetManager::ImportAsset(modelPath);
+			model = std::dynamic_pointer_cast<Model>(asset);
 		}
 
 		MEM::Ref<Model> GetModel() const { return model ? model : nullptr; }

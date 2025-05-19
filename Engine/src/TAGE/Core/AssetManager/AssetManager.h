@@ -5,56 +5,23 @@
 #include <unordered_map>
 #include <string>
 #include <type_traits>
+#include "yaml-cpp/yaml.h"
+
+#include "TAGE/Core/AssetManager/Importers/ModelImporter.h"
 
 namespace TAGE::ASSET {
 	class AssetManager
 	{
 	public:
-		template<typename T>
-		static MEM::Ref<T> Load(const std::string& path);
+		static MEM::Ref<Asset> ImportAsset(const std::filesystem::path& path);
+		static MEM::Ref<Asset> GetAsset(const UUID& handle);
+		static MEM::Ref<Asset> GetAsset(const std::string& path);
+		static bool HasAsset(const UUID& handle);
+		static bool HasAsset(const std::string& path);
+		static void RegisterImporter(MEM::Ref<AssetImporter> importer);
 
-		template<typename T>
-		static MEM::Ref<T> Get(const std::string& path);
-
-		template<typename T>
-		static bool Has(const std::string& path);
-
-		template<typename T>
-		static void Reload(const std::string& path);
 	private:
-		static std::unordered_map<std::string, MEM::Ref<Asset>> _Assets;
+		static std::unordered_map<UUID, MEM::Ref<Asset>> s_Assets;
+		static std::unordered_map<std::string, MEM::Ref<AssetImporter>> s_Importers;
 	};
-
-	template<typename T>
-	MEM::Ref<T> AssetManager::Load(const std::string& path) {
-		static_assert(std::is_base_of<Asset, T>::value, "T must derive from Asset");
-
-		auto it = _Assets.find(path);
-		if (it != _Assets.end())
-			return std::dynamic_pointer_cast<T>(_Assets[path]);
-
-		MEM::Ref<T> asset = MEM::CreateRef<T>(path);
-		_Assets[path] = std::dynamic_pointer_cast<Asset>(asset);
-		return asset;
-	}
-
-	template<typename T>
-	MEM::Ref<T> AssetManager::Get(const std::string& path) {
-		auto it = _Assets.find(path);
-		if (it == _Assets.end())
-			return nullptr;
-
-		return std::dynamic_pointer_cast<T>(_Assets[path]);
-	}
-
-	template<typename T>
-	bool AssetManager::Has(const std::string& path) {
-		return (_Assets.find(path) != _Assets.end());
-	}
-
-	template<typename T>
-	void AssetManager::Reload(const std::string& path) {
-		static_assert(std::is_base_of<Asset, T>::value, "T must derive from Asset");
-		_Assets[path] = std::dynamic_pointer_cast<Asset>(MEM::CreateRef<T>(path));
-	}
 }

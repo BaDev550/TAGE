@@ -19,6 +19,18 @@
 #include "TAGE/Thread/ThreadPool.h"
 #include "TAGE/Core/Profiler/Profiler.h"
 
+#include "TAGE/Core/AssetManager/AssetManager.h"
+#include "TAGE/Core/AssetManager/Importers/ModelImporter.h"
+#include "TAGE/Core/AssetManager/Importers/TextureImporter.h"
+//#include "TAGE/Core/AssetManager/Importers/MaterialImporter.h"
+//#include "TAGE/Core/AssetManager/Importers/ShaderImporter.h"
+//#include "TAGE/Core/AssetManager/Importers/AnimationImporter.h"
+//#include "TAGE/Core/AssetManager/Importers/SceneImporter.h"
+//#include "TAGE/Core/AssetManager/Importers/AudioImporter.h"
+//#include "TAGE/Core/AssetManager/Importers/FontImporter.h"
+//#include "TAGE/Core/AssetManager/Importers/ScriptImporter.h"
+//#include "TAGE/Core/AssetManager/Importers/PrefabImporter.h"
+
 namespace TAGE
 {
 	class Application

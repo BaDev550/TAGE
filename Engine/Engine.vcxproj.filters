@@ -1641,6 +1641,9 @@
     <ClInclude Include="src\TAGE\Project\ProjectCreator.h" />
     <ClInclude Include="src\TAGE\Project\IniReader.h" />
     <ClInclude Include="src\TAGE\Renderer\Model\Thumbnail\ThumbnailRenderer.h" />
+    <ClInclude Include="src\TAGE\Core\AssetManager\AssetImporter.h" />
+    <ClInclude Include="src\TAGE\Core\AssetManager\Importers\ModelImporter.h" />
+    <ClInclude Include="src\TAGE\Core\AssetManager\Importers\TextureImporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Platform\Windows\WindowsWindow.cpp">

@@ -59,8 +59,8 @@ namespace TAGE::EDITOR {
 
             if (ImGui::BeginDragDropSource())
             {
-                const wchar_t* itemPath = relativePath.c_str();
-                ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+                std::wstring wpath = relativePath.wstring();
+                ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", wpath.c_str(), (wpath.size() + 1) * sizeof(wchar_t));
                 ImGui::Text("%s", filename.c_str());
                 ImGui::EndDragDropSource();
             }

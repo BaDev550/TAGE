@@ -46,7 +46,9 @@ namespace TAGE::EDITOR {
 			| ImGuiTreeNodeFlags_OpenOnArrow
 			| ImGuiTreeNodeFlags_SpanAvailWidth;
 
-		bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, name.c_str());
+		std::string id = std::to_string(static_cast<int>(entity.GetHandle())) + "##" + name;
+		bool opened = ImGui::TreeNodeEx(id.c_str(), flags, name.c_str());
+
 		if (ImGui::IsItemClicked())
 		{
 			m_SelectionContext = entity;

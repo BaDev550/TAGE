@@ -2,6 +2,7 @@
 
 #include "Panel.h"
 #include "TAGE/TAGE.h"
+#include "TAGE/TObjects.h"
 #include "TAGE/TComponents.h"
 
 namespace TAGE::EDITOR {

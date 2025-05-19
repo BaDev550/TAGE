@@ -1,0 +1,11 @@
+Model Information:
+* title:	BLACKSMITH
+* source:	https://sketchfab.com/3d-models/blacksmith-312d59262c3b4477abf4ef046f7b5706
+* author:	Vaibhav Nigam (https://sketchfab.com/vaibv)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "BLACKSMITH" (https://sketchfab.com/3d-models/blacksmith-312d59262c3b4477abf4ef046f7b5706) by Vaibhav Nigam (https://sketchfab.com/vaibv) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

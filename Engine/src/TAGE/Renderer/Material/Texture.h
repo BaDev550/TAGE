@@ -11,7 +11,7 @@ namespace TAGE::RENDERER {
 		Metallic,
 		Roughness
 	};
-	class Texture : ASSET::Asset 
+	class Texture : public ASSET::Asset 
 	{
 	public:
 		virtual ~Texture() = default;

@@ -72,7 +72,7 @@ namespace TAGE::EDITOR {
 			_InspectorPanel.SetSelectedEntity(entity);
 			});
 
-		_ContentBrowser.SetProjectDirectory(TAGE::PROJECT::ProjectCreator::GetRootPath() / "Content");
+		_ContentBrowser.SetProjectDirectory(PROJECT::ProjectCreator::GetRootPath() / "Content");
 	}
 
 	void EditorLayer::OnDetach()

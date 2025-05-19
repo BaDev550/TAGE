@@ -2,6 +2,8 @@
 #include "Model.h"
 #include "TAGE/Renderer/Shader/ShaderLibrary.h"
 #include "TAGE/Renderer/Model/Animation/Animation.h"
+#include "TAGE/Core/AssetManager/Asset.h"
+#include "TAGE/Core/AssetManager/AssetManager.h"
 
 namespace TAGE::RENDERER {
 	Model::Model(const std::string& path, EMeshType type)
@@ -193,14 +195,17 @@ namespace TAGE::RENDERER {
 			}
 			else {
 				std::string fullPath = _Directory + "/" + texPath;
-				if (ASSET::AssetManager::Has<Texture2D>(fullPath)) {
-					mat->SetTexture(ourType, ASSET::AssetManager::Get<Texture2D>(fullPath));
+				if (ASSET::AssetManager::HasAsset(fullPath)) {
+					auto texture = std::dynamic_pointer_cast<Texture2D>(ASSET::AssetManager::GetAsset(fullPath));
+					mat->SetTexture(ourType, texture);
 					return;
 				}
 				else if (!texPath.empty()) {
-					auto texture = ASSET::AssetManager::Load<Texture2D>(fullPath);
+					auto texture = ASSET::AssetManager::ImportAsset(fullPath);
 					if (texture) {
-						mat->SetTexture(ourType, texture);
+						auto tex2D = std::dynamic_pointer_cast<Texture2D>(texture);
+						if (tex2D)
+							mat->SetTexture(ourType, tex2D);
 						return;
 					}
 				}

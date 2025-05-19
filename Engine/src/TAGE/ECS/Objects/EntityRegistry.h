@@ -19,6 +19,7 @@ namespace TAGE {
             auto actor = MEM::CreateRef<Entity>(e, _registry.get());
             actor->AddComponent<TagComponent>(name);
             actor->AddComponent<TransformComponent>();
+			actor->AddComponent<RelationshipComponent>();
             return actor;
         }
 		MEM::Ref<Entity> FindActorByName(const std::string& name) {
